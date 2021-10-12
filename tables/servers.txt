@@ -21,6 +21,7 @@ secureLogin_type 0
 secureLogin_requestCode
 secureLogin_account 0
 serverEncoding Western
+gameGuard 0
 storageEncryptKey 0x050B6F79, 0x0202C179, 0x0E20120, 0x04FA43E3, 0x0179B6C8, 0x05973DF2, 0x07D8D6B, 0x08CB9ED9
 addTableFolders bRO
 charBlockSize 147
@@ -43,6 +44,7 @@ secureLogin_type 0
 secureLogin_requestCode
 secureLogin_account 0
 serverEncoding Western
+gameGuard 0
 storageEncryptKey 0x050B6F79, 0x0202C179, 0x0E20120, 0x04FA43E3, 0x0179B6C8, 0x05973DF2, 0x07D8D6B, 0x08CB9ED9
 addTableFolders bRO
 charBlockSize 147
@@ -54,8 +56,8 @@ itemListType 1
 ignoreAntiCheatWarning 0
 
 # http://ro.zhaouc.com/
-[China - cRO: Prontera]
-ip acc.ro.zhaouc.com
+[cRO - China: Taren]
+ip 118.89.42.108
 port 6900
 master_version 4
 version 1
@@ -64,6 +66,10 @@ serverEncoding GBK
 charBlockSize 155
 addTableFolders cRO
 gameGuard 1
+secureLogin 0
+secureLogin_type 0
+secureLogin_requestCode
+secureLogin_account 0
 storageEncryptKey 0x050B6F79, 0x0202C179, 0x0E20120, 0x04FA43E3, 0x0179B6C8, 0x05973DF2, 0x07D8D6B, 0x08CB9ED9
 pinCode 1
 charDeleteDateType 1
@@ -72,7 +78,7 @@ rankingSystemType 1
 itemListType 1
 
 # https://eu.4game.com/ro/
-[European - euRO: Revo Classic]
+[EU - euRO: Revo Classic]
 ip 185.47.158.72
 port 6800
 version 1
@@ -158,18 +164,19 @@ charDeleteDateType 1
 
 # TODO: needs a servertype & table folder
 # https://ragnarokonline.gungho.jp/
-[Japan - jRO: Verdandi]
-ip 61.215.212.13
+[Japan - jRO: Breidablik]
+ip 18.182.57.239
 port 6900
-master_version 3
 version 10
-serverType 7
-secureLogin 1
+gameGuard 1
 serverEncoding Japanese
-addTableFolders Old
+addTableFolders jRO
+master_version 26
+serverType jRO
+charBlockSize 155
 
 # http://roz.gnjoy.com/
-[Korea - kRO: Zero]
+[Korea - kRO:Zero]
 ip 112.175.128.137
 port 6950
 OTP_ip 112.175.128.135
@@ -233,6 +240,7 @@ secureLogin_type 0
 secureLogin_requestCode
 secureLogin_account 0
 serverEncoding Western
+gameGuard 0
 addTableFolders pRO
 charBlockSize 147
 pinCode 1
@@ -253,6 +261,7 @@ secureLogin_type 0
 secureLogin_requestCode
 secureLogin_account 0
 serverEncoding Western
+gameGuard 0
 addTableFolders pRO
 charBlockSize 147
 pinCode 1
@@ -262,7 +271,7 @@ itemListType 1
 ignoreAntiCheatWarning 0
 
 # https://ru.4game.com/ro/play/
-[Russia - rRO: Renewal]
+[Russia - rRO-Renewal]
 ip 109.105.140.145
 port 6800
 master_version 25
@@ -273,6 +282,7 @@ addTableFolders rRO
 charBlockSize 145
 storageEncryptKey 0x050B6F79, 0x0202C179, 0x0E20120, 0x04FA43E3, 0x0179B6C8, 0x05973DF2, 0x07D8D6B, 0x08CB9ED9
 blockingPlayerCancel 1
+gameGuard 0
 
 # https://ro.gnjoy.com.tw/
 [Taiwan - twRO: Sarah, Alice, Bakili, Charles, Poli]
@@ -303,6 +313,7 @@ serverType tRO
 serverEncoding Thai
 addTableFolders tRO
 charBlockSize 175
+gameGuard 0
 charDeleteDateType 1
 blockingPlayerCancel 1
 rankingSystemType 1
