@@ -5,3 +5,4 @@
    2. XKore server binds to 0.0.0.0 under briged and NetRedirect.dll points to virtual machine ip
 * Using patched NetRedirect.dll
 * python script to get launch parameters
+* Stealth inject NetRedirect.dll
