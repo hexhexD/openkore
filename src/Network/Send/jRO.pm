@@ -26,6 +26,8 @@ sub new {
 	my %packets = (
 		'027C' => ['master_login', 'V A16 Z8 A40 Z12 H*', [qw(version username unknown password unknown2 unknown3)]],# 190
 		'0013' => ['character_move', 'a3', [qw(coords)]],
+        '0020' => ['gameguard_reply'],
+		'0014' => ['actor_info_request', 'a4', [qw(ID)]],
 	);
 	$self->{packet_list}{$_} = $packets{$_} for keys %packets;
 
@@ -40,7 +42,8 @@ sub new {
 		send_equip 0998
 		storage_item_add 0364
 		storage_item_remove 0365
-		sync 0360
+        gameguard_reply 0020
+        actor_info_request 0014
 	);
 	$self->{packet_lut}{$_} = $handlers{$_} for keys %handlers;
 
