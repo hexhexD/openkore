@@ -48,7 +48,7 @@ use Utils::Exceptions;
 sub iterate {
 	Benchmark::begin("ai_prepare") if DEBUG;
 	processWipeOldActors();
-    # processGetPlayerInfo();
+    processGetPlayerInfo();
 	processMisc();
 	processReAddMissingPortals();
 	processPortalRecording();
