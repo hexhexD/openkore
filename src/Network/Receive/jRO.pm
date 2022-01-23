@@ -1,6 +1,6 @@
 #########################################################################
 #  OpenKore - Network subsystem
-#  Copyright (c) 2021 OpenKore Team
+#  Copyright (c) 2006 OpenKore Team
 #
 #  This software is open source, licensed under the GNU General Public
 #  License, version 2.
@@ -21,7 +21,7 @@ sub new {
 	my $self = $class->SUPER::new(@_);
 	my %packets = (
 		'009D' => ['item_exists', 'a4 V C v3 C2', [qw(ID nameID identified x y amount subx suby)]],
-        '009E' => ['item_appeared', 'a4 V C v2 C2 v', [qw(ID nameID identified x y subx suby amount)]],
+		'009E' => ['item_appeared', 'a4 V C v2 C2 v', [qw(ID nameID identified x y subx suby amount)]],
 	);
 
 	foreach my $switch (keys %packets) {
@@ -30,7 +30,6 @@ sub new {
 
 	my %handlers = qw(
 		account_server_info 0B07
-        item_appeared 009E
 	);
 	$self->{packet_lut}{$_} = $handlers{$_} for keys %handlers;
 
