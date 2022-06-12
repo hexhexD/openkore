@@ -76,10 +76,10 @@ ai_route_unstuck 2
 ai_items_take_delay 1.4
 
 # When your monster died, start checking for loot after x seconds
-ai_items_take_start 0.4
+ai_items_take_start 0.2
 
 # Stop checking for loot x seconds after it has begun checking
-ai_items_take_end 1.2
+ai_items_take_end 0.2
 
 # When standing near an item, send the 'take' packet every x seconds until
 # the item has been taken.
@@ -131,7 +131,7 @@ ai_sit_wait 0
 # hp/sp sufficiency, do so when the specified number of seconds elapsed
 ai_safe_stand_up 2
 
-ai_skill_use 0.75
+ai_skill_use 0.3
 ai_skill_use_giveup 1
 ai_item_use_auto 0.5
 ai_item_equip_auto 0.75
@@ -159,9 +159,9 @@ ai_route_calcRoute 1
 ai_route_npcTalk 10
 
 # These timeouts are used in npc conversation (Task::TalkNPC)
-ai_npc_talk_wait_to_answer 1.5
-ai_npc_talk_wait_after_close_to_cancel 0.5
-ai_npc_talk_wait_after_cancel_to_destroy 0.5
+ai_npc_talk_wait_to_answer 0.3
+ai_npc_talk_wait_after_close_to_cancel 0.3
+ai_npc_talk_wait_after_cancel_to_destroy 0.3
 
 ai_buyAuto 5
 ai_buyAuto_wait 2
@@ -204,4 +204,4 @@ welcomeText 4
 patchserver 120
 
 # Time to wait before load map in xKore mode
-ai_clientSuspend 10
+ai_clientSuspend 2
