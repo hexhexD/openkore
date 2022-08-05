@@ -33,7 +33,7 @@ my $hooks = Plugins::addHooks(
 );
 
 my $chooks = Commands::register(
-	['eventMacro', "eventMacro plugin", \&commandHandler]
+	['em', "eventMacro plugin", \&commandHandler]
 );
 
 my $file_handle;
