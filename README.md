@@ -6,3 +6,4 @@
 * Using patched NetRedirect.dll
 * python script to get launch parameters
 * Stealth inject NetRedirect.dll
+Need to update this ptr and function offset of all manual functions
