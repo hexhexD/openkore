@@ -78,7 +78,7 @@ attackMinPortalDistance 4
 attackUseWeapon 1
 attackNoGiveup 0
 attackCanSnipe 0
-attackCheckLOS 1
+attackCheckLOS 0
 attackRouteMaxPathDistance 13
 attackLooters 0
 attackChangeTarget 1
@@ -188,7 +188,6 @@ itemsMaxWeight 89
 itemsMaxWeight_sellOrStore 48
 itemsMaxNum_sellOrStore 99
 cartMaxWeight 7900
-itemsTakeAuto_new 0
 itemsTakeGreed 0
 itemsCheckWeight 1
 
@@ -801,6 +800,7 @@ storageAuto_standpoint
 storageAuto_distance 3
 storageAuto_maxDistance
 storageAuto_npc_type 1
+storageAuto_type 0
 storageAuto_npc_steps
 storageAuto_password
 storageAuto_keepOpen 0

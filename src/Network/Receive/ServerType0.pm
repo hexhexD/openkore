@@ -585,6 +585,8 @@ sub new {
 		'09A6' => ['banking_check', 'V2 v',[qw(zeny zeny2 reason)]],
 		'09A8' => ['banking_deposit', 'v V2 V',[qw(reason zeny zeny2 balance)]],
 		'09AA' => ['banking_withdraw', 'v V2 V',[qw(reason zeny zeny2 balance)]],
+		'09BB' => ['storage_opened'],
+		'09BF' => ['storage_closed'],
 		'09CA' => ['area_spell_multiple3', 'v a*', [qw(len spellInfo)]], # -1
 		'09CB' => ['skill_used_no_damage', 'v V a4 a4 C', [qw(skillID amount targetID sourceID success)]],
 		'09CD' => ['message_string', 'v V', [qw(index param)]],
@@ -657,6 +659,16 @@ sub new {
 		'0A4B' => ['map_change', 'Z16 v2', [qw(map x y)]], # ZC_AIRSHIP_MAPMOVE
 		'0A4C' => ['map_changed', 'Z16 v2 a4 v', [qw(map x y IP port)]], # ZC_AIRSHIP_SERVERMOVE
 		'0A51' => ['rodex_check_player', 'V v2 Z24', [qw(char_id class base_level name)]],   # 34
+		'0A53' => ['captcha_upload_request', 'Z4 V', [qw(captcha_key flag)]],
+		'0A55' => ['captcha_upload_request_status'],
+		'0A57' => ['macro_reporter_status', 'V', [qw(status)]],
+		'0A58' => ['macro_detector', 'v Z4', [qw(image_size captcha_key)]],
+		'0A59' => ['macro_detector_image', 'v Z4 a*', [qw(len captcha_key captcha_image)]],
+		'0A5B' => ['macro_detector_show', 'c V', [qw(remaining_chances remaining_time)]],
+		'0A5D' => ['macro_detector_status', 'V', [qw(status)]],
+		'0A6A' => ['captcha_preview', 'V v Z4', [qw(flag image_size captcha_key)]],
+		'0A6B' => ['captcha_preview_image', 'v Z4 a*', [qw(len captcha_key captcha_image)]],
+		'0A6D' => ['macro_reporter_select', 'v a*', [qw(len account_list)]],
 		'0A6F' => ['message_string', 'v2 V Z*', [qw(len index color param)]], # -1
 		'0A7B' => ['EAC_key'],
 		'0A7D' => ['rodex_mail_list', 'v C3 a*', [qw(len type amount isEnd mailList)]],   # -1
@@ -737,6 +749,7 @@ sub new {
 		'0B6F' => ['character_creation_successful', 'a*', [qw(charInfo)]],
 		'0B72' => ['received_characters', 'v a*', [qw(len charInfo)]],
 		'0B73' => ['revolving_entity', 'a4 v', [qw(sourceID entity)]],
+		'0B77' => ['npc_store_info', 'v a*', [qw(len itemList)]],#-1
 		'0B7B' => ['guild_info', 'a4 V9 a4 Z24 Z16 V a4 Z24', [qw(ID lv conMember maxMember average exp exp_next tax tendency_left_right tendency_down_up emblemID name castles_string zeny master_char_id master)]], #118
 		'0B7C' => ['guild_expulsion_list', 'v a*', [qw(len expulsion_list)]], # -1
 		'0B7D' => ['guild_members_list', 'v a*', [qw(len member_list)]], # -1
