@@ -19,13 +19,13 @@ use base qw(Exporter);
 use Exporter;
 use IO::Socket::INET;
 use Time::HiRes qw(time usleep);
-use Win32;
+# use Win32;
 use Exception::Class ('Network::XKore::CannotStart');
 
 use Modules 'register';
 use Globals;
 use Log qw(message error debug);
-use Utils::Win32;
+# use Utils::Win32;
 use Network;
 use Network::Send ();
 use Utils qw(dataWaiting timeOut);
