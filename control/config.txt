@@ -3,12 +3,12 @@
 
 ######## Login options and server-specific options ########
 
-master
+master Japan - jRO: Urdr
 server
-username
-password
+username test
+password noneed
 loginPinCode
-char
+char 1
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -20,10 +20,10 @@ forceMapIP
 
 # 1 = hook into RO client, 2 = Act as stand-alone proxy, proxy = act as true proxy
 # https://openkore.com/wiki/XKore
-XKore 0
+XKore 1
 XKore_port 2350
 XKore_dll NetRedirect.dll
-XKore_injectDLL 1
+XKore_injectDLL 0
 XKore_autoAttachIfOneExe 1
 XKore_silent 1
 XKore_bypassBotDetection 0
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword
+adminPassword wrefrouc
 callSign
 commandPrefix ;
 callSignGM 0
@@ -153,7 +153,7 @@ cachePlayerNames_maxSize 100
 
 clientSight 15
 
-dcPause 1
+dcPause 0
 dcOnDeath 0
 dcOnDualLogin 0
 dcOnDisconnect 0
@@ -838,3 +838,4 @@ logToFile_Errors
 logToFile_Messages
 logToFile_Warnings
 history_max 50
+macro_orphans terminate
