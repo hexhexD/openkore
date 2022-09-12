@@ -25,6 +25,8 @@ sub new {
 
 	my %packets = (
 		'027C' => ['master_login', 'V Z24 a40 x12 c x a12', [qw(version username_salted password_salted master_version mac)]],# 96
+		'02E3' => ['skill_use', 'v2 a4', [qw(lv skillID targetID)]],
+		'02E2' => ['item_use', 'a2 a4', [qw(ID targetID)]],
 	);
 
 	$self->{packet_list}{$_} = $packets{$_} for keys %packets;
@@ -37,10 +39,12 @@ sub new {
 		character_move 035F
 		item_drop 0363
 		item_take 0362
+    item_use 02E2
 		master_login 027C
 		send_equip 0998
 		storage_item_add 0364
 		storage_item_remove 0365
+    skill_use 02E3
 		skill_use_location 0366
 		sync 0360
 	);

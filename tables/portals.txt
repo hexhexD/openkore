@@ -364,6 +364,7 @@ mid_camp 163 231 mid_campin 376 133
 moc_fild22b 222 200 dali 119 56 c r0 n
 dali 122 48 moc_fild22b 227 200
 dali 115 94 moc_para01 31 14 c r0 c n
+dali 114 88 prt_cas 18 29 c r0 c
 mid_camp 210 292 dali 141 82 c r0 n
 dali 149 82 mid_camp 210 289
 bif_fild01 318 159 dali 43 92 c r0 n
@@ -1806,6 +1807,7 @@ prontera 237 317 prt_church 100 56
 prontera 289 203 prt_fild06 23 193
 prontera 121 72 prt_cas 18 29 c r0
 prt_cas 27 27 dali 109 86 c r3 c c r0
+prt_cas 9 23 prontera 117 72 c r1 n
 prt_castle 28 121 prt_castle 40 138
 prt_castle 31 113 prt_castle 54 113
 prt_castle 40 138 prt_castle 28 121
