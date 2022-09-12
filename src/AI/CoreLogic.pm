@@ -51,7 +51,7 @@ sub iterate {
 	# Not necessary in xkore1 and looks more legit
   # Comment out is better than a branch
 	# processGetPlayerInfo();
-	processmisc();
+	processMisc();
 	processReAddMissingPortals();
 	processPortalRecording();
 	Benchmark::end("ai_prepare") if DEBUG;
