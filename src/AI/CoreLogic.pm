@@ -48,8 +48,10 @@ use Utils::Exceptions;
 sub iterate {
 	Benchmark::begin("ai_prepare") if DEBUG;
 	processWipeOldActors();
-    processGetPlayerInfo();
-	processMisc();
+	# Not necessary in xkore1 and looks more legit
+  # Comment out is better than a branch
+	# processGetPlayerInfo();
+	processmisc();
 	processReAddMissingPortals();
 	processPortalRecording();
 	Benchmark::end("ai_prepare") if DEBUG;
