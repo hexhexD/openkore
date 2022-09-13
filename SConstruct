@@ -184,10 +184,10 @@ if not conf.CheckPerl():
 	Exit(1)
 if not win32:
 	have_ncurses = conf.CheckLib('ncurses')
-	if not conf.CheckReadline(conf):
-		print ("You don't have GNU readline installed, or your version of GNU readline is not recent enough! Read:")
-		print ("https://openkore.com/wiki/How_to_run_OpenKore#GNU_readline")
-		Exit(1)
+	#  if not conf.CheckReadline(conf):
+		#  print ("You don't have GNU readline installed, or your version of GNU readline is not recent enough! Read:")
+		#  print ("https://openkore.com/wiki/How_to_run_OpenKore#GNU_readline")
+		#  Exit(1)
 
 	if darwin:
 		has_readline_5 = conf.CheckLib('readline.5')
