@@ -357,6 +357,7 @@ autoTalkCont 1
 noAutoSkill 0
 portalCompile 1
 portalRecord 2
+portalRecord_recompileAfter 1
 missDamage 0
 
 tankersList
@@ -374,6 +375,9 @@ monster_filter
 mercenary_attackAuto 2
 mercenary_attackAuto_party 1
 mercenary_attackAuto_notInTown 1
+mercenary_attackAuto_inLockOnly 1
+mercenary_attackAuto_considerDamagedAggressive 0
+mercenary_attackBeyondMaxDistance_waitForAgressive 1
 mercenary_attackAuto_onlyWhenSafe 0
 mercenary_attackAuto_duringRandomWalk 0
 mercenary_attackAuto_duringItemsTake 0
@@ -431,6 +435,9 @@ mercenary_teleportAuto_attackedWhenSitting 0
 homunculus_attackAuto 2
 homunculus_attackAuto_party 1
 homunculus_attackAuto_notInTown 1
+homunculus_attackAuto_inLockOnly 1
+homunculus_attackAuto_considerDamagedAggressive 0
+homunculus_attackBeyondMaxDistance_waitForAgressive 1
 homunculus_attackAuto_onlyWhenSafe 0
 homunculus_attackAuto_duringRandomWalk 0
 homunculus_attackAuto_duringItemsTake 0
@@ -510,9 +517,24 @@ attackSkillSlot {
 	minCastTime 0
 	hp
 	sp > 10
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -571,9 +593,24 @@ attackComboSlot {
 doCommand {
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -604,9 +641,24 @@ useSelf_skill {
 	minCastTime 0
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -641,9 +693,24 @@ partySkill {
 	minCastTime 0
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -723,9 +790,24 @@ equipAuto {
 	whileSitting 0
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -748,9 +830,24 @@ equipAuto {
 useSelf_item {
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive

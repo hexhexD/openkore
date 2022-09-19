@@ -530,6 +530,7 @@ sub processPortalRecording {
 
 
 	my ($ID, $destName);
+	my $recorded = 0;
 
 	# Record information about destination portal
 	if ($config{portalRecord} > 1 &&
@@ -555,6 +556,7 @@ sub processPortalRecording {
 			dstx => $sourcePos{x},
 			dsty => $sourcePos{y}
 		});
+		$recorded = 1;
 	}
 
 	# Record information about the source portal
@@ -580,6 +582,12 @@ sub processPortalRecording {
 			dstx => $char->{pos}{x},
 			dsty => $char->{pos}{y}
 		});
+		$recorded = 1;
+	}
+	
+	if ($recorded && $config{portalRecord_recompileAfter}) {
+		Settings::loadByRegexp(qr/portals/);
+		Misc::compilePortals() if Misc::compilePortals_check();
 	}
 }
 
@@ -2251,6 +2259,7 @@ sub processRandomWalk_stopDuringSlaveAttack {
 		my $slave = AI::SlaveManager::mustStopForAttack();
 		if (defined $slave) {
 			message TF("%s started attacking during randomWalk - Stoping movement for it.\n", $slave), 'slave';
+			$char->sendAttackStop;
 			AI::dequeue() while (AI::is(qw/move route mapRoute/) && AI::args()->{isRandomWalk});
 		}
 	}
@@ -3054,6 +3063,25 @@ sub processAutoAttack {
 				next if (!timeOut($monster->{attack_failedLOS}, $timeout{ai_attack_failedLOS}{timeout}));
 
 				OpenKoreMod::autoAttack($monster) if (defined &OpenKoreMod::autoAttack);
+
+				# List monsters that our slaves are attacking
+				if (
+					   $config{attackAuto_party}
+					&& $attackOnRoute && !AI::is("take", "items_take")
+					&& !$ai_v{sitAuto_forcedBySitCommand}
+					&& timeOut($monster->{attack_failed}, $timeout{ai_attack_unfail}{timeout})
+					&& (
+						   (scalar(grep { isMySlaveID($_) } keys %{$monster->{missedFromPlayer}}) && $config{attackAuto_party} != 2)
+						|| (scalar(grep { isMySlaveID($_) } keys %{$monster->{dmgFromPlayer}}) && $config{attackAuto_party} != 2)
+						|| (scalar(grep { isMySlaveID($_) } keys %{$monster->{castOnByPlayer}}) && $config{attackAuto_party} != 2)
+						|| scalar(grep { isMySlaveID($_) } keys %{$monster->{missedToPlayer}})
+						|| scalar(grep { isMySlaveID($_) } keys %{$monster->{dmgToPlayer}})
+						|| scalar(grep { isMySlaveID($_) } keys %{$monster->{castOnToPlayer}})
+					   )
+				 ) {
+					push @partyMonsters, $_;
+					next;
+				}
 
 				# List monsters that party members are attacking
 				if ($config{attackAuto_party} && $attackOnRoute && !AI::is("take", "items_take")
