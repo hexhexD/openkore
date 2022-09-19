@@ -907,9 +907,9 @@ sub updateStatusBar {
 		$i++;
 	};
 
-	$setStatus->('statText', $statText);
-	$setStatus->('xyText', $xyText);
 	$setStatus->('aiText', $aiText);
+	$setStatus->('xyText', $xyText);
+	$setStatus->('statText', $statText);
 }
 
 sub updateMapViewer {
