@@ -603,16 +603,27 @@ sub processEscapeUnknownMaps {
 			AI::dequeue;
 			if ($portalsID[0]) {
 				message T("Escaping to into nearest portal.\n");
-				main::ai_route($field->baseName, $portals{$portalsID[0]}{'pos'}{'x'},
-					$portals{$portalsID[0]}{'pos'}{'y'}, attackOnRoute => 1, noSitAuto => 1);
+				main::ai_route(
+					$field->baseName, $portals{$portalsID[0]}{'pos'}{'x'},
+					$portals{$portalsID[0]}{'pos'}{'y'},
+					attackOnRoute => 1,
+					noSitAuto => 1,
+					isEscape => 1
+				);
 				$skip = 1;
 
 			} elsif ($spellsID[0]){   #get into the first portal you see
 			     my $spell = $spells{$spellsID[0]};
 				if (getSpellName($spell->{type}) eq "Warp Portal" ){
 					message T("Found warp portal escaping into warp portal.\n");
-					main::ai_route($field->baseName, $spell->{pos}{x},
-						$spell->{pos}{y}, attackOnRoute => 1, noSitAuto => 1);
+					main::ai_route(
+						$field->baseName,
+						$spell->{pos}{x},
+						$spell->{pos}{y},
+						attackOnRoute => 1,
+						noSitAuto => 1,
+						isEscape => 1
+					);
 					$skip = 1;
 				}else{
 					error T("Escape failed no portal found.\n");;
@@ -642,11 +653,14 @@ sub processEscapeUnknownMaps {
 				error T("Invalid coordinates specified for randomWalk\n Retrying...");
 			} else {
 				message TF("Calculating random route to: %s: %s, %s\n", $field->descString(), $randX, $randY), "route";
-				ai_route($field->baseName, $randX, $randY,
-					 maxRouteTime => $config{route_randomWalk_maxRouteTime},
-					 attackOnRoute => 2,
-					 noMapRoute => ($config{route_randomWalk} == 2 ? 1 : 0),
-					 isRandomWalk => 1);
+				ai_route(
+					$field->baseName, $randX, $randY,
+					maxRouteTime => $config{route_randomWalk_maxRouteTime},
+					attackOnRoute => 2,
+					noMapRoute => ($config{route_randomWalk} == 2 ? 1 : 0),
+					isRandomWalk => 1,
+					isEscape => 1
+				);
 			}
 		}
 	}
@@ -804,7 +818,15 @@ sub processTake {
 		} elsif ($dist > 1 && timeOut(AI::args->{time_route}, $timeout{ai_take_giveup}{timeout})) {
 			my $pos = $item->{pos};
 			AI::args->{time_route} = time;
-			ai_route($field->baseName, $pos->{x}, $pos->{y}, maxRouteDistance => $config{'attackMaxRouteDistance'}, noSitAuto => 1, distFromGoal => 1);
+			ai_route(
+				$field->baseName,
+				$pos->{x},
+				$pos->{y},
+				maxRouteDistance => $config{'attackMaxRouteDistance'},
+				noSitAuto => 1,
+				distFromGoal => 1,
+				isItemTake => 1
+			);
 		} elsif (timeOut($timeout{ai_take})) {
 			my %vec;
 			my $direction;
@@ -945,6 +967,7 @@ sub processDead {
 			if ($config{storageAuto} && !$config{storageAuto_notAfterDeath} && ai_storageAutoCheck()) {
 				message T("Auto-storaging due to death\n");
 				AI::queue("storageAuto");
+				Plugins::callHook('AI_storage_auto_queued');
 			}
 
 			if ($config{autoMoveOnDeath} && $config{autoMoveOnDeath_map}) {
@@ -954,7 +977,7 @@ sub processDead {
 					message TF("Moving to %s\n", $config{autoMoveOnDeath_map});
 				}
 				AI::queue("sitAuto");
-				ai_route($config{autoMoveOnDeath_map}, $config{autoMoveOnDeath_x}, $config{autoMoveOnDeath_y});
+				ai_route($config{autoMoveOnDeath_map}, $config{autoMoveOnDeath_x}, $config{autoMoveOnDeath_y}, isDeath => 1);
 			}
 		}
 
@@ -1165,6 +1188,9 @@ sub processAutoStorage {
 		      || (!$config{'itemsMaxWeight_sellOrStore'} && percent_weight($char) >= $config{'itemsMaxWeight'})
 			  || ($config{itemsMaxNum_sellOrStore} && $char->inventory->size() >= $config{itemsMaxNum_sellOrStore}))
 		  && !AI::inQueue("storageAuto") && $char->inventory->isReady()) {
+		my %plugin_args = ( return => 0 );
+		Plugins::callHook( AI_storage_auto_weight_start => \%plugin_args );
+		return if ($plugin_args{return});
 
 		# Initiate autostorage when the weight limit has been reached
 		my $routeIndex = AI::findAction("route");
@@ -1174,6 +1200,7 @@ sub processAutoStorage {
 		if ($attackOnRoute > 1 && ai_storageAutoCheck()) {
 			message T("Auto-storaging due to excess weight\n");
 			AI::queue("storageAuto");
+			Plugins::callHook('AI_storage_auto_queued');
 		}
 
 	} elsif (AI::is("", "route", "attack")
@@ -1183,6 +1210,10 @@ sub processAutoStorage {
 		  && !AI::inQueue("storageAuto")
 		  && $char->inventory->isReady()) {
 
+		my %plugin_args = ( return => 0 );
+		Plugins::callHook( AI_storage_auto_get_auto_start => \%plugin_args );
+		return if ($plugin_args{return});
+		
 		# Initiate autostorage when we're low on some item, and getAuto is set
 		my $needitem = "";
 		my $i;
@@ -1249,6 +1280,7 @@ sub processAutoStorage {
 			$char->inventory->isReady() && ai_canOpenStorage()){
 	 		message TF("Auto-storaging due to insufficient %s\n", $needitem);
 			AI::queue("storageAuto");
+			Plugins::callHook('AI_storage_auto_queued');
 		}
 		$timeout{'ai_storageAuto'}{'time'} = time;
 	}
@@ -1258,13 +1290,18 @@ sub processAutoStorage {
 		# Autostorage finished; trigger sellAuto unless autostorage was already triggered by it
 		my $forcedBySell = AI::args->{forcedBySell};
 		my $forcedByBuy = AI::args->{forcedByBuy};
+
 		undef $timeout{ai_storageAuto_wait_before_action}{time};
 		AI::dequeue;
+
 		if ($config{sellAuto} && ai_sellAutoCheck()) {
 			if ($forcedByBuy) {
 				AI::queue("sellAuto", {forcedByBuy => 1});
+				Plugins::callHook('AI_sell_auto_queued');
+	
 			} elsif (!$forcedBySell) {
 				AI::queue("sellAuto", {forcedByStorage => 1});
+				Plugins::callHook('AI_sell_auto_queued');
 			}
 		}
 
@@ -1311,11 +1348,17 @@ sub processAutoStorage {
 				# If warpToBuyOrSell is set, warp to saveMap if we haven't done so
 				if ($config{'saveMap'} ne "" && $config{'saveMap_warpToBuyOrSell'} && !$args->{warpedToSave}
 				    && !$field->isCity && $config{'saveMap'} ne $field->baseName) {
-					$args->{warpedToSave} = 1;
-					# If we still haven't warped after a certain amount of time, fallback to walking
-					$args->{warpStart} = time unless $args->{warpStart};
-					message T("Teleporting to auto-storage\n"), "teleport";
-					useTeleport(2);
+					if ($char->{sitting}) {
+						message T("Standing up to auto-storage\n"), "teleport";
+						ai_setSuspend(0);
+						stand();
+					} else {
+						$args->{warpedToSave} = 1;
+						# If we still haven't warped after a certain amount of time, fallback to walking
+						$args->{warpStart} = time unless $args->{warpStart};
+						message T("Teleporting to auto-storage\n"), "teleport";
+						useTeleport(2);
+					}
 					$timeout{'ai_storageAuto'}{'time'} = time;
 				} else {
 					# warpToBuyOrSell is not set, or we've already warped, or timed out. Walk to the NPC
@@ -1617,6 +1660,11 @@ sub processAutoStorage {
 				Misc::checkValidity("AutoStorage part 4");
 			}
 
+			# plugins can hook here and decide to keep storage open longer after getAuto
+			my %hookArgs;
+			Plugins::callHook("AI_storage_done_after_getAuto", \%hookArgs);
+			return if ($hookArgs{return});
+
 			$messageSender->sendStorageClose() unless $config{storageAuto_keepOpen};
 			if (percent_weight($char) >= $config{'itemsMaxWeight_sellOrStore'} && ai_storageAutoCheck()) {
 				error T("Character is still overweight after storageAuto (storage is full?)\n");
@@ -1649,12 +1697,16 @@ sub processAutoSell {
 		&& $config{'sellAuto_npc'} ne ""
 		&& !$ai_v{sitAuto_forcedBySitCommand}
 	  ) {
+		my %plugin_args = ( return => 0 );
+		Plugins::callHook( AI_sell_auto_start => \%plugin_args );
+		return if ($plugin_args{return});
 		$ai_v{'temp'}{'ai_route_index'} = AI::findAction("route");
 		if ($ai_v{'temp'}{'ai_route_index'} ne "") {
 			$ai_v{'temp'}{'ai_route_attackOnRoute'} = AI::args($ai_v{'temp'}{'ai_route_index'})->{'attackOnRoute'};
 		}
 		if (!($ai_v{'temp'}{'ai_route_index'} ne "" && $ai_v{'temp'}{'ai_route_attackOnRoute'} <= 1) && ai_sellAutoCheck()) {
 			AI::queue("sellAuto");
+			Plugins::callHook('AI_sell_auto_queued');
 		}
 	}
 
@@ -1663,15 +1715,19 @@ sub processAutoSell {
 		if (exists AI::args->{'error'}) {
 			error AI::args->{'error'}.".\n";
 		}
-
-		my $var = AI::args->{'forcedByBuy'};
-		my $var2 = AI::args->{'forcedByStorage'};
 		message T("Auto-sell sequence completed.\n"), "success";
+
+		my $forcedByBuy = AI::args->{'forcedByBuy'};
+		my $forcedByStorage = AI::args->{'forcedByStorage'};
 		AI::dequeue;
-		if ($var2) {
+
+		if ($forcedByStorage) {
 			AI::queue("buyAuto", {forcedByStorage => 1});
-		} elsif (!$var) {
+			Plugins::callHook('AI_buy_auto_queued');
+
+		} elsif (!$forcedByBuy) {
 			AI::queue("buyAuto", {forcedBySell => 1});
+			Plugins::callHook('AI_buy_auto_queued');
 		}
 	} elsif (AI::action eq "sellAuto" && timeOut($timeout{'ai_sellAuto'})) {
 		my $args = AI::args;
@@ -1739,11 +1795,17 @@ sub processAutoSell {
 
 			if ($config{'saveMap'} ne "" && $config{'saveMap_warpToBuyOrSell'} && !$args->{'warpedToSave'}
 			&& !$field->isCity && $config{'saveMap'} ne $field->baseName) {
-				$args->{'warpedToSave'} = 1;
-				# If we still haven't warped after a certain amount of time, fallback to walking
-				$args->{warpStart} = time unless $args->{warpStart};
-				message T("Teleporting to auto-sell\n"), "teleport";
-				useTeleport(2);
+				if ($char->{sitting}) {
+					message T("Standing up to auto-sell\n"), "teleport";
+					ai_setSuspend(0);
+					stand();
+				} else {
+					$args->{'warpedToSave'} = 1;
+					# If we still haven't warped after a certain amount of time, fallback to walking
+					$args->{warpStart} = time unless $args->{warpStart};
+					message T("Teleporting to auto-sell\n"), "teleport";
+					useTeleport(2);
+				}
 				$timeout{'ai_sellAuto'}{'time'} = time;
 			} else {
 	 			message TF("Calculating auto-sell route to: %s(%s): %s, %s\n", $maps_lut{$ai_seq_args[0]{'npc'}{'map'}.'.rsw'}, $ai_seq_args[0]{'npc'}{'map'}, $ai_seq_args[0]{'npc'}{'pos'}{'x'}, $ai_seq_args[0]{'npc'}{'pos'}{'y'}), "route";
@@ -1821,16 +1883,20 @@ sub processAutoBuy {
 	return if( $shopstarted || $buyershopstarted );
 	my $needitem;
 	if ((AI::action eq "" || AI::action eq "route" || AI::action eq "follow") && timeOut($timeout{'ai_buyAuto'}) && $char->inventory->isReady()) {
+		my %plugin_args = ( return => 0 );
+		Plugins::callHook( AI_buy_auto_start => \%plugin_args );
+		return if ($plugin_args{return});
+		
 		undef $ai_v{'temp'}{'found'};
 
 		for(my $i = 0; exists $config{"buyAuto_$i"}; $i++) {
 			next if (!$config{"buyAuto_$i"} || !$config{"buyAuto_$i"."_npc"} || $config{"buyAuto_${i}_disabled"});
 			my $amount;
 			if ($config{"buyAuto_$i"} =~ /^\d{3,}$/) {
-				$amount = $char->inventory->sumByNameID($config{"buyAuto_$i"});
+				$amount = $char->inventory->sumByNameID($config{"buyAuto_$i"}, $config{"buyAuto_${i}_onlyIdentified"});
 			}
 			else {
-				$amount = $char->inventory->sumByName($config{"buyAuto_$i"});
+				$amount = $char->inventory->sumByName($config{"buyAuto_$i"}, $config{"buyAuto_${i}_onlyIdentified"});
 			}
 			if (
 				$config{"buyAuto_$i"."_minAmount"} ne "" &&
@@ -1854,6 +1920,7 @@ sub processAutoBuy {
 		}
 		if (!($ai_v{'temp'}{'ai_route_index'} ne "" && AI::findAction("buyAuto")) && $ai_v{'temp'}{'found'}) {
 			AI::queue("buyAuto");
+			Plugins::callHook('AI_buy_auto_queued');
 		}
 		$timeout{'ai_buyAuto'}{'time'} = time;
 	}
@@ -1865,15 +1932,19 @@ sub processAutoBuy {
 		}
 
 		# buyAuto finished
-		$ai_v{'temp'}{'var'} = AI::args->{'forcedBySell'};
-		$ai_v{'temp'}{'var2'} = AI::args->{'forcedByStorage'};
+		my $forcedBySell = AI::args->{'forcedBySell'};
+		my $forcedByStorage = AI::args->{'forcedByStorage'};
+
 		AI::dequeue;
 		Plugins::callHook('AI_buy_auto_done');
 
-		if ($ai_v{'temp'}{'var'} && $config{storageAuto}) {
+		if ($forcedBySell && $config{storageAuto}) {
 			AI::queue("storageAuto", {forcedBySell => 1});
-		} elsif (!$ai_v{'temp'}{'var2'} && $config{storageAuto}) {
+			Plugins::callHook('AI_storage_auto_queued');
+
+		} elsif (!$forcedByStorage && $config{storageAuto}) {
 			AI::queue("storageAuto", {forcedByBuy => 1});
+			Plugins::callHook('AI_storage_auto_queued');
 		}
 
 	} elsif (AI::action eq "buyAuto" && timeOut($timeout{ai_buyAuto_wait})) {
@@ -1922,10 +1993,10 @@ sub processAutoBuy {
 
 				my $amount;
 				if ($config{"buyAuto_$i"} =~ /^\d{3,}$/) {
-					$amount = $char->inventory->sumByNameID($config{"buyAuto_$i"});
+					$amount = $char->inventory->sumByNameID($config{"buyAuto_$i"}, $config{"buyAuto_${i}_onlyIdentified"});
 				}
 				else {
-					$amount = $char->inventory->sumByName($config{"buyAuto_$i"});
+					$amount = $char->inventory->sumByName($config{"buyAuto_$i"}, $config{"buyAuto_${i}_onlyIdentified"});
 				}
 
 				if ($config{"buyAuto_$i"."_maxAmount"} ne "" && $amount < $config{"buyAuto_$i"."_maxAmount"}) {
@@ -1997,14 +2068,20 @@ sub processAutoBuy {
 					!$args->{warpedToSave} &&
 					!$field->isCity && $config{'saveMap'} ne $field->baseName
 				) {
-					$args->{warpedToSave} = 1;
-					if ($needitem ne "") {
-						$msgneeditem = "Auto-buy: $needitem\n";
+					if ($char->{sitting}) {
+						message T($msgneeditem."Standing up to auto-buy\n"), "teleport";
+						ai_setSuspend(0);
+						stand();
+					} else {
+						$args->{warpedToSave} = 1;
+						if ($needitem ne "") {
+							$msgneeditem = "Auto-buy: $needitem\n";
+						}
+						# If we still haven't warped after a certain amount of time, fallback to walking
+						$args->{warpStart} = time unless $args->{warpStart};
+						message T($msgneeditem."Teleporting to auto-buy\n"), "teleport";
+						useTeleport(2);
 					}
-					# If we still haven't warped after a certain amount of time, fallback to walking
-					$args->{warpStart} = time unless $args->{warpStart};
-					message T($msgneeditem."Teleporting to auto-buy\n"), "teleport";
-					useTeleport(2);
 					$timeout{ai_buyAuto_wait}{time} = time;
 
 				} else {
@@ -2076,7 +2153,7 @@ sub processAutoBuy {
 			my $maxbuy = ($config{"buyAuto_".$args->{lastIndex}."_price"}) ? int($char->{zeny}/$config{"buyAuto_$args->{index}"."_price"}) : 30000; # we assume we can buy 30000, when price of the item is set to 0 or undef
 			my $needbuy = $config{"buyAuto_".$args->{lastIndex}."_maxAmount"};
 
-			my $inv_amount = $char->inventory->sumByNameID($args->{'nameID'});
+			my $inv_amount = $char->inventory->sumByNameID($args->{'nameID'}, $config{"buyAuto_".$args->{lastIndex}."_onlyIdentified"});
 
 			$needbuy -= $inv_amount;
 
@@ -2218,7 +2295,13 @@ sub processLockMap {
 					} else {
 						message TF("Calculating lockMap route to: %s(%s)\n", $maps_lut{$config{'lockMap'}.'.rsw'}, $config{'lockMap'}), "route";
 					}
-					ai_route($config{'lockMap'}, $lockX, $lockY, attackOnRoute => $attackOnRoute);
+					ai_route(
+						$config{'lockMap'},
+						$lockX,
+						$lockY,
+						attackOnRoute => $attackOnRoute,
+						isToLockMap => 1
+					);
 				}
 			}
 		}
@@ -2233,7 +2316,15 @@ sub processRescueSlave {
 		my $slave = AI::SlaveManager::mustRescue();
 		if (defined $slave) {
 			AI::dequeue() while (AI::is(qw/move route mapRoute/) && AI::args()->{isRandomWalk});
-			ai_route($field->baseName, $slave->{pos_to}{x}, $slave->{pos_to}{y}, distFromGoal => ($config{$slave->{configPrefix}.'followDistanceMin'} || 3), attackOnRoute => 1, noSitAuto => 1, isSlaveRescue => 1);
+			ai_route(
+				$field->baseName,
+				$slave->{pos_to}{x},
+				$slave->{pos_to}{y},
+				distFromGoal => ($config{$slave->{configPrefix}.'followDistanceMin'} || 3),
+				attackOnRoute => 1,
+				noSitAuto => 1,
+				isSlaveRescue => 1
+			);
 			warning TF("%s got lost during randomWalk (distance: %d) - Rescuing it.\n", $slave, $slave->blockDistance_master), 'slave';
 			return;
 		}
@@ -2264,7 +2355,15 @@ sub processMoveNearSlave {
 
 		my $slave = AI::SlaveManager::mustMoveNear();
 		if (defined $slave) {
-			ai_route($field->baseName, $slave->{pos_to}{x}, $slave->{pos_to}{y}, distFromGoal => ($config{$slave->{configPrefix}.'moveNearWhenIdle_minDistance'} || 4), attackOnRoute => 1, noSitAuto => 1, isMoveNearSlave => 1);
+			ai_route(
+				$field->baseName,
+				$slave->{pos_to}{x},
+				$slave->{pos_to}{y},
+				distFromGoal => ($config{$slave->{configPrefix}.'moveNearWhenIdle_minDistance'} || 4),
+				attackOnRoute => 1,
+				noSitAuto => 1,
+				isMoveNearSlave => 1
+			);
 			message TF("%s moved too far - Moving near it.\n", $slave), 'slave';
 		}
 	}
@@ -2281,6 +2380,12 @@ sub processRandomWalk {
 			$config{'route_randomWalk'} = 0;
 			return;
 		}
+		
+		my %plugin_args;
+		$plugin_args{return} = 0;
+		Plugins::callHook( ai_processRandomWalk => \%plugin_args );
+		return if ($plugin_args{return});
+		
 		my ($randX, $randY);
 		my $i = 500;
 		do {
@@ -2296,11 +2401,15 @@ sub processRandomWalk {
 			$config{'route_randomWalk'} = 0;
 		} else {
 			message TF("Calculating random route to: %s: %s, %s\n", $field->descString(), $randX, $randY), "route";
-			ai_route($field->baseName, $randX, $randY,
+			ai_route(
+				$field->baseName,
+				$randX,
+				$randY,
 				maxRouteTime => $config{route_randomWalk_maxRouteTime},
 				attackOnRoute => 2,
 				noMapRoute => ($config{route_randomWalk} == 2 ? 1 : 0),
-				isRandomWalk => 1);
+				isRandomWalk => 1
+			);
 		}
 	}
 }
@@ -2380,6 +2489,7 @@ sub processFollow {
 						$player->{pos_to}{x},
 						$player->{pos_to}{y},
 						attackOnRoute => 1,
+						isFollow => 1,
 						distFromGoal => $config{followDistanceMin}
 					);
 				}
@@ -2422,6 +2532,7 @@ sub processFollow {
 				$player->{pos_to}{x},
 				$player->{pos_to}{y},
 				attackOnRoute => 1,
+				isFollow => 1,
 				distFromGoal => $config{followDistanceMin}
 			);
 		}
@@ -2536,8 +2647,11 @@ sub processFollow {
 			my $pos = $ai_v{'temp'}{'warp_pos'};
 
 			if (!$field->canMove($char->{pos_to}, $pos)) {
-				ai_route($field->baseName, $pos->{x}, $pos->{y},
-					attackOnRoute => 0); #distFromGoal => 0);
+				ai_route(
+					$field->baseName, $pos->{x}, $pos->{y},
+					attackOnRoute => 0,
+					isFollow => 1
+				); #distFromGoal => 0);
 			} else {
 				my (%vec, %pos_to);
 				my $dist = distance($char->{pos_to}, $pos);
@@ -2570,8 +2684,11 @@ sub processFollow {
 				if ($portals{$portalID} && !$args->{'follow_lost_portal_tried'}) {
 					$args->{'follow_lost_portal_tried'} = 1;
 					%{$ai_v{'temp'}{'pos'}} = %{$portals{$args->{'follow_lost_portalID'}}{'pos'}};
-					ai_route($field->baseName, $ai_v{'temp'}{'pos'}{'x'}, $ai_v{'temp'}{'pos'}{'y'},
-						attackOnRoute => 1);
+					ai_route(
+						$field->baseName, $ai_v{'temp'}{'pos'}{'x'}, $ai_v{'temp'}{'pos'}{'y'},
+						attackOnRoute => 1,
+						isFollow => 1
+					);
 				}
 			} else {
 				moveAlongVector($ai_v{'temp'}{'pos'}, $chars[$config{'char'}]{'pos_to'}, $args->{'ai_follow_lost_vec'}, $config{'followLostStep'});
@@ -2956,7 +3073,7 @@ sub processAutoEquip {
 			) {
 				foreach my $slot (values %equipSlot_lut) {
 					next if (defined binFind(\@skip_slots, $slot));
-					if (exists $config{"equipAuto_$i"."_$slot"}) {
+					if (exists $config{"equipAuto_$i"."_$slot"} && defined $config{"equipAuto_$i"."_$slot"}) {
 						debug "Equip $slot with ".$config{"equipAuto_$i"."_$slot"}."\n";
 						$eq_list{$slot} = $config{"equipAuto_$i"."_$slot"} if (!$eq_list{$slot});
 					}
@@ -3168,6 +3285,7 @@ sub processItemsTake {
 			AI::args->{started} = 1;
 			AI::args->{ai_items_take_delay}{time} = time;
 			take($foundID);
+			Plugins::callHook('ai_items_take');
 		} elsif (AI::args->{started} || timeOut(AI::args->{ai_items_take_end})) {
 			$timeout{'ai_attack_auto'}{'time'} = 0;
 			AI::dequeue;
@@ -3236,7 +3354,15 @@ sub processItemsGather {
 			my $item = $items{$ID};
 			my $pos = $item->{pos};
 			AI::args->{time_route} = time;
-			ai_route($field->baseName, $pos->{x}, $pos->{y}, maxRouteDistance => $config{'attackMaxRouteDistance'}, noSitAuto => 1, distFromGoal => 1);
+			ai_route(
+				$field->baseName,
+				$pos->{x},
+				$pos->{y},
+				maxRouteDistance => $config{'attackMaxRouteDistance'},
+				noSitAuto => 1,
+				distFromGoal => 1,
+				isItemGather => 1
+			);
 		} else {
 			AI::dequeue;
 			take($ID);
