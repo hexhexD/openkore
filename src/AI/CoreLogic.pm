@@ -669,6 +669,10 @@ sub processEscapeUnknownMaps {
 ##### DELAYED-TELEPORT #####
 sub processDelayedTeleport {
 	if (AI::action eq 'teleport') {
+		if($char->{last_skill_used_is_continuous}) {
+			message "stoping rolling \n";
+			$messageSender->sendStopSkillUse($char->{last_continuous_skill_used});
+		}
 		if ($timeout{ai_teleport_delay}{time} && timeOut($timeout{ai_teleport_delay})) {
 			# We have already successfully used the Teleport skill,
 			# and the ai_teleport_delay timeout has elapsed
@@ -722,6 +726,13 @@ sub processSkillUse {
 
 			# Use skill if we haven't done so yet
 			} elsif (!$args->{skill_used}) {
+				if($char->{last_skill_used_is_continuous}) {
+					message "stoping rolling \n";
+					$messageSender->sendStopSkillUse($char->{last_continuous_skill_used});
+				} elsif(($char->{last_skill_used} == 2027 || $char->{last_skill_used} == 147) && !$char->{selected_craft}) {
+					message "No use skill due to not select the craft / poison";
+					last SKILL_USE;
+				}
 				my $handle = $args->{skillHandle};
 				if (!defined $args->{skillID}) {
 					my $skill = new Skill(handle => $handle);
@@ -759,6 +770,8 @@ sub processSkillUse {
 					$messageSender->sendSkillUse($skillID, $args->{lv}, $accountID);
 				} elsif ($args->{x} ne "") {
 					$messageSender->sendSkillUseLoc($skillID, $args->{lv}, $args->{x}, $args->{y});
+				} elsif ($args->{isStartSkill}) {
+					$messageSender->sendStartSkillUse($skillID, $args->{lv}, $args->{target});
 				} else {
 					$messageSender->sendSkillUse($skillID, $args->{lv}, $args->{target});
 				}
