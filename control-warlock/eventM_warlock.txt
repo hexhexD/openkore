@@ -1,0 +1,8 @@
+automacro WL_TELEKINESIS_INTENSE {
+	MobNear /(フェンリル)/i
+	timeout 30
+	StatusInactiveHandle EFST_TELEKINESIS_INTENSE
+	call {
+		do ss WL_TELEKINESIS_INTENSE
+	}
+}
