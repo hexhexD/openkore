@@ -93,7 +93,7 @@ while True:
     print("Killing ragexe")
     os.system("taskkill /im Ragexe.exe")
     os.system("taskkill /im wxstart.exe /f /t")
-    os.system("taskkill /im perl.exe /f /t")
+    #  os.system("taskkill /im perl.exe /f /t")
     print("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
 
     # Fails on expired account, you got pay up
@@ -148,7 +148,6 @@ while True:
         subprocess.Popen("Manualmap.exe", stdout=subprocess.DEVNULL)
 
     print(ragproc.pid)
-    #  subprocess.Popen("perl.exe openkore.pl --interface=Wx --control=control-mechanic", start_new_session=True)
     # os.chdir(r"C:\dev\openkore")
     # os.startfile("wxstart.exe")
     # subprocess.Popen("TAKEOFF.bat", start_new_session=True)
