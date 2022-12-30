@@ -86,11 +86,12 @@ pause 3
 }
 
 macro bomb {
-#
 [
-# final yes to convert zeny to tickety
-    do send B8 00 BD 20 00 00 01
 # store ticket
-    do send D7 0A 4F 00 20 03 00 00
+    do send D7 0A 47 00 54 02 00 00
+# number of ticket to exchange
+	do send 43 01 BC 20 00 00 54 02 00 00
+# final yes to convert zeny to tickety
+	# do send B8 00 BC 20 00 00 01
 ]
 }

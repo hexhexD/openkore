@@ -47,11 +47,11 @@ sub new {
 	undef $@;
 	$self->{server} = new IO::Socket::INET->new(
 		Listen		=> 5,
-		LocalAddr	=> '0.0.0.0',
+		LocalAddr	=> 'localhost',
 		LocalPort	=> $port,
 		Proto		=> 'tcp');
 	if (!$self->{server}) {
-		Network::XKore::CannotStart->throw(error => TF("Unable to start the X-Kore server.\n" . 
+		Network::XKore::CannotStart->throw(error => TF("Unable to start the X-Kore server.\n" .
 			"Make sure no other servers are running on port %s.\n", $port));
 	}
 

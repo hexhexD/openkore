@@ -2,6 +2,7 @@
 * Commented out processGetPlayerInfo() in CoreLogic.pm
 
 ## Notes
+* Set TCPNoDelay and TCPAckFrequency registry to 1
 * Run XKore 1 on a differnt machine (change listen on 0.0.0.0).
   1. Guest can access host using adapter ip. It's better than the next two methods.
   2. XKore server binds to 0.0.0.0 under NAT and port forwarding,
