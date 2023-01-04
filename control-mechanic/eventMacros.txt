@@ -69,11 +69,20 @@ automacro rinseAndRepeat {
 
 automacro ranOutOfFly {
     InMap abyss_03
-	InInventory "ハエの羽" < 1
-	timeout 30
+	InInventory "ハエの羽" <= 1
+	timeout 5
 	overrideAI 1
     call {
         do respawn
+    }
+}
+
+automacro swingAxeAfterMapChange {
+    InMap abyss_03
+	SimpleHookEvent Network::Receive::map_changed
+    call {
+        do ss NC_AXETORNADO
+		# do send E3 02 05 00 E8 08 38 36 51 00
     }
 }
 

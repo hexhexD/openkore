@@ -305,7 +305,7 @@ verbose 0
 showDomain 0
 showDomain_NPC parseMsg_presence
 showDomain_Shop list
-squelchDomains
+squelchDomains drop
 verboseDomains
 beepDomains
 beepDomains_notInTown
@@ -668,9 +668,9 @@ useSelf_skill BS_MAXIMIZE {
 }
 # Keep casting OVERTHURST after each telepoert, this is a hack with timeout
 useSelf_skill BS_OVERTHRUST {
-	whenStatusActive EFST_CARTBOOST
+	whenStatusInactive EFST_OVERTHRUST
 	aggressives 0
-	timeout 100
+	timeout 30
 	notInTown 1
 }
 useSelf_skill WS_OVERTHRUSTMAX {
@@ -851,7 +851,7 @@ buyAuto 601 {
 	npc hu_in01 241 368
 	distance 20
 	minAmount
-	maxAmount 450
+	maxAmount 400
 	disabled 0
 }
 
@@ -910,9 +910,9 @@ getAuto {
 
 debug 0
 debugPacket_unparsed 0
-debugPacket_received 1
+debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 1
+debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include 07FD
 debugPacket_include_dumpMethod 0
