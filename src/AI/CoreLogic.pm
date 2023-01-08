@@ -50,7 +50,7 @@ sub iterate {
 	processWipeOldActors();
 	# Not necessary in xkore1 and looks more legit
   # Comment out is better than a branch
-	# processGetPlayerInfo();
+	processGetPlayerInfo();
 	processMisc();
 	processReAddMissingPortals();
 	processPortalRecording();

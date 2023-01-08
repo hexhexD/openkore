@@ -1,5 +1,5 @@
 ## Diverged from upstream
-* Commented out processGetPlayerInfo() in CoreLogic.pm
+* ~~Commented out processGetPlayerInfo() in CoreLogic.pm~~
 
 ## Notes
 * Set TCPNoDelay and TCPAckFrequency registry to 1
