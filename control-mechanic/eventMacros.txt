@@ -86,6 +86,16 @@ automacro swingAxeAfterMapChange {
     }
 }
 
+automacro mobKilled {
+	InMap abyss_03
+	SimpleHookEvent target_died
+	overrideAI 1
+    timeout 1
+	call {
+		do ss BS_GREED
+	}
+}
+
 macro test {
 overrideAI 1
 do charselect
