@@ -2,6 +2,13 @@
 * ~~Commented out processGetPlayerInfo() in CoreLogic.pm~~
 
 ## Notes
+* processItemsAutoGather is broken and introduced random walk after kill
+* increased distance check in processItemsTake so we don't miss any items too
+  far away from us
+*
+
+
+
 * Set TCPNoDelay and TCPAckFrequency registry to 1
 * Run XKore 1 on a differnt machine (change listen on 0.0.0.0).
   1. Guest can access host using adapter ip. It's better than the next two methods.
