@@ -16,6 +16,7 @@ parser.add_argument("-p", help="password", required=True)
 parser.add_argument("-k", help="website login cookie key", required=True)
 parser.add_argument("-v", help="webstie login cookie value", required=True)
 parser.add_argument("-g", help="Game path", default="C:/Gravity/Ragnarok")
+parser.add_argument("-a", help="roaccount")
 
 args = parser.parse_args()
 
@@ -68,13 +69,8 @@ home_url = "https://ragnarokonline.gungho.jp"
 host = "https://member.gungho.jp"
 login_url = "https://member.gungho.jp/front/ro/iframe/login.aspx"
 jar = requests.cookies.RequestsCookieJar()
-### Find this in brower storage to bypass captcha
-# jar.set("GHLI532CFF22B5283747ACAF9FCE52E9FD57",
-#         # Login cookie to skip kana input
-#         "ALsM5c95HoNg9Yt0s-rIZi6UDAxIODcWZWknxOOTeE1vo8dxDw7ebFJ5M-sDM51nJQoHUIrVHGDliYu07c3YJG_nmI0r7uyHsyx1ytyefUG_tqVHOlF4r9l5FVZWqPjm1C817HipClvYzR6VTBdvAKw")
+#  jar.set("roaccount", "0b248b60-cc24-46fb-b461-a5f26396504b", path="/front/ro/iframe")
 jar.set(args.k, args.v);
-# select the right account without using drop down menu
-jar.set("roaccount", "c1253422-7d85-4826-8ad4-c51aacdd9825")
 
 session = requests.Session()
 home_response = session.get(home_url)
@@ -85,9 +81,14 @@ login_soup = BeautifulSoup(login_response.content, "lxml")
 print(login_soup)
 target_tag = login_soup.find(onclick=lambda x: x and 'ゲーム起動' in x)
 launch_url = host + target_tag['href']
+#  print(launch_url)
+# select roaccount if it's supplied
+if (args.a != None):
+	equal_idx = launch_url.find("=");
+	launch_url = launch_url[:equal_idx+1] + args.a;
+	print(launch_url)
 
 koredir = os.path.dirname(os.path.realpath(__file__))
-
 while True:
     input_data = input("Press key to get going my guy")
     print("Killing ragexe")
