@@ -82,19 +82,18 @@ automacro swingAxeAfterMapChange {
 	SimpleHookEvent Network::Receive::map_changed
     call {
         do ss NC_AXETORNADO
-		# do send E3 02 05 00 E8 08 38 36 51 00
     }
 }
 
-automacro mobKilled {
-	InMap abyss_03
-	SimpleHookEvent target_died
-	overrideAI 1
-    timeout 1
-	call {
-		do ss BS_GREED
-	}
-}
+#automacro mobKilled {
+#	InMap abyss_03
+#	SimpleHookEvent target_died
+#	overrideAI 1
+#    timeout 1
+#	call {
+#		do ss BS_GREED
+#	}
+#}
 
 macro test {
 overrideAI 1

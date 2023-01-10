@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword zotaucro
+adminPassword gispouke
 callSign
 commandPrefix ;
 callSignGM 0
@@ -86,7 +86,7 @@ attackCanSnipe 0
 attackCheckLOS 0
 attackRouteMaxPathDistance 13
 attackLooters 0
-attackChangeTarget 1
+attackChangeTarget 0
 aggressiveAntiKS 0
 
 attackBeyondMaxDistance_waitForAgressive 0
@@ -1023,7 +1023,7 @@ getAuto {
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_unparsed 0
+debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 0
 debugPacket_sent 0
