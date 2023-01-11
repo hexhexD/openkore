@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword gispouke
+adminPassword drebocos
 callSign
 commandPrefix ;
 callSignGM 0
@@ -56,6 +56,7 @@ whenInGame_requestCashPoints 0
 message_length_max 80
 
 ######## Main configuration ########
+BetterWalkPlan 1
 
 alias_heal sp 28
 
@@ -86,7 +87,7 @@ attackCanSnipe 0
 attackCheckLOS 0
 attackRouteMaxPathDistance 13
 attackLooters 0
-attackChangeTarget 0
+attackChangeTarget 1
 aggressiveAntiKS 0
 
 attackBeyondMaxDistance_waitForAgressive 0
@@ -162,7 +163,7 @@ cachePlayerNames 1
 cachePlayerNames_duration 900
 cachePlayerNames_maxSize 100
 
-clientSight 20
+clientSight 30
 clientSight_removeBeyond 2
 
 dcPause 1
@@ -213,9 +214,9 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 0
+route_randomWalk 1
 route_randomWalk_inTown 0
-route_randomWalk_maxRouteTime 10
+route_randomWalk_maxRouteTime 60
 route_maxWarpFee
 route_maxNpcTries 5
 route_teleport 1
@@ -274,7 +275,7 @@ tankModeTarget
 
 teleportAuto_hp 10
 teleportAuto_sp 0
-teleportAuto_idle 1
+teleportAuto_idle 0
 teleportAuto_portal 0
 teleportAuto_minAggressives 0
 teleportAuto_minAggressivesInLock 0
@@ -290,7 +291,7 @@ teleportAuto_atkCount 0
 teleportAuto_atkMiss 10
 teleportAuto_unstuck 1
 teleportAuto_lostTarget 0
-teleportAuto_dropTarget 0
+teleportAuto_dropTarget 1
 teleportAuto_dropTargetKS 0
 teleportAuto_attackedWhenSitting 0
 teleportAuto_totalDmg 0
@@ -964,7 +965,7 @@ buyAuto 601 {
 	npc hu_in01 241 368
 	distance 20
 	minAmount
-	maxAmount 450
+	maxAmount 50
 	disabled 0
 }
 
