@@ -1,0 +1,116 @@
+automacro abyss_02 {
+    InMap hu_fild05
+    exclusive 0
+    timeout 30
+    call {
+      do move 172 312
+      do talknpc 168 304 c r0 c c
+      pause 1
+      do move 197 210
+      pause 1
+      do move abyss_02
+    }
+}
+automacro hu_fild06 {
+    InMap hu_fild06
+    exclusive 0
+    timeout 15
+    call {
+      do move hu_fild05
+    }
+}
+
+automacro firstFloor {
+    InMap abyss_01
+    exclusive 0
+    timeout 15
+    delay 1
+    call {
+        do move abyss_02
+    }
+}
+
+automacro enterTheAbyss {
+    InMap abyss_02
+    exclusive 0
+    timeout 15
+    delay 1
+    call {
+        do move abyss_03
+    }
+}
+
+automacro goBack {
+    CharCurrentWeight > 89%
+    InMap abyss_03
+    timeout 5
+    exclusive 1
+    call {
+        do respawn
+        pause 2
+        # do charselect
+        # do reload eventMacro
+    }
+}
+
+automacro rinseAndRepeat {
+    InMap hugel
+    timeout 70
+    disabled 0
+    call {
+        do move hu_in01
+        pause 1
+        do autosell
+        pause 17
+        # do autobuy
+        do move hu_fild06
+    }
+}
+
+automacro ranOutOfFly {
+    InMap abyss_03
+	InInventory "ハエの羽" <= 1
+	timeout 5
+	overrideAI 1
+    disabled 1
+    call {
+        do respawn
+    }
+}
+
+automacro swingAxeAfterMapChange {
+    InMap abyss_03
+	SimpleHookEvent Network::Receive::map_changed
+    call {
+        do ss NC_AXETORNADO
+    }
+}
+
+#automacro mobKilled {
+#	InMap abyss_03
+#	SimpleHookEvent target_died
+#	overrideAI 1
+#    timeout 1
+#	call {
+#		do ss BS_GREED
+#	}
+#}
+
+macro test {
+overrideAI 1
+do charselect
+pauses 4
+do eval $messageSender->sendCharLogin(1)
+pause 3
+}
+
+macro bomb {
+[
+# store ticket
+    do send D7 0A 47 00 54 02 00 00
+# number of ticket to exchange
+	do send 43 01 BC 20 00 00 54 02 00 00
+# final yes to convert zeny to tickety
+	# do send B8 00 BC 20 00 00 01
+]
+}
