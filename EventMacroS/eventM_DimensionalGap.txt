@@ -32,7 +32,6 @@ automacro ghost_first {
     call {
 		do conf itemsTakeAuto 0
 		do conf attackAuto 2
-
 		do talknpc 41 204 c r0
 		pause 3
 		do move 41 215
@@ -62,7 +61,7 @@ automacro ghost_prison {
 		do move 178 186
 		do move 203 42
 		do talknpc 216 43 c r0
-		do route_randomWalk 2
+		do conf route_randomWalk 2
 	}
 }
 
