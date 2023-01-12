@@ -8,7 +8,7 @@ server
 username wapi
 password 123
 loginPinCode
-char 1
+char 3
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt

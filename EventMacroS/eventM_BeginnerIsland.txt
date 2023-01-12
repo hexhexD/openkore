@@ -1,5 +1,5 @@
 automacro first {
-    InMap new_3-1
+    InMap new_4-1
 	timeout 30
 	call {
 		do talk 2
@@ -14,7 +14,8 @@ automacro room {
 	call {
 		do talknpc 43 41
 		do move 43 51
-		do talknpc 30 46 r0 r0 r0 r0 r0
+		do talknpc 30 46 r0 r0 r0 r0
+		pause 1
 		do talknpc 57 46 r0 r0
 		do talknpc 44 65 r0 r0
 	}
