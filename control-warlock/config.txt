@@ -8,7 +8,7 @@ server
 username wapi
 password 123
 loginPinCode
-char 3
+char 1
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -57,12 +57,13 @@ message_length_max 80
 
 ######## Main configuration ########
 
+BetterWalkPlan 1
 alias_heal sp 28
 
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -191,9 +192,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 2
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore 60
@@ -228,9 +229,9 @@ route_tryToGuessMissingPortalByDistance 1
 route_reAddMissingPortals 1
 route_randomFactor 0
 
-runFromTarget 1
+runFromTarget 0
 runFromTarget_inAdvance 0
-runFromTarget_dist 5
+runFromTarget_dist 6
 runFromTarget_minStep 7
 runFromTarget_maxPathDistance 13
 

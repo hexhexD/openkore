@@ -1,6 +1,12 @@
 macro regroup {
-  do party leave
-  do party create cardhoshi
+	do party leave
+	do party create cardhoshi
+[
+	do conf itemsTakeAuto 0
+	do conf itemsGatherAuto 0
+	do conf attackAuto 0
+	do conf route_randomWalk 0
+]
 }
 
 ####################################### Ghost Palace
@@ -71,6 +77,7 @@ automacro ghost_boss_death {
 	call {
     if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
 		do conf itemsTakeAuto 2
+		do conf itemsGatherAuto 2
 		log 呪いの根源 dead xD
 		do move 202 38
 		do talknpc 196 44 r0
@@ -177,7 +184,6 @@ automacro sara_boss_death {
       do move 87 190
       do move 47 142
       do talknpc 39 142 r0
-      do conf itemsTakeAuto 0
 	  pause 1
 	  do talknpc 130 107 c r0
     }
@@ -263,6 +269,18 @@ automacro magic_leave {
 ##################
 macro sarah2 {
 	call regroup
+	do move dali02 91 140
+	do talknpc 97 142 r0
+}
+automacro sarah2_ready {
+	SimpleHookEvent instance_ready
+	InMap dali02
+    timeout 600
+	IsInCoordinate 89..93 135..145
+	call {
+		log instance ready let's go
+		do talknpc 99 148 c r0
+	}
 }
 automacro sarah2 {
 	InMap 1@glast
@@ -281,6 +299,13 @@ automacro sarah2_bridge {
 	call {
 	do talknpc 47 270
 	do move 42 272
+	}
+}
+automacro sarah2_crossedbridge {
+	InMap 1@glast
+	IsInCoordinate 42 348
+	timeout 30
+	call {
 	do move 46 358
 	do talk resp 0
 	}
@@ -295,10 +320,11 @@ automacro sarah2_sarah {
 }
 automacro sarah2_garden {
 	InMap 1@glast
-	IsInCoordinate 200 204
+	IsInCoordinate 189..205 200..210
 	timeout 30
 	call {
 	do conf itemsGatherAuto 2
+	do conf attackAuto 2
 	do move 177 183
 	do talknpc 176 178
 	do move 131 130
