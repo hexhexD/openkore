@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword drebocos
+adminPassword bezuvore
 callSign
 commandPrefix ;
 callSignGM 0
@@ -711,39 +711,32 @@ useSelf_skill {
 
 useSelf_skill WS_CARTBOOST {
 	whenStatusInactive EFST_CARTBOOST
-	aggressives 0
 	notInTown 0
 }
 useSelf_skill MC_LOUD {
 	whenStatusInactive EFST_SHOUT
-	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_ADRENALINE {
 	whenStatusInactive EFST_ADRENALINE
-	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_WEAPONPERFECT {
 	whenStatusInactive EFST_WEAPONPERFECT
-	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_MAXIMIZE {
 	whenStatusInactive EFST_MAXIMIZE
-	aggressives 0
 	notInTown 1
 }
 # Keep casting OVERTHURST after each telepoert, this is a hack with timeout
 useSelf_skill BS_OVERTHRUST {
 	whenStatusInactive EFST_OVERTHRUST
-	aggressives 0
-	timeout 30
 	notInTown 1
+	timeout 60
 }
 useSelf_skill WS_OVERTHRUSTMAX {
 	whenStatusInactive EFST_OVERTHRUSTMAX
-	aggressives 0
 	timeout 50
 	inMap abyss_03
 	disabled 1
@@ -1027,7 +1020,7 @@ debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 0
+debugPacket_sent 1
 debugPacket_exclude
 debugPacket_include 07FD
 debugPacket_include_dumpMethod 0
