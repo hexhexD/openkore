@@ -1,0 +1,31 @@
+#################################### Endless tower
+macro endless {
+	do move alberta 209 73
+	do talknpc 214 77 r1
+}
+
+automacro endless_island {
+	InMap e_tower
+	# IsInCoordinate 85..95 136..146
+    timeout 600
+	call {
+		do talknpc 81 105 r0
+	}
+}
+
+automacro endless_ready {
+	InMap e_tower
+	SimpleHookEvent instance_ready
+	call {
+		do talknpc 81 105 r1
+	}
+}
+
+automacro endless_1 {
+	InMap 1@tower
+    timeout 600
+	call {
+    do move
+	}
+}
+

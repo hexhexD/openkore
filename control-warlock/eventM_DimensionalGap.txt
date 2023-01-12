@@ -1,0 +1,279 @@
+macro regroup {
+  do party leave
+  do party create cardhoshi
+}
+
+####################################### Ghost Palace
+
+macro ghost {
+	do move dali02 47 130
+	do talknpc 43 129 c r0 c r0
+	pause 2
+	do talknpc 43 129 c r0 c r0
+}
+
+automacro ghost_ready {
+	SimpleHookEvent instance_ready
+	InMap dali02
+    timeout 600
+	IsInCoordinate 42..52 125..135
+	call {
+		log instance ready let's go
+		do talknpc 40 134 c r0
+	}
+}
+
+automacro ghost_first {
+    InMap 1@spa
+	IsInCoordinate 35..47 191..201
+	timeout 600
+	disabled 0
+    call {
+    do conf itemsTakeAuto 0
+    do conf attackAuto 2
+
+		do talknpc 41 204 c r0
+		pause 3
+		do move 41 215
+		pause 3
+		do move 126 120
+		do talknpc 132 122 c r0
+		pause 1
+		do move 113 130
+		pause 1
+		do move 116 136
+	}
+}
+
+automacro ghost_prison {
+  InMap 1@spa
+	IsInCoordinate 60 43
+	timeout 600
+    call {
+		do move 40 51
+		do talknpc 32 54 c r0
+		pause 3
+		do move 54 28
+    pause 2
+		do move 202 209
+		do talknpc 199 214 c r0
+		pause 3
+		do move 178 186
+		do move 203 42
+		do talknpc 216 43 c r0
+	}
+}
+
+macro ghost_patrol {
+	do move 208 54
+	do move 209 27
+	do move 207 42
+	do move 185 46
+	do move 183 22
+}
+
+#automacro ghost_attack_on_sight {
+#	InMap 1@spa
+#	MobNearCount > 0
+#	timeout 5
+#	overrideAI 1
+#	call {
+#		do a 0
+#		do a 1
+#	}
+#}
+automacro ghost_boss_death {
+	InMap 1@spa
+	SimpleHookEvent target_died
+	call {
+    if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
+      do conf itemsTakeAuto 2
+      log 呪いの根源 dead xD
+      do move 202 38
+      do talknpc 196 44 r0
+      do talknpc 204 29 r0
+    }
+	}
+}
+
+###########################################
+
+########################################### Sara's Memory
+macro sara {
+	do move dali 135 111
+	do talknpc 130 107 c r0
+	do talknpc 130 107 c r0
+	pause 2
+	do talknpc 139 118 c r0
+	do talknpc 139 118 c r0
+}
+
+automacro sara_ready {
+	InMap dali
+	SimpleHookEvent instance_ready
+	IsInCoordinate 130..140 106..116
+	call {
+		do talknpc 139 118 c r1
+	}
+}
+
+automacro sara_entered {
+	InMap 1@sara
+	IsInCoordinate 245..255 150..160
+	timeout 5
+	call {
+    do conf itemsTakeAuto 0
+    pause 1
+		do talknpc 261 156 c r0
+		do move 241 146
+	}
+}
+
+automacro sara_north {
+	InMap 1@sara
+	IsInCoordinate 89..99 315..325
+	timeout 15
+	call {
+		do talknpc 107 325 c r0
+		do move 208 250
+	}
+}
+
+automacro sara_first_portal {
+	InMap 1@sara
+	IsInCoordinate 225..235 311..321
+	timeout 15
+	call {
+		do move 226 190
+	}
+}
+
+automacro sara_before_end {
+	InMap 1@sara
+	IsInCoordinate 258..268 89..99
+	timeout 15
+	call {
+		do move 166 67
+	}
+}
+
+automacro sara_end {
+	InMap 1@sara
+	IsInCoordinate 160..170 76..86
+	timeout 15
+	call {
+		do move 155 178
+	}
+}
+
+automacro sara_boss {
+	InMap 1@sara
+	IsInCoordinate 150..160 191..201
+	timeout 15
+	call {
+    do conf itemsTakeAuto 1
+	do move 155 232
+    do talknpc 152 233 r0
+    pause 1
+    do talknpc 156 236 r2
+    do move 156 212
+	do move 155 220
+	}
+}
+
+automacro sara_boss_death {
+	InMap 1@sara
+	SimpleHookEvent target_died
+	call {
+    if ($.SimpleHookEventLastMonster =~ /大長老アイリン/) {
+      log 大長老アイリン dead xD
+      do move 155 227
+      do talknpc 156 236 c r0
+      do move 87 190
+      do move 47 142
+      do talknpc 39 142 r0
+      do conf itemsTakeAuto 0
+	  pause 1
+	  call regroup
+	  do talknpc 130 107 c r0
+    }
+	}
+}
+
+#################################
+
+################################# Geffen Magic Tournament
+macro magic {
+	do move dali 90 141
+	do talknpc 98 141 c c r0
+  pause 2
+	do talknpc 98 141 c c r0
+}
+
+automacro magic_ready {
+	InMap dali
+	IsInCoordinate 85..95 136..146
+	SimpleHookEvent instance_ready
+	call {
+		do talknpc 100 147 c r0
+	}
+}
+
+automacro magic_register_auto {
+	InMap 1@gef
+    timeout 600
+	call {
+    do move 130 135
+		do move 121 61
+		do talknpc 122 58 c r0 c c c r0
+	}
+}
+
+automacro magic_wolf_killed {
+	InMap 1@gef
+	SimpleHookEvent target_died
+	call {
+		do talknpc 122 58 c c r0
+		do move 120 34
+    do conf itemsTakeAuto 1
+    do conf attackAuto 2
+    pause 3
+    do talknpc 107 57 c r0
+	}
+}
+
+automacro magic_battle {
+	InMap 1@ge_st
+	timeout 10
+	PubMsg /魔法大会進行係に準備完了/
+	call {
+    pause 4
+		do talknpc 109 51 c r0
+		do talknpc 107 57 c r0
+	}
+}
+
+automacro magic_won {
+	InMap 1@ge_st
+	NpcMsg /優勝/
+	call {
+		pause 3
+		do talknpc 107 57 c r0
+	}
+}
+
+automacro magic_leave {
+	InMap 1@gef
+	IsInCoordinate 120 104
+  timeout 60
+	call {
+    do talknpc 115 105
+    do talknpc 117 108
+    do talknpc 120 108
+    do talknpc 123 108
+    do talknpc 125 105
+    call regroup
+	}
+}
+
+##################
