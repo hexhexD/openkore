@@ -29,8 +29,8 @@ automacro ghost_first {
 	timeout 600
 	disabled 0
     call {
-    do conf itemsTakeAuto 0
-    do conf attackAuto 2
+		do conf itemsTakeAuto 0
+		do conf attackAuto 2
 
 		do talknpc 41 204 c r0
 		pause 3
@@ -54,44 +54,28 @@ automacro ghost_prison {
 		do talknpc 32 54 c r0
 		pause 3
 		do move 54 28
-    pause 2
+		pause 2
 		do move 202 209
 		do talknpc 199 214 c r0
 		pause 3
 		do move 178 186
 		do move 203 42
 		do talknpc 216 43 c r0
+		do route_randomWalk 2
 	}
 }
 
-macro ghost_patrol {
-	do move 208 54
-	do move 209 27
-	do move 207 42
-	do move 185 46
-	do move 183 22
-}
-
-#automacro ghost_attack_on_sight {
-#	InMap 1@spa
-#	MobNearCount > 0
-#	timeout 5
-#	overrideAI 1
-#	call {
-#		do a 0
-#		do a 1
-#	}
-#}
 automacro ghost_boss_death {
 	InMap 1@spa
 	SimpleHookEvent target_died
 	call {
     if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
-      do conf itemsTakeAuto 2
-      log 呪いの根源 dead xD
-      do move 202 38
-      do talknpc 196 44 r0
-      do talknpc 204 29 r0
+		do conf itemsTakeAuto 2
+		log 呪いの根源 dead xD
+		do move 202 38
+		do talknpc 196 44 r0
+		do talknpc 204 29 r0
+		do route_randomWalk 0
     }
 	}
 }
@@ -206,7 +190,7 @@ automacro sara_boss_death {
 macro magic {
 	do move dali 90 141
 	do talknpc 98 141 c c r0
-  pause 2
+	pause 2
 	do talknpc 98 141 c c r0
 }
 

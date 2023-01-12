@@ -1,9 +1,10 @@
-!include eventM_DimensionalGap.txt
-!include eventM_EndlessTower.txt
+!include ../EventMacroS/eventM_DimensionalGap.txt
+!include ../EventMacroS/eventM_EndlessTower.txt
 
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i
-	timeout 30
+	timeout 5
+	overrideAI 1
 	StatusInactiveHandle EFST_TELEKINESIS_INTENSE
 	call {
 		do ss WL_TELEKINESIS_INTENSE

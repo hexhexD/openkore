@@ -8,7 +8,7 @@ server
 username wapi
 password 123
 loginPinCode
-char 0
+char 1
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword chegrist
+adminPassword sheastif
 callSign
 commandPrefix ;
 callSignGM 0
@@ -68,9 +68,13 @@ attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
 attackAuto_inLockOnly 1
 attackAuto_notInTown 1
+attackAuto_notWhile_storageAuto 1
+attackAuto_notWhile_buyAuto 1
+attackAuto_notWhile_sellAuto 1
+attackAuto_considerDamagedAggressive 0
 attackDistance 30
-attackMaxDistance 30
 attackDistanceAuto 0
+attackMaxDistance 30
 attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
@@ -84,7 +88,12 @@ attackLooters 0
 attackChangeTarget 1
 aggressiveAntiKS 0
 
-attackUpdateMonsterPos 1
+attackBeyondMaxDistance_waitForAgressive 0
+attackBeyondMaxDistance_sendAttackWhileWaiting 1
+attackSendAttackWithMove 1
+attackWaitApproachFinish 1
+
+attackUpdateMonsterPos 0
 
 autoMoveOnDeath 0
 autoMoveOnDeath_x
@@ -132,6 +141,7 @@ autoResponseOnHeal 0
 
 autoSpell
 autoSpell_safe
+autoPoison
 
 avoidGM_namePattern
 avoidGM_near 0
@@ -151,7 +161,8 @@ cachePlayerNames 1
 cachePlayerNames_duration 900
 cachePlayerNames_maxSize 100
 
-clientSight 20
+clientSight 30
+clientSight_removeBeyond 2
 
 dcPause 0
 dcOnDeath -1
@@ -180,7 +191,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 2
+itemsTakeAuto 1
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -203,7 +214,7 @@ route_escape_shout
 route_avoidWalls 1
 route_randomWalk 0
 route_randomWalk_inTown 0
-route_randomWalk_maxRouteTime 10
+route_randomWalk_maxRouteTime 30
 route_maxWarpFee
 route_maxNpcTries 5
 route_teleport 1
@@ -215,12 +226,12 @@ route_removeMissingPortals_NPC 1
 route_removeMissingPortals 0
 route_tryToGuessMissingPortalByDistance 1
 route_reAddMissingPortals 1
+route_randomFactor 0
 
 runFromTarget 0
 runFromTarget_inAdvance 0
 runFromTarget_dist 5
 runFromTarget_minStep 7
-runFromTarget_maxStep 11
 runFromTarget_maxPathDistance 13
 
 saveMap
@@ -277,7 +288,7 @@ teleportAuto_allPlayers 0
 teleportAuto_notPlayers
 teleportAuto_atkCount 0
 teleportAuto_atkMiss 10
-teleportAuto_unstuck 0
+teleportAuto_unstuck 1
 teleportAuto_lostTarget 0
 teleportAuto_dropTarget 0
 teleportAuto_dropTargetKS 0
@@ -309,7 +320,7 @@ verboseDomains
 beepDomains
 beepDomains_notInTown
 friendlyAID
-showTime
+showTime 1
 showTimeDomains
 showTimeDomainsFormat
 wx_map_maxAutoSize 300
@@ -352,6 +363,7 @@ autoTalkCont 1
 noAutoSkill 0
 portalCompile 1
 portalRecord 2
+portalRecord_recompileAfter 1
 missDamage 0
 
 tankersList
@@ -369,6 +381,8 @@ monster_filter
 mercenary_attackAuto 2
 mercenary_attackAuto_party 1
 mercenary_attackAuto_notInTown 1
+mercenary_attackAuto_inLockOnly 1
+mercenary_attackAuto_considerDamagedAggressive 0
 mercenary_attackAuto_onlyWhenSafe 0
 mercenary_attackAuto_duringRandomWalk 0
 mercenary_attackAuto_duringItemsTake 0
@@ -384,6 +398,10 @@ mercenary_attackChangeTarget 1
 mercenary_attack_dance_melee 0
 mercenary_attack_dance_ranged 0
 
+mercenary_attackBeyondMaxDistance_waitForAgressive 1
+mercenary_attackBeyondMaxDistance_sendAttackWhileWaiting 1
+mercenary_attackSendAttackWithMove 1
+
 mercenary_lost_teleportToMaster_maxTries 6
 
 mercenary_route_randomWalk_rescueWhenLost 0
@@ -394,8 +412,7 @@ mercenary_runFromTarget 0
 mercenary_runFromTarget_inAdvance 0
 mercenary_runFromTarget_dist 5
 mercenary_runFromTarget_minStep 7
-mercenary_runFromTarget_maxStep 11
-mercenary_runFromTarget_maxPathDistance 13
+mercenary_runFromTarget_maxPathDistance 20
 
 mercenary_followDistanceMax 12
 mercenary_followDistanceMin 3
@@ -427,6 +444,8 @@ mercenary_teleportAuto_attackedWhenSitting 0
 homunculus_attackAuto 2
 homunculus_attackAuto_party 1
 homunculus_attackAuto_notInTown 1
+homunculus_attackAuto_inLockOnly 1
+homunculus_attackAuto_considerDamagedAggressive 0
 homunculus_attackAuto_onlyWhenSafe 0
 homunculus_attackAuto_duringRandomWalk 0
 homunculus_attackAuto_duringItemsTake 0
@@ -441,6 +460,10 @@ homunculus_attackNoGiveup 0
 homunculus_attackChangeTarget 1
 homunculus_attack_dance_melee 0
 
+homunculus_attackBeyondMaxDistance_waitForAgressive 1
+homunculus_attackBeyondMaxDistance_sendAttackWhileWaiting 1
+homunculus_attackSendAttackWithMove 1
+
 homunculus_lost_teleportToMaster_maxTries 6
 
 homunculus_route_randomWalk_rescueWhenLost 0
@@ -450,8 +473,7 @@ homunculus_route_randomWalk_waitMinDistance 0
 homunculus_runFromTarget 0
 homunculus_runFromTarget_dist 5
 homunculus_runFromTarget_minStep 7
-homunculus_runFromTarget_maxStep 11
-homunculus_runFromTarget_maxPathDistance 13
+homunculus_runFromTarget_maxPathDistance 20
 
 homunculus_followDistanceMax 12
 homunculus_followDistanceMin 3
@@ -501,8 +523,8 @@ pet_return 20
 
 attackSkillSlot WL_DRAINLIFE {
 	lvl 5
-	hp < 50%
-	maxAttempts 2
+	hp < 70%
+	maxAttempts 5
 }
 
 attackSkillSlot WL_SOULEXPANSION {
@@ -523,9 +545,24 @@ attackSkillSlot {
 	minCastTime 0
 	hp
 	sp > 10
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -552,6 +589,7 @@ attackSkillSlot {
 	whenPartyMembersNearDist
 	inInventory
 	isSelfSkill 0
+	isStartSkill 0
 	equip_topHead
 	equip_midHead
 	equip_lowHead
@@ -584,9 +622,24 @@ attackComboSlot {
 doCommand {
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -617,9 +670,24 @@ useSelf_skill {
 	minCastTime 0
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -654,9 +722,24 @@ partySkill {
 	minCastTime 0
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -736,9 +819,24 @@ equipAuto {
 	whileSitting 0
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -761,9 +859,24 @@ equipAuto {
 useSelf_item {
 	hp
 	sp
+	homunculus
 	homunculus_hp
 	homunculus_sp
 	homunculus_dead
+	homunculus_resting
+	homunculus_onAction
+	homunculus_notOnAction
+	homunculus_whenIdle
+	homunculus_whenNotIdle
+	mercenary
+	mercenary_hp
+	mercenary_sp
+	mercenary_whenStatusActive
+	mercenary_whenStatusInactive
+	mercenary_onAction
+	mercenary_notOnAction
+	mercenary_whenIdle
+	mercenary_whenNotIdle
 	onAction
 	whenStatusActive
 	whenStatusInactive
@@ -798,6 +911,7 @@ buyAuto {
 	minAmount 2
 	maxAmount 3
 	batchSize
+	onlyIdentified
 	disabled 0
 	maxBase
 	minBase
@@ -829,6 +943,7 @@ storageAuto_npc_type 1
 storageAuto_type 0
 storageAuto_npc_steps
 storageAuto_password
+storageEncryptKey
 storageAuto_keepOpen 0
 storageAuto_useChatCommand
 storageAuto_useItem 0
