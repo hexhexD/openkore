@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword sheastif
+adminPassword waujayab
 callSign
 commandPrefix ;
 callSignGM 0
@@ -228,7 +228,7 @@ route_tryToGuessMissingPortalByDistance 1
 route_reAddMissingPortals 1
 route_randomFactor 0
 
-runFromTarget 0
+runFromTarget 1
 runFromTarget_inAdvance 0
 runFromTarget_dist 5
 runFromTarget_minStep 7
@@ -265,8 +265,8 @@ statsAddAuto_list
 statsAddAuto_dontUseBonus 0
 statsAdd_over_99 1
 
-skillsAddAuto 0
-skillsAddAuto_list
+skillsAddAuto 1
+skillsAddAuto_list NV_BASIC 9
 
 tankMode 0
 tankModeTarget
