@@ -6,6 +6,7 @@ macro regroup {
 ####################################### Ghost Palace
 
 macro ghost {
+	call regroup
 	do move dali02 47 130
 	do talknpc 43 129 c r0 c r0
 	pause 2
@@ -84,6 +85,7 @@ automacro ghost_boss_death {
 
 ########################################### Sara's Memory
 macro sara {
+    call regroup
 	do move dali 135 111
 	do talknpc 130 107 c r0
 	do talknpc 130 107 c r0
@@ -178,7 +180,6 @@ automacro sara_boss_death {
       do talknpc 39 142 r0
       do conf itemsTakeAuto 0
 	  pause 1
-	  call regroup
 	  do talknpc 130 107 c r0
     }
 	}
@@ -188,6 +189,7 @@ automacro sara_boss_death {
 
 ################################# Geffen Magic Tournament
 macro magic {
+    call regroup
 	do move dali 90 141
 	do talknpc 98 141 c c r0
 	pause 2
@@ -256,8 +258,55 @@ automacro magic_leave {
     do talknpc 120 108
     do talknpc 123 108
     do talknpc 125 105
-    call regroup
 	}
 }
 
 ##################
+macro sarah2 {
+	call regroup
+}
+automacro sarah2 {
+	InMap 1@glast
+	IsInCoordinate 363..368 301..307
+	timeout 30
+	call {
+	do talknpc 359 294 r0
+	do move 352 281
+	do talk resp 0
+	}
+}
+automacro sarah2_bridge {
+	InMap 1@glast
+	IsInCoordinate 47 264
+	timeout 30
+	call {
+	do talknpc 47 270
+	do move 42 272
+	do move 46 358
+	do talk resp 0
+	}
+}
+automacro sarah2_sarah {
+	InMap 1@glast
+	IsInCoordinate 199 333
+	timeout 30
+	call {
+	do talknpc 200 340 r0
+	}
+}
+automacro sarah2_garden {
+	InMap 1@glast
+	IsInCoordinate 200 204
+	timeout 30
+	call {
+	do conf itemsGatherAuto 2
+	do move 177 183
+	do talknpc 176 178
+	do move 131 130
+	do move 200 129
+	do talknpc 200 135
+	do move 351 270
+	}
+}
+
+

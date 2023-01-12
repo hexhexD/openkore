@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword waujayab
+adminPassword bocraimu
 callSign
 commandPrefix ;
 callSignGM 0
@@ -193,7 +193,7 @@ followBot 0
 
 itemsTakeAuto 1
 itemsTakeAuto_party 0
-itemsGatherAuto 0
+itemsGatherAuto 2
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore 60
