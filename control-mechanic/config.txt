@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword bezuvore
+adminPassword chidobre
 callSign
 commandPrefix ;
 callSignGM 0
@@ -289,7 +289,7 @@ teleportAuto_allPlayers 0
 teleportAuto_notPlayers
 teleportAuto_atkCount 0
 teleportAuto_atkMiss 10
-teleportAuto_unstuck 1
+teleportAuto_unstuck 0
 teleportAuto_lostTarget 0
 teleportAuto_dropTarget 1
 teleportAuto_dropTargetKS 0
