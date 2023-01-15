@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword vegeswod
+adminPassword wielumas
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 1
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -956,7 +956,11 @@ useSelf_item 王級メロン {
 	notInTown 1
 	manualAI 0
 }
-
+useSelf_item 王級メロン {
+	sp < 20%
+	notInTown 1
+	manualAI 0
+}
 
 ######## Autostorage/autosell ########
 

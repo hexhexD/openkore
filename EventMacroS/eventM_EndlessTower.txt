@@ -1,7 +1,7 @@
 #################################### Endless tower
 macro endless {
 	do move alberta 209 73
-	do talknpc 214 77 r1
+	do talknpc 214 77 r0 r0
 }
 
 automacro endless_island {

@@ -75,14 +75,19 @@ automacro ghost_boss_death {
 	InMap 1@spa
 	SimpleHookEvent target_died
 	call {
-    if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
+    	if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
+[
 		do conf itemsTakeAuto 2
 		do conf itemsGatherAuto 2
+		do conf route_randomWalk 2
+]
 		log 呪いの根源 dead xD
 		do move 202 38
-		do talknpc 196 44 r0
-		do talknpc 204 29 r0
-    }
+		do talknpc 196 44 r0 r0
+		do move 198 27
+		do talknpc 204 29 r0 r0
+		do move 208 25
+    	}
 	}
 }
 
@@ -114,6 +119,7 @@ automacro sara_entered {
 	timeout 5
 	call {
 		do conf itemsTakeAuto 1
+		do conf attackAuto 2
 		pause 1
 		do talknpc 261 156 c r0
 		do move 241 146
@@ -167,7 +173,8 @@ automacro sara_boss {
 	pause 1
     	do talknpc 156 236 r2
 	do move 156 212
-	do move 155 220
+	do move 155 216
+	do move 156 212
 	}
 }
 
@@ -268,7 +275,7 @@ automacro magic_leave {
 }
 
 ##################
-macro sarah2 {
+macro sara2 {
 	call regroup
 	do move dali02 91 140
 	do talknpc 97 142 r0
@@ -283,7 +290,7 @@ automacro sarah2_ready {
 		do talknpc 99 148 c r0
 	}
 }
-automacro sarah2 {
+automacro sara2 {
 	InMap 1@glast
 	IsInCoordinate 363..368 301..307
 	timeout 30
@@ -293,7 +300,7 @@ automacro sarah2 {
 	do talk resp 0
 	}
 }
-automacro sarah2_bridge {
+automacro sara2_bridge {
 	InMap 1@glast
 	IsInCoordinate 47 264
 	timeout 30
@@ -302,7 +309,7 @@ automacro sarah2_bridge {
 	do move 42 272
 	}
 }
-automacro sarah2_crossedbridge {
+automacro sara2_crossedbridge {
 	InMap 1@glast
 	IsInCoordinate 39..44 345..352
 	timeout 30
@@ -311,7 +318,7 @@ automacro sarah2_crossedbridge {
 	do talk resp 0
 	}
 }
-automacro sarah2_sarah {
+automacro sara2_sarah {
 	InMap 1@glast
 	IsInCoordinate 199 333
 	timeout 30
@@ -319,7 +326,7 @@ automacro sarah2_sarah {
 	do talknpc 200 340 r0
 	}
 }
-automacro sarah2_garden {
+automacro sara2_garden {
 	InMap 1@glast
 	IsInCoordinate 189..205 200..210
 	timeout 30
