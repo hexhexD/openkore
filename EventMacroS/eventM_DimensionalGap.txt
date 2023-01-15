@@ -4,7 +4,7 @@ macro regroup {
 [
 	do conf itemsTakeAuto 0
 	do conf itemsGatherAuto 0
-	do conf attackAuto 0
+	do conf attackAuto -1
 	do conf route_randomWalk 0
 ]
 }
@@ -75,15 +75,19 @@ automacro ghost_boss_death {
 	InMap 1@spa
 	SimpleHookEvent target_died
 	call {
-    if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
+    	if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
+[
 		do conf itemsTakeAuto 2
 		do conf itemsGatherAuto 2
+		do conf route_randomWalk 2
+]
 		log 呪いの根源 dead xD
 		do move 202 38
-		do talknpc 196 44 r0
-		do talknpc 204 29 r0
-		do route_randomWalk 0
-    }
+		do talknpc 196 44 r0 r0
+		do move 198 27
+		do talknpc 204 29 r0 r0
+		do move 208 25
+    	}
 	}
 }
 
@@ -114,8 +118,9 @@ automacro sara_entered {
 	IsInCoordinate 245..255 150..160
 	timeout 5
 	call {
-    do conf itemsTakeAuto 0
-    pause 1
+		do conf itemsTakeAuto 1
+		do conf attackAuto 2
+		pause 1
 		do talknpc 261 156 c r0
 		do move 241 146
 	}
@@ -163,13 +168,13 @@ automacro sara_boss {
 	IsInCoordinate 150..160 191..201
 	timeout 15
 	call {
-    do conf itemsTakeAuto 1
 	do move 155 232
-    do talknpc 152 233 r0
-    pause 1
-    do talknpc 156 236 r2
-    do move 156 212
-	do move 155 220
+    	do talknpc 152 233 r0
+	pause 1
+    	do talknpc 156 236 r2
+	do move 156 212
+	do move 155 216
+	do move 156 212
 	}
 }
 
@@ -214,7 +219,11 @@ automacro magic_register_auto {
 	InMap 1@gef
     timeout 600
 	call {
-    do move 130 135
+[
+		do conf itemsTakeAuto 1
+ 		do conf attackAuto 2
+]
+		do move 130 135
 		do move 121 61
 		do talknpc 122 58 c r0 c c c r0
 	}
@@ -226,10 +235,8 @@ automacro magic_wolf_killed {
 	call {
 		do talknpc 122 58 c c r0
 		do move 120 34
-    do conf itemsTakeAuto 1
-    do conf attackAuto 2
-    pause 3
-    do talknpc 107 57 c r0
+		pause 3
+		do talknpc 107 57 c r0
 	}
 }
 
@@ -248,6 +255,7 @@ automacro magic_won {
 	InMap 1@ge_st
 	NpcMsg /優勝/
 	call {
+		do move 108 48
 		pause 3
 		do talknpc 107 57 c r0
 	}
@@ -267,7 +275,7 @@ automacro magic_leave {
 }
 
 ##################
-macro sarah2 {
+macro sara2 {
 	call regroup
 	do move dali02 91 140
 	do talknpc 97 142 r0
@@ -282,7 +290,7 @@ automacro sarah2_ready {
 		do talknpc 99 148 c r0
 	}
 }
-automacro sarah2 {
+automacro sara2 {
 	InMap 1@glast
 	IsInCoordinate 363..368 301..307
 	timeout 30
@@ -292,7 +300,7 @@ automacro sarah2 {
 	do talk resp 0
 	}
 }
-automacro sarah2_bridge {
+automacro sara2_bridge {
 	InMap 1@glast
 	IsInCoordinate 47 264
 	timeout 30
@@ -301,16 +309,16 @@ automacro sarah2_bridge {
 	do move 42 272
 	}
 }
-automacro sarah2_crossedbridge {
+automacro sara2_crossedbridge {
 	InMap 1@glast
-	IsInCoordinate 42 348
+	IsInCoordinate 39..44 345..352
 	timeout 30
 	call {
 	do move 46 358
 	do talk resp 0
 	}
 }
-automacro sarah2_sarah {
+automacro sara2_sarah {
 	InMap 1@glast
 	IsInCoordinate 199 333
 	timeout 30
@@ -318,7 +326,7 @@ automacro sarah2_sarah {
 	do talknpc 200 340 r0
 	}
 }
-automacro sarah2_garden {
+automacro sara2_garden {
 	InMap 1@glast
 	IsInCoordinate 189..205 200..210
 	timeout 30

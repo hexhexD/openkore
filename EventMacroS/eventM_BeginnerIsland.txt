@@ -1,4 +1,28 @@
-automacro first {
+automacro __1 {
+    InMap new_1-1
+	timeout 30
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
+automacro __2 {
+    InMap new_2-1
+	timeout 30
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
+automacro __3 {
+    InMap new_3-1
+	timeout 30
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
+automacro __4 {
     InMap new_4-1
 	timeout 30
 	call {
@@ -14,7 +38,7 @@ automacro room {
 	call {
 		do talknpc 43 41
 		do move 43 51
-		do talknpc 30 46 r0 r0 r0 r0
+		do talknpc 30 46 r0 r0
 		pause 1
 		do talknpc 57 46 r0 r0
 		do talknpc 44 65 r0 r0

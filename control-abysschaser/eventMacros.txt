@@ -1,0 +1,26 @@
+!include ../EventMacroS/eventM_DimensionalGap.txt
+!include ../EventMacroS/eventM_EndlessTower.txt
+!include ../EventMacroS/eventM_BeginnerIsland.txt
+
+automacro WL_TELEKINESIS_INTENSE {
+	MobNear /(フェンリル)/i
+	timeout 5
+	overrideAI 1
+	StatusInactiveHandle EFST_TELEKINESIS_INTENSE
+	call {
+		do ss WL_TELEKINESIS_INTENSE
+	}
+}
+
+####### mugi mugi event
+automacro HIT_training {
+    NpcNear /パワースポット/
+    timeout 1
+    disabled 1
+    call {
+		log $.NpcNearLastPos
+		$x = &arg ("$.NpcNearLastPos", 1)
+		$y = &arg ("$.NpcNearLastPos", 2)
+		do talknpc $x $y c
+    }
+}

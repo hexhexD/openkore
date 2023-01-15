@@ -42,9 +42,6 @@ if 1:
     payload["api_user_key"] = login.text
     r = requests.post("https://pastebin.com/api/api_post.php", data=payload)
 ####################################
-
-cwd = os.getcwd()
-
 headers = {
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36",
         "Accept-Encoding": "gzip,deflate,br",
@@ -52,7 +49,6 @@ headers = {
         # "origin": "https://member.gungho.jp",
         # "referer": "https://member.gungho.jp/front/ro/iframe/login.aspx"
         }
-
 payload = {
         # Essential to get the right response, constant
         "__VIEWSTATE": """/wEPDwULLTEwMzI1ODUyNDIPZBYCAgMPZBYOAgkPDxYCHgRUZXh0ZWRkAg0PDxYCHgdWaXNpYmxlaGRkAg8PDxYCHgtOYXZpZ2F0ZVVybAWBAS9mcm9udC9ndWVzdC9vYXV0aHJlcXVlc3QuYXNweD9hcHRpZD1CRkYxRERBNi0zNUI5LTQwQTQtOEU3NS1CMzBEREQ1OEFCRUUmLmdvZVJldHVyblVybD1odHRwcyUzYSUyZiUyZnJhZ25hcm9rb25saW5lLmd1bmdoby5qcCUyZmRkAhEPDxYCHwIFgQEvZnJvbnQvZ3Vlc3Qvb2F1dGhyZXF1ZXN0LmFzcHg/YXB0aWQ9QzAzNzgxNUUtNzRFNi00OERELUI4REMtNkE2MzVFMEMyNkEzJi5nb2VSZXR1cm5Vcmw9aHR0cHMlM2ElMmYlMmZyYWduYXJva29ubGluZS5ndW5naG8uanAlMmZkZAITDw8WAh8CBYkBL2Zyb250L2d1ZXN0L29wZW5pZGNvbm5lY3RyZXF1ZXN0LmFzcHg/YXB0aWQ9MjAzRjE1OTYtQ0U4MC00MzFBLTkyRTItQzA4QzlFQzhDOUE2Ji5nb2VSZXR1cm5Vcmw9aHR0cHMlM2ElMmYlMmZyYWduYXJva29ubGluZS5ndW5naG8uanAlMmZkZAIVDw8WAh8CBYkBL2Zyb250L2d1ZXN0L29wZW5pZGNvbm5lY3RyZXF1ZXN0LmFzcHg/YXB0aWQ9ODZEMkExQTUtNkVEMy00RjU4LUJBMTYtNzdFMDNCMTE3MkMwJi5nb2VSZXR1cm5Vcmw9aHR0cHMlM2ElMmYlMmZyYWduYXJva29ubGluZS5ndW5naG8uanAlMmZkZAIXDw8WAh8CBYkBL2Zyb250L2d1ZXN0L29wZW5pZGNvbm5lY3RyZXF1ZXN0LmFzcHg/YXB0aWQ9QTVGMDUwQUUtNUVCNi00NEZCLUIzQjUtNUZCOTY2OTAxQ0QyJi5nb2VSZXR1cm5Vcmw9aHR0cHMlM2ElMmYlMmZyYWduYXJva29ubGluZS5ndW5naG8uanAlMmZkZGTbzhdHJ3nhanM5J6P6Wt0CM5tSzg==""",
@@ -65,16 +61,23 @@ payload = {
         "passwordControl$txtPassword": args.p
         }
 
+cwd = os.getcwd()
 home_url = "https://ragnarokonline.gungho.jp"
 host = "https://member.gungho.jp"
 login_url = "https://member.gungho.jp/front/ro/iframe/login.aspx"
 jar = requests.cookies.RequestsCookieJar()
 #  jar.set("roaccount", "0b248b60-cc24-46fb-b461-a5f26396504b", path="/front/ro/iframe")
 jar.set(args.k, args.v);
-
 session = requests.Session()
 home_response = session.get(home_url)
 home_soup = BeautifulSoup(home_response.content, "lxml")
+
+# wireguard
+wireguard = "C:/Program Files/WireGuard/wireguard.exe"
+proxy_conf = os.path.join(cwd, "Japan.conf")
+start_proxy = [wireguard, "/installtunnelservice", proxy_conf]
+subprocess.run(start_proxy);
+time.sleep(1)
 
 login_response = session.post(login_url, data=payload, headers=headers, cookies=jar)
 login_soup = BeautifulSoup(login_response.content, "lxml")
@@ -89,6 +92,8 @@ if (args.a != None):
 	print(launch_url)
 
 koredir = os.path.dirname(os.path.realpath(__file__))
+stop_proxy = [wireguard, "/uninstalltunnelservice", "Japan"]
+subprocess.run(stop_proxy);
 while True:
     input_data = input("Press key to get going my guy")
     print("Killing ragexe")
