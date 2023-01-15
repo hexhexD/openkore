@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword roclirou
+adminPassword yaugumiw
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -80,7 +80,7 @@ attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
 attackMinPortalDistance 4
-attackUseWeapon 0
+attackUseWeapon 1
 attackNoGiveup 0
 attackCanSnipe 0
 attackCheckLOS 0

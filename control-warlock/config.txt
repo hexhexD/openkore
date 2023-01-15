@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword roclirou
+adminPassword fredeeyu
 callSign
 commandPrefix ;
 callSignGM 0
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 0
+itemsTakeAuto 1
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
