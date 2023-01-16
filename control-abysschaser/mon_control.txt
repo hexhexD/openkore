@@ -57,6 +57,9 @@
 # Monsters not found in this file, or flags not specified will default to:
 # <attack> = 1
 
+### mimimi quest
+スリーパー 2 0 0
+
 ##### Eggs #####
 Ant's Egg 0 0 0
 PecoPeco's Egg 0 0 0
@@ -65,19 +68,19 @@ Thief Bug's Egg 0 0 0
 
 ##### Alchemist Summons ####
 # Summoned Parasite
-1555 0 0 0 
+1555 0 0 0
 
 # Summoned Flora
-1575 0 0 0 
+1575 0 0 0
 
 # Summoned Hydra
-1579 0 0 0 
+1579 0 0 0
 
 # Summoned Mandragora
-1589 0 0 0 
+1589 0 0 0
 
 # Summoned Geographer
-1590 0 0 0 
+1590 0 0 0
 
 ##### Plants #####
 Black Mushroom 0 0 0
@@ -187,7 +190,7 @@ Yellow Plant 0 0 0
 2156 -1 1 0 #Leak
 1646 -1 1 0 #Lord Knight Seyren
 1373 -1 1 0 #Lord of Death
-2131 -1 1 0 #Lost Dragon 
+2131 -1 1 0 #Lost Dragon
 1147 -1 1 0 #Maya
 1289 -1 1 0 #Maya Purple
 1059 -1 1 0 #Mistress
