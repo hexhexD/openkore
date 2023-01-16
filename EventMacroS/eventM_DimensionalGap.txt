@@ -4,7 +4,7 @@ macro regroup {
 [
 	do conf itemsTakeAuto 0
 	do conf itemsGatherAuto 0
-	do conf attackAuto -1
+	do conf attackAuto 0
 	do conf route_randomWalk 0
 ]
 }
@@ -63,8 +63,8 @@ automacro ghost_prison {
 		pause 2
 		do move 202 209
 		do talknpc 199 214 c r0
-		pause 3
 		do move 178 186
+		pause 3
 		do move 203 42
 		do talknpc 216 43 c r0
 		do conf route_randomWalk 2
@@ -79,14 +79,14 @@ automacro ghost_boss_death {
 [
 		do conf itemsTakeAuto 2
 		do conf itemsGatherAuto 2
-		do conf route_randomWalk 2
+		do conf route_randomWalk 0
 ]
 		log 呪いの根源 dead xD
 		do move 202 38
 		do talknpc 196 44 r0 r0
 		do move 198 27
 		do talknpc 204 29 r0 r0
-		do move 208 25
+		do move 211 27
     	}
 	}
 }
@@ -119,6 +119,7 @@ automacro sara_entered {
 	timeout 5
 	call {
 		do conf itemsTakeAuto 1
+		do conf itemsGatherAuto 0
 		do conf attackAuto 2
 		pause 1
 		do talknpc 261 156 c r0
@@ -338,6 +339,7 @@ automacro sara2_garden {
 	do move 131 130
 	do move 200 129
 	do talknpc 200 135
+	do conf attackAuto -1
 	do move 351 270
 	}
 }
