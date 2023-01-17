@@ -59,6 +59,7 @@
 
 ### mimimi quest
 スリーパー 2 0 0
+ポポリン 2 0 0
 
 ##### Eggs #####
 Ant's Egg 0 0 0

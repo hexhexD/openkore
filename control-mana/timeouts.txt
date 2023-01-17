@@ -35,7 +35,7 @@ ai_homunculus_standby 0.5
 ai_mercenary_standby 0.5
 
 # Send the attack packet every x seconds, if it hasn't been send already
-ai_attack 1
+ai_attack 0.3
 ai_homunculus_attack 1
 ai_mercenary_attack 1
 

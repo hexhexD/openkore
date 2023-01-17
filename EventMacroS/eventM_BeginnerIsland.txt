@@ -38,7 +38,7 @@ automacro room {
 	call {
 		do talknpc 43 41
 		do move 43 51
-		do talknpc 30 46 r0 r0
+		do talknpc 30 46 r0 r0 r0 r0
 		pause 1
 		do talknpc 57 46 r0 r0
 		do talknpc 44 65 r0 r0
