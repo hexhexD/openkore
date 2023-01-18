@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword yevidrec
+adminPassword tradeena
 callSign
 commandPrefix ;
 callSignGM 0
@@ -289,7 +289,7 @@ teleportAuto_allPlayers 0
 teleportAuto_notPlayers
 teleportAuto_atkCount 0
 teleportAuto_atkMiss 10
-teleportAuto_unstuck 0
+teleportAuto_unstuck 1
 teleportAuto_lostTarget 0
 teleportAuto_dropTarget 1
 teleportAuto_dropTargetKS 0
@@ -1022,8 +1022,8 @@ debugPacket_received 0
 debugPacket_ro_sent 0
 debugPacket_sent 1
 debugPacket_exclude
-debugPacket_include 07FD
-debugPacket_include_dumpMethod 0
+debugPacket_include 07FD, 02E3
+debugPacket_include_dumpMethod 2
 debugDomains
 logToFile_Debug
 logToFile_Errors

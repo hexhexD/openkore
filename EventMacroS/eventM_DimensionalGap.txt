@@ -1,4 +1,4 @@
-macro regroup {
+ macro regroup {
 	do party leave
 	do party create cardhoshi
 [
@@ -64,7 +64,7 @@ automacro ghost_prison {
 		do move 202 209
 		do talknpc 199 214 c r0
 		do move 178 186
-		pause 3
+		pause 5
 		do move 203 42
 		do talknpc 216 43 c r0
 		do conf route_randomWalk 2
@@ -119,7 +119,7 @@ automacro sara_entered {
 	timeout 5
 	call {
 		do conf itemsTakeAuto 1
-		do conf itemsGatherAuto 0
+		do conf itemsGatherAuto 1
 		do conf attackAuto 2
 		pause 1
 		do talknpc 261 156 c r0
@@ -174,7 +174,7 @@ automacro sara_boss {
 	pause 1
     	do talknpc 156 236 r2
 	do move 156 212
-	do move 155 216
+	do move 155 215
 	do move 156 212
 	}
 }
@@ -184,6 +184,7 @@ automacro sara_boss_death {
 	SimpleHookEvent target_died
 	call {
     if ($.SimpleHookEventLastMonster =~ /大長老アイリン/) {
+    	pause 3
       log 大長老アイリン dead xD
       do move 155 227
       do talknpc 156 236 c r0
@@ -279,7 +280,8 @@ automacro magic_leave {
 macro sara2 {
 	call regroup
 	do move dali02 91 140
-	do talknpc 97 142 r0
+	do talknpc 97 142 r0 r0
+	do talknpc 97 142 r0 r0
 }
 automacro sarah2_ready {
 	SimpleHookEvent instance_ready
@@ -297,7 +299,7 @@ automacro sara2 {
 	timeout 30
 	call {
 	do talknpc 359 294 r0
-	do move 352 281
+	do move 352 279
 	do talk resp 0
 	}
 }
@@ -341,6 +343,9 @@ automacro sara2_garden {
 	do talknpc 200 135
 	do conf attackAuto -1
 	do move 351 270
+	do talk resp 1
+	pause 3
+	do move 358 291
 	}
 }
 

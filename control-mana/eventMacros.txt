@@ -1,2 +1,3 @@
 !include ../EventMacroS/eventM_DimensionalGap.txt
 !include ../EventMacroS/eventM_EndlessTower.txt
+!include ../EventMacroS/eventM_BeginnerIsland.txt
