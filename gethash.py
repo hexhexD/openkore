@@ -94,6 +94,7 @@ if (args.a != None):
 koredir = os.path.dirname(os.path.realpath(__file__))
 stop_proxy = [wireguard, "/uninstalltunnelservice", "Japan"]
 subprocess.run(stop_proxy);
+time.sleep(1)
 while True:
     input_data = input("Press key to get going my guy")
     print("Killing ragexe")
