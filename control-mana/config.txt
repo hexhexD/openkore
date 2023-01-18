@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto -1
+attackAuto 2
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -193,9 +193,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 0
+itemsTakeAuto 1
 itemsTakeAuto_party 0
-itemsGatherAuto 2
+itemsGatherAuto 1
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -330,7 +330,7 @@ wx_map_npcSticking 1
 wx_map_playersSticking 1
 wx_map_portalSticking 5
 wx_map_route 1
-wx_npcTalk
+wx_npcTalk 1
 wx_captcha
 showAllDamage 0
 manualURL https://openkore.com/wiki/Manual
@@ -589,18 +589,24 @@ attackSkillSlot {
 	manualAI 0
 }
 
-attackSkillSlot NC_MAGMA_ERUPTION {
-	aggressives > 2
-	lvl 5
-	timeout 5
-	disabled 0
-}
-
 attackSkillSlot NC_AXETORNADO {
 	lvl 5
 	dist 2
 	timeout 4
 	aggressives > 2
+}
+
+attackSkillSlot MC_CARTREVOLUTION {
+	lvl 1
+	dist 3
+	disabled 1
+}
+
+attackSkillSlot NC_MAGMA_ERUPTION {
+	aggressives > 2
+	lvl 5
+	timeout 5
+	disabled 0
 }
 
 attackSkillSlot NC_POWERSWING {
