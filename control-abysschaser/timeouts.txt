@@ -45,7 +45,7 @@ ai_mercenary_dance_attack_melee 0.2
 ai_mercenary_dance_attack_ranged 0.2
 
 # Check for monsters to attack every x seconds
-ai_attack_auto 0.2
+ai_attack_auto 0.5
 ai_homunculus_attack_auto 0.5
 ai_mercenary_attack_auto 0.5
 
@@ -133,7 +133,7 @@ ai_sit_wait 0
 # hp/sp sufficiency, do so when the specified number of seconds elapsed
 ai_safe_stand_up 2
 
-ai_skill_use 0.2
+ai_skill_use 0.3
 ai_skill_use_giveup 1
 ai_item_use_auto 0.5
 ai_item_equip_auto 0.75

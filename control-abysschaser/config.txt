@@ -5,7 +5,7 @@
 
 master Japan - jRO: Urdr
 server
-username wapi
+username abyss
 password 123
 loginPinCode
 char 0
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword creemest
+adminPassword jutriziv
 callSign
 commandPrefix ;
 callSignGM 0
@@ -73,25 +73,25 @@ attackAuto_notWhile_storageAuto 1
 attackAuto_notWhile_buyAuto 1
 attackAuto_notWhile_sellAuto 1
 attackAuto_considerDamagedAggressive 0
-attackDistance 30
+attackDistance 5
 attackDistanceAuto 0
-attackMaxDistance 30
+attackMaxDistance 10
 attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
 attackMinPortalDistance 4
-attackUseWeapon 1
+attackUseWeapon 0
 attackNoGiveup 0
 attackCanSnipe 0
 attackCheckLOS 0
-attackRouteMaxPathDistance 30
+attackRouteMaxPathDistance 13
 attackLooters 0
 attackChangeTarget 1
 aggressiveAntiKS 0
 
 attackBeyondMaxDistance_waitForAgressive 0
 attackBeyondMaxDistance_sendAttackWhileWaiting 1
-attackSendAttackWithMove 0
+attackSendAttackWithMove 1
 attackWaitApproachFinish 1
 
 attackUpdateMonsterPos 0
@@ -166,13 +166,13 @@ clientSight 30
 clientSight_removeBeyond 2
 
 dcPause 0
-dcOnDeath -1
+dcOnDeath 0
 dcOnDualLogin 0
 dcOnDisconnect 0
 dcOnEmptyArrow 0
 dcOnMaxReconnections 0
 dcOnMute 0
-dcOnPM 1
+dcOnPM 0
 dcOnZeny 0
 dcOnStorageFull 1
 dcOnPlayer 0
@@ -192,12 +192,12 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 0
+itemsTakeAuto 1
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
-itemsMaxWeight_sellOrStore 60
+itemsMaxWeight_sellOrStore
 itemsMaxNum_sellOrStore
 cartMaxWeight 7900
 itemsTakeGreed 0
@@ -213,14 +213,14 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 0
+route_randomWalk 1
 route_randomWalk_inTown 0
-route_randomWalk_maxRouteTime 30
+route_randomWalk_maxRouteTime 60
 route_maxWarpFee
 route_maxNpcTries 5
 route_teleport 1
-route_teleport_minDistance 75
-route_teleport_maxTries 8
+route_teleport_minDistance 150
+route_teleport_maxTries 15
 route_teleport_notInMaps
 route_step 10
 route_removeMissingPortals_NPC 1
@@ -231,11 +231,11 @@ route_randomFactor 0
 
 runFromTarget 0
 runFromTarget_inAdvance 0
-runFromTarget_dist 6
+runFromTarget_dist 5
 runFromTarget_minStep 7
 runFromTarget_maxPathDistance 13
 
-saveMap
+saveMap hugel
 saveMap_warpToBuyOrSell 1
 saveMap_warpChatCommand
 memo1
@@ -250,8 +250,8 @@ shop_useSkill 1
 buyerShopAuto_open 0
 buyerShop_random 0
 
-sitAuto_hp_lower 0
-sitAuto_hp_upper 0
+sitAuto_hp_lower 1
+sitAuto_hp_upper 30
 sitAuto_sp_lower 0
 sitAuto_sp_upper 0
 sitAuto_follow 0
@@ -526,15 +526,6 @@ attackSkillSlot WL_DRAINLIFE {
 	lvl 5
 	hp < 70%
 	maxAttempts 5
-}
-
-attackSkillSlot WL_SOULEXPANSION {
-	lvl 5
-	monstersCount >= 2
-}
-
-attackSkillSlot WL_HELLINFERNO {
-	lvl 5
 }
 
 attackSkillSlot {
@@ -899,6 +890,12 @@ useSelf_item {
 	manualAI 0
 }
 
+useSelf_item ハイスピードポーション {
+	whenStatusInactive EFST_ATTHASTE_POTION2
+	inMap abyss_03
+	timeout 100
+}
+
 ######## Autostorage/autosell ########
 
 buyAuto {
@@ -921,23 +918,37 @@ buyAuto 601 {
 	npc hu_in01 241 368
 	distance 20
 	minAmount
-	maxAmount 300
-	disabled 1
+	maxAmount 50
+	disabled 0
 }
 
-sellAuto 0
-sellAuto_npc hu_in01 252 368
+buyAuto 656 {
+	npc hu_in01 241 368
+	distance 20
+	minAmount
+	maxAmount 6
+	disabled 0
+}
+
+buyAuto 602 {
+	npc hu_in01 241 368
+	distance 20
+	minAmount
+	maxAmount 5
+	disabled 0
+}
+
+sellAuto 1
+sellAuto_npc hu_in01 241 368
 sellAuto_standpoint
 sellAuto_distance 20
 sellAuto_maxDistance
 sellAuto_npc_steps s
 
 storageAuto 0
-storageAuto_npc prt_cas 27 27
-storageAuto_npc_type 1
-storageAuto_npc_steps
+storageAuto_npc
 storageAuto_standpoint
-storageAuto_distance 5
+storageAuto_distance 3
 storageAuto_maxDistance
 storageAuto_npc_type 1
 storageAuto_type 0
@@ -966,18 +977,18 @@ getAuto {
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_sent 0
-debugPacket_received 0
 debugPacket_unparsed 1
+debugPacket_received 0
 debugPacket_ro_sent 0
+debugPacket_sent 1
 debugPacket_exclude
-debugPacket_include
-debugPacket_include_dumpMethod 0
+debugPacket_include 07FD, 02E3
+debugPacket_include_dumpMethod 2
 debugDomains
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages
 logToFile_Warnings
 history_max 50
-charSelect_password 1111
 macro_orphans terminate
+charSelect_password 1111
