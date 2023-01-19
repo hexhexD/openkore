@@ -1,6 +1,6 @@
  macro regroup {
 	do party leave
-	do party create cardhoshi
+	do party create cardplz
 [
 	do conf itemsTakeAuto 0
 	do conf itemsGatherAuto 0
