@@ -199,3 +199,40 @@ RACE_IGNORE_DEF_PERCENT_PLAYER_HUMAN#人間形プレイヤーのDef %d%%無視#
 RACE_IGNORE_DEF_PERCENT_PLAYER_DORAM#ドラム形プレイヤーのDef %d%%無視#
 RACE_IGNORE_MDEF_PERCENT_PLAYER_HUMAN#人間形プレイヤーのMdef %d%%無視#
 RACE_IGNORE_MDEF_PERCENT_PLAYER_DORAM#ドラム形プレイヤーのMdef %d%%無視#
+REFLECT_DAMAGE_PERCENT#一部のダメージを反射する効果で　　　　　　　　　　受けるダメージ - %d%%#
+MELEE_ATTACK_DAMAGE_TARGET#近接物理攻撃で与えるダメージ + %d%%#
+MELEE_ATTACK_DAMAGE_USER#近接物理攻撃で受けるダメージ - %d%%#
+ADDSKILLMDAMAGE_NOTHING#無属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_WATER#水属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_GROUND#地属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_FIRE#火属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_WIND#風属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_POISON#毒属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_SAINT#聖属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_DARKNESS#闇属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_TELEKINESIS#念属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_UNDEAD#不死属性魔法攻撃で与えるダメージ + %d%%#
+ADDSKILLMDAMAGE_ALL#全属性魔法攻撃で与えるダメージ + %d%%#
+ADDEXPPERCENT_KILLRACE_NOTHING#無形モンスターをした時、　　　　　　　　　　　　　　　 獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_UNDEAD#不死形モンスターをした時、　　　　　　　　　　　　　　獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_ANIMAL#動物形モンスターをした時、　　　　　　　　　　　　　　獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_PLANT#植物形モンスターをした時、　　　　　　　　　　　　　　獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_INSECT#昆虫形モンスターをした時、　　　　　　　　　　　　　　獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_FISHS#魚貝形モンスターをした時、　　　　　　　　　　　　　　獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_DEVIL#悪魔形モンスターをした時、　　　　　　　　　　　　　　獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_HUMAN#人間形モンスターをした時、　　　　　　　　　　　　　　獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_ANGEL#天使形モンスターをした時、　　　　　　　　　　　　　　獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_DRAGON#竜形モンスターをした時、　　　　　　　　　　　　　　　 獲得する経験値 + %d%%#
+ADDEXPPERCENT_KILLRACE_ALL#全てのモンスターを倒した時、　　　　　　　　　　　　　獲得する経験値 + %d%%#
+VAR_POWAMOUNT#Pow + %d#
+VAR_SPLAMOUNT#Spl + %d#
+VAR_STAAMOUNT#Sta + %d#
+VAR_WISAMOUNT#Wis + %d#
+VAR_CONAMOUNT#Con + %d#
+VAR_CRTAMOUNT#Crt + %d#
+VAR_PATKAMOUNT#P.Atk + %d#
+VAR_SMATKAMOUNT#S.Matk + %d#
+VAR_RESAMOUNT#Res + %d#
+VAR_MRESAMOUNT#Mres + %d#
+VAR_HEAL_PLUS#H.Plus + %d#
+VAR_CRITICAL_RATE#C.Rate + %d#
