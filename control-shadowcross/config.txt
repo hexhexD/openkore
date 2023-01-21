@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 1
+attackAuto 2
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -213,7 +213,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 1
+route_randomWalk 0
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 60
 route_maxWarpFee
@@ -521,12 +521,6 @@ pet_return 20
 ######## Block options ########
 # You can copy & paste any block multiple times. So if you want to
 # configure two attack skills, just duplicate the attackSkillSlot block.
-
-attackSkillSlot WL_DRAINLIFE {
-	lvl 5
-	hp < 70%
-	maxAttempts 5
-}
 
 attackSkillSlot {
 	lvl
@@ -982,7 +976,7 @@ debugPacket_received 0
 debugPacket_ro_sent 0
 debugPacket_sent 1
 debugPacket_exclude
-debugPacket_include 07FD, 02E3
+debugPacket_include
 debugPacket_include_dumpMethod 2
 debugDomains
 logToFile_Debug
