@@ -303,7 +303,7 @@ teleportAuto_useItemForRespawn
 teleportAuto_item1
 teleportAuto_item2
 
-dealAuto 1
+dealAuto 2
 dealAuto_names
 partyAuto 2
 partyAutoShare 0
