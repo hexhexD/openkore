@@ -1,6 +1,6 @@
  macro regroup {
 	do party leave
-	do party create cardplz
+	do party create cardplzzz
 [
 	do conf itemsTakeAuto 0
 	do conf itemsGatherAuto 0
@@ -58,9 +58,9 @@ automacro ghost_prison {
     call {
 		do move 40 51
 		do talknpc 32 54 c r0
-		pause 3
+		pause 5
 		do move 54 28
-		pause 2
+		pause 5
 		do move 202 209
 		do talknpc 199 214 c r0
 		do move 178 186
@@ -175,8 +175,7 @@ automacro sara_boss {
 	pause 1
     	do talknpc 156 236 r2
 	do move 156 212
-	do move 155 215
-	do move 156 212
+	do move 155 225
 	}
 }
 

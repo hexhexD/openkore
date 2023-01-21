@@ -195,7 +195,7 @@ followBot 0
 
 itemsTakeAuto 1
 itemsTakeAuto_party 0
-itemsGatherAuto 1
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -214,7 +214,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 1
+route_randomWalk 2
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 60
 route_maxWarpFee
