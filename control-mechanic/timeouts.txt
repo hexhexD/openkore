@@ -28,7 +28,7 @@ ai 0.8
 ai_teleport 0.8
 ai_teleport_idle 0.2
 
-ai_move_retry 0.25
+ai_move_retry 0.5
 ai_move_giveup 1
 
 ai_homunculus_standby 0.5
