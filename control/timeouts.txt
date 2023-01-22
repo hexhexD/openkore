@@ -24,7 +24,9 @@ reconnect_random 20
 poseidon_wait_reply 15
 
 # Activate AI after x seconds after the map's loaded
-ai 2
+ai 0.8
+ai_teleport 0.8
+ai_teleport_idle 0.2
 
 ai_move_retry 0.25
 ai_move_giveup 1
@@ -43,7 +45,7 @@ ai_mercenary_dance_attack_melee 0.2
 ai_mercenary_dance_attack_ranged 0.2
 
 # Check for monsters to attack every x seconds
-ai_attack_auto 0.5
+ai_attack_auto 0.3
 ai_homunculus_attack_auto 0.5
 ai_mercenary_attack_auto 0.5
 
@@ -55,42 +57,39 @@ ai_mercenary_route_adjust 0.3
 ai_attack_failedLOS 12
 
 # Give up attacking a monster if it can't be reached within x seconds
-ai_attack_giveup 6
-
+ai_attack_giveup 3
 ai_check_monster_auto 0.4
-ai_homunculus_check_monster_auto 0.2
-ai_mercenary_check_monster_auto 0.2
 
 # If you've just killed a monster, and there are no aggressives,
 # and you're not picking up any items, wait x seconds before doing
 # anything else.
-ai_attack_waitAfterKill 0.3
+ai_attack_waitAfterKill 0
 ai_homunculus_attack_waitAfterKill 0.3
 ai_mercenary_attack_waitAfterKill 0.3
 
 ai_attack_unstuck 2.75
-ai_attack_unfail 12
+ai_attack_unfail 3
 
 ai_route_unstuck 2
 
 # Pause for the specified number of seconds after taking something,
 # it increases the interval between taking several items and between
 # taking the last item and continuing the actions.
-ai_items_take_delay 1.4
+ai_items_take_delay 0
 
 # When your monster died, start checking for loot after x seconds
-ai_items_take_start 0.4
+ai_items_take_start 0.2
 
 # Stop checking for loot x seconds after it has begun checking
-ai_items_take_end 1.2
+ai_items_take_end 0.2
 
 # When standing near an item, send the 'take' packet every x seconds until
 # the item has been taken.
 ai_take .4
 
 # Give up if unable to pickup item after x seconds
-ai_take_giveup 3
-ai_items_gather_giveup 3
+ai_take_giveup 2
+ai_items_gather_giveup 2
 
 # Every x seconds, check items for gathering
 ai_items_gather_auto .3
@@ -134,16 +133,14 @@ ai_sit_wait 0
 # hp/sp sufficiency, do so when the specified number of seconds elapsed
 ai_safe_stand_up 2
 
-ai_skill_use 0.75
+ai_skill_use 0.1
 ai_skill_use_giveup 1
 ai_item_use_auto 0.5
 ai_item_equip_auto 0.75
 ai_equipAuto_skilluse_giveup 5
 ai_equip_giveup 2
 
-ai_teleport 1
-ai_teleport_away 3
-ai_teleport_idle 4
+ai_teleport_away 1
 ai_teleport_portal 2
 ai_teleport_hp 3
 ai_teleport_safe_force 120
@@ -162,9 +159,9 @@ ai_route_calcRoute 1
 ai_route_npcTalk 10
 
 # These timeouts are used in npc conversation (Task::TalkNPC)
-ai_npc_talk_wait_to_answer 1.5
-ai_npc_talk_wait_after_close_to_cancel 0.5
-ai_npc_talk_wait_after_cancel_to_destroy 0.5
+ai_npc_talk_wait_to_answer 0.2
+ai_npc_talk_wait_after_close_to_cancel 0.4
+ai_npc_talk_wait_after_cancel_to_destroy 0.4
 
 ai_buyAuto 5
 ai_buyAuto_wait 2
@@ -207,4 +204,4 @@ welcomeText 4
 patchserver 120
 
 # Time to wait before load map in xKore mode
-ai_clientSuspend 10
+ai_clientSuspend 0
