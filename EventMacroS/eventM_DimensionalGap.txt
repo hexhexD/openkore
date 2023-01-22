@@ -36,7 +36,6 @@ automacro ghost_first {
 	timeout 600
 	disabled 0
     call {
-		do conf itemsTakeAuto 0
 		do conf attackAuto 2
 		do talknpc 41 204 c r0
 		pause 3
@@ -346,7 +345,7 @@ automacro sara2_garden {
 	do talk resp 1
 	pause 3
 	do move 358 291
-	do talknpc 
+	do talknpc
 	}
 }
 

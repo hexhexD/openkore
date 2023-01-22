@@ -8,7 +8,7 @@ server
 username abyss
 password 123
 loginPinCode
-char 0
+char 1
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword grauspos
+adminPassword froswoga
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 1
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -73,26 +73,26 @@ attackAuto_notWhile_storageAuto 1
 attackAuto_notWhile_buyAuto 1
 attackAuto_notWhile_sellAuto 1
 attackAuto_considerDamagedAggressive 0
-attackDistance 5
+attackDistance 20
 attackDistanceAuto 0
-attackMaxDistance 10
+attackMaxDistance 30
 attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
 attackMinPortalDistance 4
-attackUseWeapon 0
+attackUseWeapon 1
 attackNoGiveup 0
 attackCanSnipe 0
 attackCheckLOS 0
 attackRouteMaxPathDistance 13
 attackLooters 0
-attackChangeTarget 1
+attackChangeTarget 0
 aggressiveAntiKS 0
 
 attackBeyondMaxDistance_waitForAgressive 0
-attackBeyondMaxDistance_sendAttackWhileWaiting 1
-attackSendAttackWithMove 1
-attackWaitApproachFinish 1
+attackBeyondMaxDistance_sendAttackWhileWaiting 0
+attackSendAttackWithMove 0
+attackWaitApproachFinish 0
 
 attackUpdateMonsterPos 0
 
@@ -303,7 +303,7 @@ teleportAuto_useItemForRespawn
 teleportAuto_item1
 teleportAuto_item2
 
-dealAuto 2
+dealAuto 0
 dealAuto_names
 partyAuto 2
 partyAutoShare 0
@@ -976,7 +976,7 @@ debugPacket_received 0
 debugPacket_ro_sent 0
 debugPacket_sent 1
 debugPacket_exclude
-debugPacket_include
+debugPacket_include 00B8, 0090
 debugPacket_include_dumpMethod 2
 debugDomains
 logToFile_Debug

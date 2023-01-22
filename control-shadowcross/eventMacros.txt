@@ -24,3 +24,34 @@ automacro HIT_training {
 		do talknpc $x $y c
     }
 }
+
+
+macro setup {
+	# ticket man ready to trade zeny for 1037 tickets
+	do talknpc 174 220 r1 r1 d1037
+}
+
+macro test {
+[
+	# buy stuff
+	do send 01 08 10 00 EC 04 00 00 0B 00 00 00 01 00 05 00
+	# put money forth
+	do send E8 00 00 00 C8 D2 0F 00
+	# for money forth
+	do send EB 00
+	# need another finalize below to finish trading
+	do send EF 00
+
+
+	# talk resp 0
+	# do send B8 00 1C 00 00 00 01
+]
+}
+
+macro addz {
+[
+	do send E8 00 00 00 C8 D2 0F 00
+	# do send E8 00 00 00 FF FF FF FF
+	do send EB 00
+]
+}
