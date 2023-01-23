@@ -78,15 +78,16 @@ automacro ghost_boss_death {
 [
 		do conf itemsTakeAuto 2
 		do conf itemsGatherAuto 2
-		do conf route_randomWalk 0
 ]
 		log 呪いの根源 dead xD
 		do move 202 38
 		do talknpc 196 44 r0 r0
+		do conf route_randomWalk 1
 		pause 5
 		do move 198 27
 		do talknpc 204 29 r0 r0
 		do move 211 27
+		do conf route_randomWalk 0
     	}
 	}
 }
@@ -173,7 +174,7 @@ automacro sara_boss {
     	do talknpc 152 233 r0
 	pause 1
     	do talknpc 156 236 r2
-	do move 156 212
+	do move 156 216
 	do move 155 225
 	}
 }

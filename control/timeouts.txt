@@ -45,7 +45,7 @@ ai_mercenary_dance_attack_melee 0.2
 ai_mercenary_dance_attack_ranged 0.2
 
 # Check for monsters to attack every x seconds
-ai_attack_auto 0.3
+ai_attack_auto 0
 ai_homunculus_attack_auto 0.5
 ai_mercenary_attack_auto 0.5
 
@@ -88,8 +88,8 @@ ai_items_take_end 0.2
 ai_take .4
 
 # Give up if unable to pickup item after x seconds
-ai_take_giveup 2
-ai_items_gather_giveup 2
+ai_take_giveup 3
+ai_items_gather_giveup 3
 
 # Every x seconds, check items for gathering
 ai_items_gather_auto .3
