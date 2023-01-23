@@ -83,7 +83,7 @@ attackMinPortalDistance 4
 attackUseWeapon 0
 attackNoGiveup 0
 attackCanSnipe 0
-attackCheckLOS 1
+attackCheckLOS 0
 attackRouteMaxPathDistance 30
 attackLooters 0
 attackChangeTarget 1
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
