@@ -341,7 +341,9 @@ automacro sara2_garden {
 	do move 131 130
 	do move 200 129
 	do talknpc 200 135
-	do conf attackAuto -1
+
+	do move 191 68
+	do move 356 140
 	do move 351 270
 	do talk resp 1
 	pause 3

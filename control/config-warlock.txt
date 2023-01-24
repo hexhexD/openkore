@@ -8,7 +8,7 @@ server
 username wapi
 password 123
 loginPinCode
-char 1
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword jadoshed
+adminPassword thaushes
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 1
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -194,7 +194,7 @@ followBot 0
 
 itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 0
+itemsGatherAuto 2
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore 60
@@ -524,18 +524,18 @@ pet_return 20
 
 attackSkillSlot WL_DRAINLIFE {
 	lvl 5
-	hp < 70%
-	maxAttempts 5
+	hp < 80%
+	maxAttempts 3
+	monstersCounter < 2
 }
-
+attackSkillSlot WL_HELLINFERNO {
+	lvl 5
+}
 attackSkillSlot WL_SOULEXPANSION {
 	lvl 5
 	monstersCount >= 2
 }
 
-attackSkillSlot WL_HELLINFERNO {
-	lvl 5
-}
 
 attackSkillSlot {
 	lvl
@@ -966,7 +966,7 @@ getAuto {
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_sent 0
+debugPacket_sent 1
 debugPacket_received 0
 debugPacket_unparsed 1
 debugPacket_ro_sent 0
