@@ -66,7 +66,7 @@ automacro ghost_prison {
 		pause 5
 		do move 203 42
 		do talknpc 216 43 c r0
-		do conf route_randomWalk 2
+		do conf route_randomWalk 1
 	}
 }
 
@@ -76,18 +76,18 @@ automacro ghost_boss_death {
 	call {
     	if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
 [
+		do move stop
 		do conf itemsTakeAuto 2
 		do conf itemsGatherAuto 2
+		do conf route_randomWalk 0
 ]
 		log 呪いの根源 dead xD
 		do move 202 38
 		do talknpc 196 44 r0 r0
-		do conf route_randomWalk 1
 		pause 5
 		do move 198 27
 		do talknpc 204 29 r0 r0
 		do move 211 27
-		do conf route_randomWalk 0
     	}
 	}
 }
