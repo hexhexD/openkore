@@ -1,6 +1,8 @@
  macro regroup {
 	do party leave
-	do party create cardplzzz
+	$number = &rand(666, 999)
+	$name = card お願いします$number
+	do party create $name
 [
 	do conf itemsTakeAuto 0
 	do conf itemsGatherAuto 0
