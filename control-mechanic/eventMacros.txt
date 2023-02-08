@@ -56,7 +56,7 @@ automacro goBack {
 
 automacro rinseAndRepeat {
     InMap hugel
-    timeout 70
+    timeout 80
     disabled 0
     call {
         do move hu_in01
@@ -120,7 +120,7 @@ macro exchange {
     set exclusive 1
     do respawn 
     do move 177 143
-    do talk resp r0
+    do talk resp 0
 }
 
 automacro getoff_yuno {
