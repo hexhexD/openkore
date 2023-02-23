@@ -133,7 +133,7 @@ while True:
     startupinfo.dwFlags |= subprocess.HIGH_PRIORITY_CLASS
     ragproc = subprocess.Popen(commandline, startupinfo=startupinfo)
 
-    time.sleep(4)
+    time.sleep(6)
     print("Taking out the trash after game start")
     trash = glob.glob(args.g + "/GameGuard/*.erl")
     trash += glob.glob(args.g + "/GameGuard/*.erv")
