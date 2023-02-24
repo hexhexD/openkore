@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword tredobuy
+adminPassword rotaciha
 callSign
 commandPrefix ;
 callSignGM 0
@@ -935,7 +935,7 @@ useSelf_item ハイスピードポーション {
 	inMap abyss_03
 	timeout 100
 }
-useSelf_item 万能薬 {
+useSelf_item 緑ポーション {
 	whenStatusActive EFST_HEALTHSTATE_SILENCE
 	timeout 5
 }
@@ -983,12 +983,12 @@ buyAuto 602 {
 	disabled 0
 }
 
-buyAuto 万能薬 {
+buyAuto 緑ポーション {
 	npc hu_in01 241 368
 	distance 20
 	minAmount
-	maxAmount 6
-	disabled 1
+	maxAmount 4
+	disabled 0
 }
 
 sellAuto 1
