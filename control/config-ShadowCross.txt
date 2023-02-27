@@ -8,7 +8,7 @@ server
 username mechanic
 password 123
 loginPinCode
-char 1
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword staliric
+adminPassword chajiepo
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 1
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -193,7 +193,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -214,7 +214,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 2
+route_randomWalk 0
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 60
 route_maxWarpFee
@@ -267,8 +267,8 @@ statsAddAuto_list
 statsAddAuto_dontUseBonus 0
 statsAdd_over_99 1
 
-skillsAddAuto 0
-skillsAddAuto_list
+skillsAddAuto 1
+skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10
 
 tankMode 0
 tankModeTarget
@@ -330,7 +330,7 @@ wx_map_npcSticking 1
 wx_map_playersSticking 1
 wx_map_portalSticking 5
 wx_map_route 1
-wx_npcTalk 1
+wx_npcTalk
 wx_captcha
 showAllDamage 0
 manualURL https://openkore.com/wiki/Manual
@@ -356,7 +356,7 @@ chatTitleOversize 0
 shopTitleOversize 0
 buyerShopTitleOversize 0
 
-sleepTime 100
+sleepTime 10
 
 ignoreAll 0
 itemHistory 0
@@ -577,7 +577,7 @@ attackSkillSlot {
 	isStartSkill 0
 	equip_topHead
 	equip_midHead
-	equip_lowHead
+	vquip_lowHead
 	equip_leftHand
 	equip_rightHand
 	equip_leftAccessory
@@ -589,32 +589,10 @@ attackSkillSlot {
 	manualAI 0
 }
 
-attackSkillSlot NC_AXETORNADO {
+
+attackSkillSlot GC_ROLLINGCUTTER {
 	lvl 5
-	dist 2
-	timeout 4
-	aggressives > 2
 }
-
-attackSkillSlot MC_CARTREVOLUTION {
-	lvl 1
-	dist 3
-	disabled 1
-}
-
-attackSkillSlot NC_MAGMA_ERUPTION {
-	aggressives > 2
-	lvl 5
-	timeout 5
-	disabled 0
-}
-
-attackSkillSlot NC_POWERSWING {
-	lvl 10
-	dist 3
-	disabled 0
-}
-
 
 attackComboSlot {
 	afterSkill
@@ -722,45 +700,6 @@ useSelf_skill {
 	manualAI 0
 }
 
-useSelf_skill WS_CARTBOOST {
-	whenStatusInactive EFST_CARTBOOST
-	aggressives 0
-	notInTown 0
-}
-useSelf_skill MC_LOUD {
-	whenStatusInactive EFST_SHOUT
-	aggressives 0
-	notInTown 1
-}
-useSelf_skill BS_ADRENALINE {
-	whenStatusInactive EFST_ADRENALINE
-	aggressives 0
-	notInTown 1
-}
-useSelf_skill BS_WEAPONPERFECT {
-	whenStatusInactive EFST_WEAPONPERFECT
-	aggressives 0
-	notInTown 1
-}
-useSelf_skill BS_MAXIMIZE {
-	whenStatusInactive EFST_MAXIMIZE
-	aggressives 0
-	notInTown 1
-}
-# Keep casting OVERTHURST after each telepoert, this is a hack with timeout
-useSelf_skill BS_OVERTHRUST {
-	whenStatusInactive EFST_OVERTHRUST
-	aggressives 0
-	timeout 30
-	notInTown 1
-}
-useSelf_skill WS_OVERTHRUSTMAX {
-	whenStatusInactive EFST_OVERTHRUSTMAX
-	aggressives 0
-	timeout 50
-	inMap abyss_03
-	disabled 1
-}
 useSelf_skill_smartHeal 1
 
 partySkillDistance 0..8
