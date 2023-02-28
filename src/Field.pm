@@ -67,7 +67,7 @@ use constant {
 ##
 # Field->new(options...)
 #
-# Create a new Load a field (.fld2) file. 
+# Create a new Load a field (.fld2) file.
 #
 # This function also loads an associated .weight file
 # (the weight per cell file), which is used by pathfinding (for path choosing).
@@ -212,12 +212,12 @@ sub isOffMap {
 
 sub getCellInfo {
 	my ($self, $x, $y) = @_;
-	
+
 	if ($self->isOffMap($x, $y)) {
 		message "Cell $x $y is off the map.\n";
 		return;
 	}
-	
+
 	if ($self->isWalkable($x, $y)) {
 		message "Cell $x $y is walkable.\n";
 		my $weight = $self->getBlockWeight($x, $y);
@@ -225,19 +225,19 @@ sub getCellInfo {
 	} else {
 		message "Cell $x $y is not walkable.\n";
 	}
-	
+
 	if ($self->isSnipable($x, $y)) {
 		message "Cell $x $y is snipable.\n";
 	} else {
 		message "Cell $x $y is not snipable.\n";
 	}
-	
+
 	if ($self->isWater($x, $y)) {
 		message "Cell $x $y is water.\n";
 	} else {
 		message "Cell $x $y is not water.\n";
 	}
-	
+
 	if ($self->isCliff($x, $y)) {
 		message "Cell $x $y is a Cliff.\n";
 	} else {
@@ -314,17 +314,17 @@ sub getBlockDist {
 # Returns: walkable position in a reference to a position hash (which contains 'x' and 'y' keys) on success or undef on failure.
 sub closestWalkableSpot {
 	my ($self, $pos, $max_distance) = @_;
-	
+
 	my %center = ( x => $pos->{x}, y => $pos->{y} );
-	
+
 	if ($self->isWalkable($pos->{x}, $pos->{y})) {
 		return \%center;
 	}
-	
+
 	return if (!$max_distance);
-	
+
 	my @current_distance = (1..$max_distance);
-	
+
 	foreach my $distance (@current_distance) {
 		my @blocks = Misc::calcRectArea($center{x}, $center{y}, $distance, $self);
 		foreach my $block (@blocks) {
@@ -332,7 +332,7 @@ sub closestWalkableSpot {
 			return $block;
 		}
 	}
-	
+
 	return undef;
 }
 
@@ -482,9 +482,13 @@ sub canMove {
 	}
 
 	# If there are no obstacles return success
-	my $easy_solution = get_client_easy_solution($from, $to);
-	if ($self->checkPathFree($easy_solution)) {
-		return 1;
+	if ($dist < 2) {
+		return $self->checkLOS($from, $to, 0);
+	} else {
+		my $easy_solution = get_client_easy_solution($from, $to);
+		if ($self->checkPathFree($easy_solution)) {
+			return 1;
+		}
 	}
 
 	# If there are obstacles and OFFICIAL_WALKPATH is defined (which is by default) then calculate a client pathfinding
@@ -588,7 +592,7 @@ sub loadFile {
 	$weightFile =~ s/\.fld2(\.gz)?$/.weight/i;
 	if ($loadWeightMap) {
 		if ((!-f $weightFile && !-f $weightFile.'.gz') || !$self->loadWeightMap($weightFile, $width, $height)) {
-			
+
 			# Load the associated distance map (.dist file)
 			my $distFile = $filename;
 			$distFile =~ s/\.fld2(\.gz)?$/.dist/i;
@@ -604,7 +608,7 @@ sub loadFile {
 					close $f;
 				}
 			}
-			
+
 			# (Re)create the weight map.
 			my $f;
 			$self->{weightMap} = Utils::makeWeightMap($self->{dstMap}, $width, $height);
@@ -615,7 +619,7 @@ sub loadFile {
 				print $f $self->{weightMap};
 				close $f;
 			}
-			
+
 			delete $self->{dstMap};
 		}
 	} else {
@@ -644,13 +648,13 @@ sub loadFile {
 sub loadWeightMap {
 	my ($self, $filename, $width, $height) = @_;
 	my ($f, $weightData);
-	
+
 	$filename .= '.gz' if (-f $filename.'.gz');
-	
+
 	if ($filename =~ /\.gz$/) {
 		use bytes;
 		no encoding 'utf8';
-		
+
 		my $gz = gzopen($filename, 'rb');
 		if (!$gz) {
 			IOException->throw("Cannot open $filename for reading.");
@@ -677,7 +681,7 @@ sub loadWeightMap {
 		IOException->throw("Cannot open distance map $filename for reading.");
 		return;
 	}
-	
+
 	# Get file version.
 	my $dversion = 0;
 	if (substr($weightData, 0, 2) eq "V#") {
