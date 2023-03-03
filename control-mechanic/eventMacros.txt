@@ -45,7 +45,7 @@ automacro goBack {
     InMap abyss_03
     timeout 5
     exclusive 1
-    delay 5
+    delay 2
     call {
         do respawn
         pause 2

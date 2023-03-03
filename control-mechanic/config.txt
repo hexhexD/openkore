@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword rotaciha
+adminPassword ripristo
 callSign
 commandPrefix ;
 callSignGM 0
@@ -87,7 +87,7 @@ attackCanSnipe 0
 attackCheckLOS 0
 attackRouteMaxPathDistance 13
 attackLooters 0
-attackChangeTarget 1
+attackChangeTarget 0
 aggressiveAntiKS 0
 
 attackBeyondMaxDistance_waitForAgressive 0
@@ -356,7 +356,7 @@ chatTitleOversize 0
 shopTitleOversize 0
 buyerShopTitleOversize 0
 
-sleepTime 100
+sleepTime 1
 
 ignoreAll 0
 itemHistory 0
@@ -729,17 +729,18 @@ useSelf_skill BS_MAXIMIZE {
 	whenStatusInactive EFST_MAXIMIZE
 	notInTown 1
 }
-# Keep casting OVERTHURST after each telepoert, this is a hack with timeout
+
 useSelf_skill BS_OVERTHRUST {
 	whenStatusInactive EFST_OVERTHRUST
 	notInTown 1
 	timeout 60
+	disabled 1
 }
 useSelf_skill WS_OVERTHRUSTMAX {
 	whenStatusInactive EFST_OVERTHRUSTMAX
 	timeout 50
 	inMap abyss_03
-	disabled 1
+	disabled 0
 }
 useSelf_skill_smartHeal 1
 
@@ -1030,12 +1031,12 @@ getAuto {
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_unparsed 1
+debugPacket_unparsed 0
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 1
+debugPacket_sent 0
 debugPacket_exclude
-debugPacket_include
+debugPacket_include 0087
 debugPacket_include_dumpMethod 0
 debugDomains
 logToFile_Debug
