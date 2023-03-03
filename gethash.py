@@ -6,6 +6,7 @@ import re
 import shlex
 import subprocess
 import time
+import msvcrt
 
 import requests
 from bs4 import BeautifulSoup
@@ -76,7 +77,7 @@ home_soup = BeautifulSoup(home_response.content, "lxml")
 wireguard = "C:/Program Files/WireGuard/wireguard.exe"
 proxy_conf = os.path.join(cwd, "Japan.conf")
 start_proxy = [wireguard, "/installtunnelservice", proxy_conf]
-subprocess.run(start_proxy);
+subprocess.Popen(start_proxy);
 time.sleep(1)
 
 login_response = session.post(login_url, data=payload, headers=headers, cookies=jar)
@@ -91,17 +92,22 @@ if (args.a != None):
 	launch_url = launch_url[:equal_idx+1] + args.a;
 	print(launch_url)
 
-koredir = os.path.dirname(os.path.realpath(__file__))
 stop_proxy = [wireguard, "/uninstalltunnelservice", "Japan"]
-subprocess.run(stop_proxy);
+subprocess.Popen(stop_proxy);
 time.sleep(2)
 while True:
-    input_data = input("Press key to get going my guy")
+    #  input_data = input("Waiting for input")
+    print("Waiting for keypress...")
+    c = msvcrt.getch()
+
+    #  print("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
+    #  os.system("taskkill /im perl.exe /f /t")
+    #  os.system("taskkill /im wxstart.exe /f /t")
     print("Killing ragexe")
     os.system("taskkill /im Ragexe.exe")
-    os.system("taskkill /im wxstart.exe /f /t")
-    #  os.system("taskkill /im perl.exe /f /t")
-    print("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
+    if c == b'q':
+        print("byebye")
+        exit()
 
     # Fails on expired account, you got pay up
     launch_response = session.post(launch_url, headers=headers, cookies=jar)
@@ -125,6 +131,7 @@ while True:
     trash += glob.glob(args.g + "/GameGuard/*.ver")
     for t in trash:
         os.remove(t)
+
     commandline = r"Ragexe.exe 1rag1 -w {}".format(onetime_key).rstrip("\x00")
     commandline = shlex.split(commandline)
     print(commandline)
@@ -142,17 +149,20 @@ while True:
         os.remove(t)
 
     # Chose if we want to inject netredirect or logging dll
-    if "1" in input_data:
-        os.chdir(koredir)
+    if b"1" == c:
+        #  print("Game launched as is")
+        os.chdir(cwd)
         # os.startfile("wxstart.exe")
-        # subprocess.Popen(r"perl.exe openkore.pl", start_new_session=True)
         #  subprocess.Popen("Manualmap.exe", stdout=subprocess.DEVNULL)
         #  print("Injected logging dll")
-    elif "2" in input_data:
+    elif b"2" == c:
         print("Game launched as is")
     else:
         os.chdir(cwd)
         subprocess.Popen("Manualmap.exe", stdout=subprocess.DEVNULL)
+        #  subprocess.Popen(r"perl openkore.pl --interface=Wx --config=control\config-ShadowCross.txt",
+						 #  close_fds=True,
+						 #  creationflags=subprocess.DETACHED_PROCESS)
 
     print(ragproc.pid)
     # os.chdir(r"C:\dev\openkore")

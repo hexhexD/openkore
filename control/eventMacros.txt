@@ -23,3 +23,10 @@ automacro HIT_training {
 		do talknpc $x $y c
     }
 }
+
+automacro doge_player {
+	PlayerNearCount > 0
+	call {
+		log Someone nearby
+	}
+}
