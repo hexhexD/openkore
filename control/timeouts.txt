@@ -133,7 +133,7 @@ ai_sit_wait 0
 # hp/sp sufficiency, do so when the specified number of seconds elapsed
 ai_safe_stand_up 2
 
-ai_skill_use 0.1
+ai_skill_use 0.001
 ai_skill_use_giveup 1
 ai_item_use_auto 0.5
 ai_item_equip_auto 0.75
@@ -159,9 +159,9 @@ ai_route_calcRoute 1
 ai_route_npcTalk 10
 
 # These timeouts are used in npc conversation (Task::TalkNPC)
-ai_npc_talk_wait_to_answer 0.2
-ai_npc_talk_wait_after_close_to_cancel 0.4
-ai_npc_talk_wait_after_cancel_to_destroy 0.4
+ai_npc_talk_wait_to_answer 0.1
+ai_npc_talk_wait_after_close_to_cancel 0.1
+ai_npc_talk_wait_after_cancel_to_destroy 0.1
 
 ai_buyAuto 5
 ai_buyAuto_wait 2

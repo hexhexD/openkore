@@ -5,7 +5,7 @@
 
 master Japan - jRO: Urdr
 server
-username mechanic
+wsername Shadow
 password 123
 loginPinCode
 char 0
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword chajiepo
+adminPassword brausair
 callSign
 commandPrefix ;
 callSignGM 0
@@ -592,6 +592,7 @@ attackSkillSlot {
 
 attackSkillSlot GC_ROLLINGCUTTER {
 	lvl 5
+	dist 1
 }
 
 attackComboSlot {
