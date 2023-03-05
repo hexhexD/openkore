@@ -130,7 +130,7 @@ sub new {
 	} else {
 		$self->{avoidWalls} = 0;
 	}
-
+	
 	if ($config{$self->{actor}{configPrefix}.'route_randomFactor'}) {
 		if (!defined $self->{randomFactor}) {
 			$self->{randomFactor} = $config{$self->{actor}{configPrefix}.'route_randomFactor'};
@@ -141,7 +141,7 @@ sub new {
 	if (!defined $self->{useManhattan}) {
 		$self->{useManhattan} = 0;
 	}
-
+	
 	$self->{solution} = [];
 	$self->{stage} = NOT_INITIALIZED;
 
@@ -215,7 +215,7 @@ sub iterate {
 		if (!$self->{meetingSubRoute} && !$self->{LOSSubRoute} && $pos_to->{x} == $self->{dest}{pos}{x} && $pos_to->{y} == $self->{dest}{pos}{y}) {
 			debug "Route $self->{actor}: Current position and destination are the same.\n", "route";
 			$self->setDone();
-
+		
 		} elsif ($self->getRoute($self->{solution}, $self->{dest}{map}, $pos, $self->{dest}{pos}, $self->{avoidWalls}, $self->{randomFactor}, $self->{useManhattan}, 1)) {
 			$self->{stage} = ROUTE_SOLUTION_READY;
 
@@ -225,7 +225,7 @@ sub iterate {
 			$self->{confirmed_correct_vector} = 0;
 
 			debug "Route $self->{actor} Solution Ready! Found path on ".$self->{dest}{map}->baseName." from ".$pos->{x}." ".$pos->{y}." to ".$self->{dest}{pos}{x}." ".$self->{dest}{pos}{y}.". Size: ".@{$self->{solution}}." steps.\n", "route";
-
+			
 			# Changed in pathfinding.xs
 			#unshift(@{$self->{solution}}, { x => $pos->{x}, y => $pos->{y}});
 
@@ -312,9 +312,9 @@ sub iterate {
 
 		# $actor->{pos_to} is the position the character moved TO in the last move packet received
 		@{$current_pos_to}{qw(x y)} = @{$self->{actor}{pos_to}}{qw(x y)};
-
+		
 		my $current_calc_pos = calcPosFromPathfinding($field, $self->{actor});
-
+		
 		if ($current_calc_pos->{x} == $solution->[$#{$solution}]{x} && $current_calc_pos->{y} == $solution->[$#{$solution}]{y}) {
 			# Actor position is the destination; we've arrived at the destination
 			if ($self->{notifyUponArrival}) {
@@ -415,7 +415,7 @@ sub iterate {
 		}
 
 		my $stepsleft = @{$solution};
-
+		
 		$self->{lastStep} = 0;
 
 		if ($stepsleft == 0) {
@@ -532,7 +532,7 @@ sub iterate {
 				@{$self->{last_pos_to}}{qw(x y)} = @{$current_pos_to}{qw(x y)};
 
 				debug "Route $self->{actor} - next step moving to ($self->{next_pos}{x}, $self->{next_pos}{y}), index $self->{step_index}, $stepsleft steps left\n", "route";
-
+				
 				$self->setMove();
 			}
 		}
@@ -546,31 +546,31 @@ sub iterate {
 
 sub setMove {
 	my ($self) = @_;
-
+	
 	my $task = new Task::Move(
 		actor => $self->{actor},
 		x => $self->{next_pos}{x},
 		y => $self->{next_pos}{y}
 	);
-
+	
 	my $sendAttack = 0;
-	if ($self->{actor}->isa('Actor::You') && $config{"attackUseWeapon"} && $config{"attackSendAttackWithMove"}) {
+	if ($self->{actor}->isa('Actor::You') && $config{"attackSendAttackWithMove"}) {
 		$sendAttack = 1;
-
+		
 	} elsif (
 		($self->{actor}->isa("AI::Slave::Homunculus") || $self->{actor}->isa("Actor::Slave::Homunculus") || $self->{actor}->isa("AI::Slave::Mercenary") || $self->{actor}->isa("Actor::Slave::Mercenary")) &&
 		$config{$self->{actor}{configPrefix}.'attackSendAttackWithMove'}
 	) {
 		$sendAttack = 1;
 	}
-
+	
 	if ($sendAttack && $self->{lastStep} == 1 && $self->{attackID}) {
 		$task->{sendAttack} = 1;
 		$task->{attackID} = $self->{attackID};
 	} else {
 		$task->{sendAttack} = 0;
 	}
-
+	
 	$self->setSubtask($task);
 	$self->iterate();
 }
@@ -631,7 +631,7 @@ sub getRoute {
 	$plugin_args{useManhattan} = $useManhattan;
 	$plugin_args{return} = 0;
 
-	Plugins::callHook( getRoute => \%plugin_args );
+	Plugins::callHook('getRoute' => \%plugin_args);
 
 	my $pathfinding;
 	if ($plugin_args{return}) {

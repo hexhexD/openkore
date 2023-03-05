@@ -451,4 +451,9 @@ sub sendAttack {
 	$messageSender->sendAction($attackID, ($config{'tankMode'}) ? 0 : 7);
 }
 
+sub sendAttack {
+	my ($self, $attackID) = @_;
+	$messageSender->sendAction($attackID, ($config{'tankMode'}) ? 0 : 7);
+}
+
 1;

@@ -117,7 +117,7 @@ sub serverRecv {
 sub serverSend {
 	my $self = shift;
 	my $msg = shift;
-	Plugins::callHook("Network::serverSend/pre", { msg => \$msg });
+	Plugins::callHook('Network::serverSend/pre', {msg => \$msg});
 	$self->{client}->send("S".pack("v", length($msg)).$msg) if ($self->serverAlive);
 }
 

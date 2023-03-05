@@ -880,9 +880,9 @@ sub run {
 			my %params;
 			$params{switch} = $switch;
 			$params{args} = $args;
-			Plugins::callHook("Commands::run/pre", \%params);
+			Plugins::callHook('Commands::run/pre', \%params);
 			$handler->($switch, $args);
-			Plugins::callHook("Commands::run/post", \%params);
+			Plugins::callHook('Commands::run/post', \%params);
 
 		} else {
 			my %params = ( switch => $switch, input => $command );
@@ -5104,9 +5104,6 @@ sub cmdSell {
 
 	} elsif ($args[0] eq "done") {
 		completeNpcSell(\@sellList);
-		@sellList = ();
-		message TF("Sold %s items.\n", @sellList.""), "success";
-
 	} elsif ($args[0] eq "cancel") {
 		@sellList = ();
 		completeNpcSell(\@sellList);

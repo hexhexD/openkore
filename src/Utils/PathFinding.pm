@@ -102,8 +102,7 @@ sub reset {
 	my %hookArgs;
 	$hookArgs{args} = \%args;
 	$hookArgs{return} = 1;
-	Plugins::callHook("PathFindingReset", \%hookArgs);
-
+	Plugins::callHook('PathFindingReset', \%hookArgs);
 	if ($hookArgs{return}) {
 		$args{avoidWalls} = 1 unless (defined $args{avoidWalls});
 		$args{weight_map} = \($args{field}->{weightMap}) unless (defined $args{weight_map});
@@ -113,7 +112,7 @@ sub reset {
 
 		$args{randomFactor} = 0 unless (defined $args{randomFactor});
 		$args{useManhattan} = 0 unless (defined $args{useManhattan});
-		
+
 		$args{width} = $args{field}{width} unless (defined $args{width});
 		$args{height} = $args{field}{height} unless (defined $args{height});
 		$args{timeout} = 1500 unless (defined $args{timeout});
@@ -124,17 +123,17 @@ sub reset {
 	}
 
 	return $class->_reset(
-		$args{weight_map}, 
-		$args{avoidWalls}, 
+		$args{weight_map},
+		$args{avoidWalls},
 		$args{customWeights},
 		$args{secondWeightMap},
 		$args{randomFactor},
 		$args{useManhattan},
-		$args{width}, 
+		$args{width},
 		$args{height},
-		$args{start}{x}, 
+		$args{start}{x},
 		$args{start}{y},
-		$args{dest}{x}, 
+		$args{dest}{x},
 		$args{dest}{y},
 		$args{timeout},
 		$args{min_x},

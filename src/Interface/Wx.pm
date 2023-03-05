@@ -460,7 +460,7 @@ sub createMenuBar {
 	$infoMenu->AppendSeparator;
 	$self->addMenu($infoMenu, T('&Experience Report'),	sub { Commands::run("exp"); });
 	$self->addMenu($infoMenu, T('&Item Change Report'),	sub { Commands::run("exp item"); });
-	$self->addMenu($infoMenu, T('&Monsiter Kill Report'),	sub { Commands::run("exp monster"); });
+	$self->addMenu($infoMenu, T('&Monster Kill Report'),	sub { Commands::run("exp monster"); });
 	$menu->Append($infoMenu, T('I&nfo'));
 
 	# View menu
@@ -910,6 +910,17 @@ sub updateStatusBar {
 	$setStatus->('aiText', $aiText);
 	$setStatus->('xyText', $xyText);
 	$setStatus->('statText', $statText);
+}
+
+sub get_task {
+	my ($args) = @_;
+	if (UNIVERSAL::isa($args, 'Task::Route')) {
+		return $args;
+	} elsif (UNIVERSAL::isa($args, 'Task::MapRoute') && $args->getSubtask && UNIVERSAL::isa($args->getSubtask, 'Task::Route')) {
+		return $args->getSubtask;
+	} else {
+		return undef;
+	}
 }
 
 sub get_task {
