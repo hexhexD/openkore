@@ -26,7 +26,11 @@ automacro HIT_training {
 
 automacro doge_player {
 	PlayerNearCount > 0
+	timeout 10
+	disabled 1
 	call {
+		do is ハエの羽
 		log Someone nearby
+		do charselect
 	}
 }

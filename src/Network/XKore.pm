@@ -250,6 +250,12 @@ sub checkConnection {
 		}
 	}
 
+	if ($conState == Network::CONNECTED_TO_LOGIN_SERVER && $config{'char'} ne "" && !$conState_tries) {
+		message("Connected to character server");
+		$messageSender->sendCharLogin($config{'char'});
+		$conState_tries++;
+	}
+
 	return if ($self->serverAlive);
 
 	# (Re-)initialize X-Kore if necessary
@@ -262,7 +268,7 @@ sub checkConnection {
 
 	message TF("Please start the Ragnarok Online client (%s)\n", $config{XKore_exeName}), "startup";
 	Plugins::callHook('XKore_start');
-	while (-1) {
+	while (0) {
 		undef @list;
 		my @z = Utils::Win32::listProcesses();
 
@@ -422,11 +428,11 @@ sub recv {
 			: "";
 		if ($type eq "R") {
 			# Client-bound (or "from server") packets
-			my $switch = uc(unpack("H2", substr($msg, 1, 1))) . uc(unpack("H2", substr($msg, 0, 1)));
-			if (($switch eq "0071" || $switch eq "0092") && $currentClientKey && $messageSender->{encryption}->{crypt_key}) {
-				$currentClientKey = $messageSender->{encryption}->{crypt_key_1};
-				$messageSender->{encryption}->{crypt_key} = $messageSender->{encryption}->{crypt_key_1};
-			}
+			# my $switch = uc(unpack("H2", substr($msg, 1, 1))) . uc(unpack("H2", substr($msg, 0, 1)));
+			# if (($switch eq "0071" || $switch eq "0092") && $currentClientKey && $messageSender->{encryption}->{crypt_key}) {
+				# $currentClientKey = $messageSender->{encryption}->{crypt_key_1};
+				# $messageSender->{encryption}->{crypt_key} = $messageSender->{encryption}->{crypt_key_1};
+			# }
 			$self->{serverPackets} .= $msg;
 		} elsif ($type eq "S") {
 			# Server-bound (or "to server") packets

@@ -136,6 +136,7 @@ automacro sara_north {
 	timeout 15
 	call {
 		do talknpc 107 325 c r0
+		pasue 2
 		do move 208 250
 	}
 }

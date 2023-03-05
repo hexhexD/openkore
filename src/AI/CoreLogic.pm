@@ -49,8 +49,8 @@ sub iterate {
 	Benchmark::begin("ai_prepare") if DEBUG;
 	processWipeOldActors();
 	# Not necessary in xkore1 and looks more legit
-  # Comment out is better than a branch
-	processGetPlayerInfo();
+	# Comment out is better than a branch
+	# processGetPlayerInfo();
 	processMisc();
 	processReAddMissingPortals();
 	processPortalRecording();
