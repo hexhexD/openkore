@@ -1,6 +1,7 @@
 !include ../EventMacroS/eventM_DimensionalGap.txt
 !include ../EventMacroS/eventM_EndlessTower.txt
 !include ../EventMacroS/eventM_BeginnerIsland.txt
+!include ../EventMacroS/eventM_BioLab.txt
 
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i
