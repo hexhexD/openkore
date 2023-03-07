@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword pucrikog
+adminPassword vosoloto
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 1
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -74,18 +74,18 @@ attackAuto_notWhile_storageAuto 1
 attackAuto_notWhile_buyAuto 1
 attackAuto_notWhile_sellAuto 1
 attackAuto_considerDamagedAggressive 0
-attackDistance 1
+attackDistance 30
 attackDistanceAuto 0
-attackMaxDistance 10
+attackMaxDistance 30
 attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
 attackMinPortalDistance 4
-attackUseWeapon 1
+attackUseWeapon 0
 attackNoGiveup 0
 attackCanSnipe 0
 attackCheckLOS 0
-attackRouteMaxPathDistance 20
+attackRouteMaxPathDistance 30
 attackLooters 0
 attackChangeTarget 0
 aggressiveAntiKS 0
@@ -591,7 +591,7 @@ attackSkillSlot {
 
 attackSkillSlot GC_ROLLINGCUTTER {
 	lvl 5
-	dist 1
+	dist 2
 }
 
 attackComboSlot {
@@ -964,7 +964,7 @@ storageAuto_maxDistance
 storageAuto_npc_type 1
 storageAuto_type 0
 storageAuto_npc_steps
-storageAuto_password
+storageAuto_password 1111
 storageEncryptKey
 storageAuto_keepOpen 0
 storageAuto_useChatCommand
