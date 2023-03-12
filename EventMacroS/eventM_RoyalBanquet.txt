@@ -51,7 +51,7 @@ automacro new_world_access_next2 {
 # TODO: figure out how to go to lighthalzen without mimimi
 automacro new_world_access_next3 {
 	QuestActive 10069
-	InMap lighthalzen
+	InMap lighthalze
 	run-once 1
 	call {
 		do move lhz_in01 125 256
@@ -61,16 +61,47 @@ automacro new_world_access_next3 {
 }
 automacro new_world_access_next4 {
 	QuestActive 10071
+	InMap rachel
+	run-once 1
+	call {
+		do move ra_temple 117 113
+		do talknpc 119 113
+		call rachel_yuno
+	}
+}
+automacro new_world_access_next5 {
+	QuestActive 10072
 	InMap lighthalzen
 	run-once 1
 	call {
 		do move lhz_in01 125 256
 		do talknpc 132 259
 		do talknpc 132 259
+		do move 148 179
+		do move 23 22
+		do talknpc 32 22
+		do talknpc 32 22
 	}
 }
-
-
+automacro new_world_access_next6 {
+	QuestActive 10076
+	run-once 1
+	call {
+		do move 11 24
+		do move lhz_in01 126 225
+		do talknpc 130 232 r0
+		pause 1
+		do talknpc 349 179 r0
+		pause 1
+		do talknpc 230 197
+		do talknpc 230 197 r0
+		do move 310 201
+		do move 229 200
+		do talknpc 230 197
+		# back to prontera
+		do talknpc 230 197 r0
+	}
+}
 
 
 ### 七王家とユミルの心臓 ###

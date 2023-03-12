@@ -140,9 +140,7 @@ payon 181 104 prontera 116 72 2000 1 c r2 c r0
 payon 175 226 prontera 116 72 1200 1 c r2 c r0
 alberta 113 60 payon 161 58 2000 1 c r2 c r0
 rachel 109 138 veins 205 101 2200 1 c r2 c r0
-rachel 109 138 yuno 158 125 3000 1 c r2 c r1
 veins 208 128 rachel 115 125 2200 1 c r2 c r0
-veins 208 128 yuno 158 125 3000 1 c r2 c r1
 moc_para01 14 32 prontera 116 72 1800 1 c c r0 c n
 
 # Training Grounds
@@ -2637,7 +2635,7 @@ y_airport 19 18 y_airport 123 14
 y_airport 160 14 y_airport 48 20
 y_airport 48 18 y_airport 162 14
 yuno 53 214 y_airport 143 23
-y_airport 143 23 yuno 52 207
+y_airport 143 16 yuno 52 207
 yuno 47 240 y_airport 143 54
 yuno 59 240 y_airport 143 54
 airplane 208 53 airplane 239 160

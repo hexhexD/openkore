@@ -118,23 +118,33 @@ macro bomb {
 
 macro exchange {
     set exclusive 1
-    do respawn 
+    do respawn
     do move 177 143
     do talk resp 0
 }
-
 automacro getoff_yuno {
-    InMap airplane
     LocalMsg /現在、ジュノーに停船中です/
     call {
         do move 242 72
     }
 }
-
 automacro arrvied_yuno {
     InMap yuno
     IsInCoordinate 92 260
     call {
         do move prontera
     }
+}
+
+automacro doge_player {
+	InMap hu_fild05, hu_fild06, abyss_01, abyss_02, abyss_03
+	PlayerNearCount > 0
+	disabled 1
+
+	call {
+		do is ハエの羽
+		log Someone nearby
+		log $.PlayerNearLast
+		do charselect
+	}
 }
