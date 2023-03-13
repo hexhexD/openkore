@@ -248,12 +248,21 @@ sub checkConnection {
 		} else {
 			error "waiting actions for the Ragnarok Online client\n";
 		}
-	}
-
-	if ($conState == Network::CONNECTED_TO_LOGIN_SERVER && $config{'char'} ne "" && !$conState_tries) {
-		message("Connected to character server");
+	} elsif ($conState == Network::CONNECTED_TO_LOGIN_SERVER && $config{'char'} ne "" && !$conState_tries) {
+		# used to introduce a wait
+		if ($self->serverAlive) {
+			# new state so we don't enter this block of code again
+			$conState = 2.1;
+			$timeout{charSelectDelay}{time} = time;
+			$timeout{charSelectDelay}{timeout} = int(rand(10)) + 5;
+			message("Selecting char in random seconds\n");
+		}
+	} elsif ($self->getState() == 2.1 && timeOut($timeout{charSelectDelay})) {
 		$messageSender->sendCharLogin($config{'char'});
-		$conState_tries++;
+		# Only send char login once
+		$conState = 2.2;
+	} elsif ($self->getState() == Network::IN_GAME) {
+		undef $conState_tries;
 	}
 
 	return if ($self->serverAlive);
