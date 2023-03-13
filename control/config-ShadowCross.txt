@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword treshona
+adminPassword jitwabri
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 1
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -74,20 +74,20 @@ attackAuto_notWhile_storageAuto 1
 attackAuto_notWhile_buyAuto 1
 attackAuto_notWhile_sellAuto 1
 attackAuto_considerDamagedAggressive 0
-attackDistance 5
+attackDistance 30
 attackDistanceAuto 0
-attackMaxDistance 10
+attackMaxDistance 30
 attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
 attackMinPortalDistance 4
-attackUseWeapon 1
+attackUseWeapon 0
 attackNoGiveup 0
 attackCanSnipe 0
 attackCheckLOS 0
-attackRouteMaxPathDistance 20
+attackRouteMaxPathDistance 30
 attackLooters 0
-attackChangeTarget 1
+attackChangeTarget 0
 aggressiveAntiKS 0
 
 attackBeyondMaxDistance_waitForAgressive 0
@@ -268,8 +268,7 @@ statsAddAuto_dontUseBonus 0
 statsAdd_over_99 1
 
 skillsAddAuto 1
-skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10
-
+skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 8, TF_HIDING 10, TF_DETOXIFY 1, カタール修練 10, エンチャントポイズン 5, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソニックブロー 10, 右手修練 5, 左手修練 5
 tankMode 0
 tankModeTarget
 
@@ -592,7 +591,7 @@ attackSkillSlot {
 
 attackSkillSlot GC_ROLLINGCUTTER {
 	lvl 5
-	dist 1
+	dist 2
 }
 
 attackComboSlot {
@@ -965,7 +964,7 @@ storageAuto_maxDistance
 storageAuto_npc_type 1
 storageAuto_type 0
 storageAuto_npc_steps
-storageAuto_password
+storageAuto_password 1111
 storageEncryptKey
 storageAuto_keepOpen 0
 storageAuto_useChatCommand
@@ -996,7 +995,7 @@ debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include 07FD
 debugPacket_include_dumpMethod 0
-debugDomains
+debugDomains portalRecord
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

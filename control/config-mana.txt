@@ -316,7 +316,7 @@ verbose 0
 showDomain 0
 showDomain_NPC parseMsg_presence
 showDomain_Shop list
-squelchDomains drop, attacked, attackedMiss, exp
+squelchDomains
 verboseDomains
 beepDomains
 beepDomains_notInTown

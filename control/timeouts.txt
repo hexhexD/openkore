@@ -133,9 +133,9 @@ ai_sit_wait 0
 # hp/sp sufficiency, do so when the specified number of seconds elapsed
 ai_safe_stand_up 2
 
-ai_skill_use 0.1
+ai_skill_use 0
 ai_skill_use_giveup 1
-ai_item_use_auto 0.5
+ai_item_use_auto 0.1
 ai_item_equip_auto 0.75
 ai_equipAuto_skilluse_giveup 5
 ai_equip_giveup 2
@@ -155,7 +155,7 @@ ai_portal_give_up 10
 ai_portal_re_add_missed 3600
 
 # You probably don't ever have to change the following timeouts
-ai_route_calcRoute 1
+ai_route_calcRoute 3
 ai_route_npcTalk 10
 
 # These timeouts are used in npc conversation (Task::TalkNPC)
