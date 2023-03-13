@@ -1797,11 +1797,15 @@ prontera 237 317 prt_church 100 56
 prontera 289 203 prt_fild06 23 193
 prontera 121 72 prt_cas 18 29 c r0
 
+# Royal banquet
 prt_cas 27 27 prt_pri00 51 120 r3 r5
 prt_pri00 51 116 prt_prison 160 290 r0
-
 prt_cas 27 27 dali 109 86 c r3 c c r0
 prt_cas 9 23 prontera 117 72 c r1 n
+prt_cas 216 184 prt_cas 93 212
+prt_cas 93 208 prt_cas 216 180
+prt_cas 152 163 prt_cas_q 150 8
+
 prt_castle 28 121 prt_castle 40 138
 prt_castle 31 113 prt_castle 54 113
 prt_castle 40 138 prt_castle 28 121

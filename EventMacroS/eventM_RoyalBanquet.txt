@@ -106,3 +106,15 @@ automacro new_world_access_next6 {
 
 ### 七王家とユミルの心臓 ###
 
+macro royal_quest {
+	do move prontera 120 72
+	do talknpc 121 72 r2 r0
+}
+automacro royal {
+	InMap prt_castle
+	IsInCoordinate 102 24
+	call {
+		do talknpc 106 27 r0
+	}
+}
+

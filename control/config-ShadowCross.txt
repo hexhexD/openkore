@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword fraufrop
+adminPassword jitwabri
 callSign
 commandPrefix ;
 callSignGM 0
@@ -995,7 +995,7 @@ debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include 07FD
 debugPacket_include_dumpMethod 0
-debugDomains route
+debugDomains portalRecord
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages
