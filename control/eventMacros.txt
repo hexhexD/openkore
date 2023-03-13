@@ -3,6 +3,7 @@
 !include ../EventMacroS/eventM_BeginnerIsland.txt
 !include ../EventMacroS/eventM_BioLab.txt
 !include ../EventMacroS/eventM_RoyalBanquet.txt
+!include ../EventMacroS/Utils.txt
 
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i
@@ -22,44 +23,5 @@ automacro HIT_training {
 		$x = &arg ("$.NpcNearLastPos", 1)
 		$y = &arg ("$.NpcNearLastPos", 2)
 		do talknpc $x $y c
-    }
-}
-
-macro yuno_rachel {
-    set exclusive 1
-	$airship_dst = Rachel
-	do move y_airport 142 55
-    do talknpc 140 63 r0
-}
-macro rachel_yuno {
-    set exclusive 1
-	$airship_dst = yuno
-	do move ra_fild12 295 208
-	do talk resp 0
-}
-automacro getoff_yuno {
-    LocalMsg /現在、ジュノーに停船中です/
-    call {
-		log Getting off at Yuno
-		if ($airship_dst == yuno) {
-			do move 242 72
-		}
-    }
-}
-automacro getoff_rachel {
-    LocalMsg /現在、ラヘルに停船中です/
-    call {
-		log Getting off at Rachel
-		if ($airship_dst == Rachel) {
-			do move 242 72
-			do move rachel
-		}
-    }
-}
-automacro arrvied_yuno {
-    InMap yuno
-    IsInCoordinate 92 260
-    call {
-        do move prontera
     }
 }

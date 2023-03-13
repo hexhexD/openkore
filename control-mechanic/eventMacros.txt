@@ -1,3 +1,5 @@
+!include ../EventMacroS/Utils.txt
+
 automacro abyss_02 {
     InMap hu_fild05
     exclusive 0
@@ -19,7 +21,6 @@ automacro hu_fild06 {
       do move hu_fild05
     }
 }
-
 automacro firstFloor {
     InMap abyss_01
     exclusive 0
@@ -29,7 +30,6 @@ automacro firstFloor {
         do move abyss_02
     }
 }
-
 automacro enterTheAbyss {
     InMap abyss_02
     exclusive 0
@@ -39,7 +39,6 @@ automacro enterTheAbyss {
         do move abyss_03
     }
 }
-
 automacro goBack {
     CharCurrentWeight > 89%
     InMap abyss_03
@@ -53,7 +52,6 @@ automacro goBack {
         # do reload eventMacro
     }
 }
-
 automacro rinseAndRepeat {
     InMap hugel
     timeout 80
@@ -67,7 +65,6 @@ automacro rinseAndRepeat {
         do move hu_fild06
     }
 }
-
 automacro ranOutOfFly {
     InMap abyss_03
 	InInventory "ハエの羽" <= 1
@@ -78,7 +75,6 @@ automacro ranOutOfFly {
         do respawn
     }
 }
-
 automacro swingAxeAfterMapChange {
     InMap abyss_03
 	SimpleHookEvent Network::Receive::map_changed
@@ -97,14 +93,6 @@ automacro swingAxeAfterMapChange {
 #	}
 #}
 
-macro test {
-overrideAI 1
-do charselect
-pauses 4
-do eval $messageSender->sendCharLogin(1)
-pause 3
-}
-
 macro bomb {
 [
 # store ticket
@@ -116,31 +104,29 @@ macro bomb {
 ]
 }
 
-macro exchange {
-    set exclusive 1
-    do respawn
-    do move 177 143
-    do talk resp 0
-}
-automacro getoff_yuno {
-    LocalMsg /現在、ジュノーに停船中です/
-    call {
-        do move 242 72
-    }
-}
-automacro arrvied_yuno {
-    InMap yuno
-    IsInCoordinate 92 260
-    call {
-        do move prontera
-    }
-}
-
+# macro exchange {
+#     set exclusive 1
+#     do respawn
+#     do move 177 143
+#     do talk resp 0
+# }
+# automacro getoff_yuno {
+#     LocalMsg /現在、ジュノーに停船中です/
+#     call {
+#         do move 242 72
+#     }
+# }
+# automacro arrvied_yuno {
+#     InMap yuno
+#     IsInCoordinate 92 260
+#     call {
+#         do move prontera
+#     }
+# }
 automacro doge_player {
 	InMap hu_fild05, hu_fild06, abyss_01, abyss_02, abyss_03
 	PlayerNearCount > 0
 	disabled 1
-
 	call {
 		do is ハエの羽
 		log Someone nearby
