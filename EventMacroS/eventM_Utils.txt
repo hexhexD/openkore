@@ -3,18 +3,21 @@
 macro yuno_rachel {
     set exclusive 1
 	$airship_dst = Rachel
-	do move y_airport 142 55
+	do move y_airport 150 34
+	do talknpc 143 43 r0 r0
     do talknpc 140 63 r0
-}
-macro rachel_yuno {
-    set exclusive 1
-	$airship_dst = yuno
-	do move ra_fild12 295 208
-	do talk resp 0
 }
 macro yuno_hugel {
     set exclusive 1
 	$airship_dst = hugel
+	do move y_airport 150 34
+	do talknpc 143 43 r0 r0
+    do talknpc 145 63 r0
+    do move 96 261
+}
+macro rachel_yuno {
+    set exclusive 1
+	$airship_dst = yuno
 	do move ra_fild12 295 208
 	do talk resp 0
 }

@@ -1,4 +1,4 @@
-!include ../EventMacroS/Utils.txt
+!include ../EventMacroS/eventM_Utils.txt
 
 automacro abyss_02 {
     InMap hu_fild05
@@ -16,9 +16,17 @@ automacro abyss_02 {
 automacro hu_fild06 {
     InMap hu_fild06
     exclusive 0
-    timeout 15
+    timeout 20
     call {
       do move hu_fild05
+    }
+}
+automacro inandout {
+    InMap hu_fild06
+    exclusive 1
+    timeout 360
+    call {
+      do charselect
     }
 }
 automacro firstFloor {
@@ -126,7 +134,7 @@ macro bomb {
 automacro doge_player {
 	InMap hu_fild05, hu_fild06, abyss_01, abyss_02, abyss_03
 	PlayerNearCount > 0
-	disabled 1
+	disabled 0
 	call {
 		do is ハエの羽
 		log Someone nearby

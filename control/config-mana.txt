@@ -8,7 +8,7 @@ server
 username mechanic
 password 123
 loginPinCode
-char 1
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword staliric
+adminPassword briseere
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -81,19 +81,19 @@ attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
 attackMinPortalDistance 4
-attackUseWeapon 1
+attackUseWeapon 0
 attackNoGiveup 0
 attackCanSnipe 0
 attackCheckLOS 0
-attackRouteMaxPathDistance 20
+attackRouteMaxPathDistance 13
 attackLooters 0
 attackChangeTarget 1
 aggressiveAntiKS 0
 
 attackBeyondMaxDistance_waitForAgressive 0
-attackBeyondMaxDistance_sendAttackWhileWaiting 0
-attackSendAttackWithMove 0
-attackWaitApproachFinish 0
+attackBeyondMaxDistance_sendAttackWhileWaiting 1
+attackSendAttackWithMove 1
+attackWaitApproachFinish 1
 
 attackUpdateMonsterPos 0
 
@@ -193,7 +193,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -214,7 +214,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 2
+route_randomWalk 0
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 60
 route_maxWarpFee
@@ -251,7 +251,7 @@ shop_useSkill 1
 buyerShopAuto_open 0
 buyerShop_random 0
 
-sitAuto_hp_lower 0
+sitAuto_hp_lower 1
 sitAuto_hp_upper 30
 sitAuto_sp_lower 0
 sitAuto_sp_upper 0
@@ -303,7 +303,7 @@ teleportAuto_useItemForRespawn
 teleportAuto_item1
 teleportAuto_item2
 
-dealAuto 2
+dealAuto 1
 dealAuto_names
 partyAuto 1
 partyAutoShare 0
@@ -316,7 +316,7 @@ verbose 0
 showDomain 0
 showDomain_NPC parseMsg_presence
 showDomain_Shop list
-squelchDomains
+squelchDomains drop, attacked, attackedMiss, exp
 verboseDomains
 beepDomains
 beepDomains_notInTown
@@ -330,7 +330,7 @@ wx_map_npcSticking 1
 wx_map_playersSticking 1
 wx_map_portalSticking 5
 wx_map_route 1
-wx_npcTalk 1
+wx_npcTalk
 wx_captcha
 showAllDamage 0
 manualURL https://openkore.com/wiki/Manual
@@ -589,20 +589,8 @@ attackSkillSlot {
 	manualAI 0
 }
 
-attackSkillSlot NC_AXETORNADO {
-	lvl 5
-	dist 2
-	timeout 4
-	aggressives > 2
-}
-
-attackSkillSlot MC_CARTREVOLUTION {
-	lvl 1
-	dist 3
-	disabled 1
-}
-
 attackSkillSlot NC_MAGMA_ERUPTION {
+	maxAttempts 1
 	aggressives > 2
 	lvl 5
 	timeout 5
@@ -611,10 +599,9 @@ attackSkillSlot NC_MAGMA_ERUPTION {
 
 attackSkillSlot NC_POWERSWING {
 	lvl 10
-	dist 3
+	dist 2
 	disabled 0
 }
-
 
 attackComboSlot {
 	afterSkill
@@ -958,15 +945,11 @@ useSelf_item ハイスピードポーション {
 }
 
 useSelf_item 王級メロン {
-	hp < 90%
+	sp < 90%
 	notInTown 1
 	manualAI 0
 }
-useSelf_item 王級メロン {
-	sp < 20%
-	notInTown 1
-	manualAI 0
-}
+
 
 ######## Autostorage/autosell ########
 

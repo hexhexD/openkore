@@ -3,7 +3,7 @@
 !include ../EventMacroS/eventM_BeginnerIsland.txt
 !include ../EventMacroS/eventM_BioLab.txt
 !include ../EventMacroS/eventM_RoyalBanquet.txt
-!include ../EventMacroS/Utils.txt
+!include ../EventMacroS/eventM_Utils.txt
 
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i

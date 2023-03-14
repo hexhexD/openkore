@@ -29,7 +29,7 @@ XKore_silent 1
 XKore_bypassBotDetection 0
 XKore_exeName ragexe.exe
 
-# XKore 2 / Proxy configuration
+# XKore 2 / Proxy configuration/
 XKore_listenIp 127.0.0.1
 XKore_listenPort 6901
 XKore_publicIp 127.0.0.1
@@ -210,7 +210,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 1
+route_randomWalk 0
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 75
 route_maxWarpFee
