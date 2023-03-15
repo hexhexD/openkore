@@ -5,7 +5,7 @@ automacro abyss_02 {
     exclusive 0
     timeout 30
     call {
-      do move 172 312
+      do move 179 309
       do talknpc 168 304 c r0 c c
       pause 1
       do move 197 210
@@ -25,6 +25,7 @@ automacro inandout {
     InMap hu_fild06
     exclusive 1
     timeout 360
+	delay 5
     call {
       do charselect
     }
@@ -66,7 +67,7 @@ automacro rinseAndRepeat {
     disabled 1
     call {
         do move hu_in01
-        pause 1
+		do send 61 03 02 00 00
         do autosell
         pause 17
         # do autobuy
