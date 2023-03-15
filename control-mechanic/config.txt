@@ -964,7 +964,7 @@ buyAuto 601 {
 	npc hu_in01 241 368
 	distance 20
 	minAmount
-	maxAmount 50
+	maxAmount 80
 	disabled 0
 }
 
@@ -1034,7 +1034,7 @@ debug 0
 debugPacket_unparsed 0
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 0
+debugPacket_sent 1
 debugPacket_exclude
 debugPacket_include 0087
 debugPacket_include_dumpMethod 0

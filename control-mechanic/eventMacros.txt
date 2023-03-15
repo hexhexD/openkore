@@ -63,7 +63,7 @@ automacro goBack {
 automacro rinseAndRepeat {
     InMap hugel
     timeout 80
-    disabled 0
+    disabled 1
     call {
         do move hu_in01
         pause 1
