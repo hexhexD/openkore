@@ -5,7 +5,7 @@ automacro abyss_02 {
     exclusive 0
     timeout 30
     call {
-      do move 179 309
+      do move 173 304
       do talknpc 168 304 c r0 c c
       pause 1
       do move 197 210
@@ -46,6 +46,7 @@ automacro enterTheAbyss {
     delay 1
     call {
         do move abyss_03
+        do conf route_randomWalk 1
     }
 }
 automacro goBack {
@@ -64,13 +65,15 @@ automacro goBack {
 automacro rinseAndRepeat {
     InMap hugel
     timeout 80
-    disabled 1
+    disabled 0
     call {
         do move hu_in01
-		do send 61 03 02 00 00
+	    # do send 61 03 02 00 00
         do autosell
         pause 17
         # do autobuy
+        do conf route_randomWalk 0
+        do conf attackAuto 1
         do move hu_fild06
     }
 }
@@ -132,14 +135,17 @@ macro bomb {
 #         do move prontera
 #     }
 # }
-automacro doge_player {
+automacro dodge_player {
 	InMap hu_fild05, hu_fild06, abyss_01, abyss_02, abyss_03
-	PlayerNearCount > 0
+	# PlayerNearCount > 0
+    PlayerNear /.+?/
 	disabled 0
+    timeout 1
 	call {
-		do is ハエの羽
-		log Someone nearby
-		log $.PlayerNearLast
-		do charselect
+    [
+        log Someone nearby
+        log $.PlayerNearLast
+        do is ハエの羽
+    ]
 	}
 }
