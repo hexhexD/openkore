@@ -48,3 +48,11 @@ automacro arrvied_yuno {
         do move prontera
     }
 }
+
+automacro green_when_silenced {
+	StatusActiveHandle EFST_HEALTHSTATE_SILENCE
+	timeout 5
+	call {
+		do is 緑ポーション
+	}
+}

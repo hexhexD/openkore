@@ -1,4 +1,5 @@
 !include ../EventMacroS/eventM_Utils.txt
+!include ../EventMacroS/eventM_DimensionalGap.txt
 
 automacro abyss_02 {
     InMap hu_fild05
@@ -45,6 +46,7 @@ automacro enterTheAbyss {
     timeout 15
     delay 1
     call {
+        do conf route_randomWalk 1
         do move abyss_03
         do conf route_randomWalk 1
     }
@@ -68,7 +70,7 @@ automacro rinseAndRepeat {
     disabled 0
     call {
         do move hu_in01
-	    # do send 61 03 02 00 00
+	    do send 61 03 02 00 00
         do autosell
         pause 17
         # do autobuy
