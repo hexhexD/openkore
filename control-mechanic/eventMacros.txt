@@ -76,6 +76,8 @@ automacro rinseAndRepeat {
         # do autobuy
         do conf route_randomWalk 0
         do conf attackAuto 1
+        do conf itemsTakeAuto 1
+        do conf itemsGatherAuto 0
         do move hu_fild06
     }
 }
