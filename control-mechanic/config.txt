@@ -195,7 +195,7 @@ followBot 0
 
 itemsTakeAuto 1
 itemsTakeAuto_party 0
-itemsGatherAuto 1
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
