@@ -30,6 +30,14 @@ automacro __4 {
 		do talk resp 3
 	}
 }
+automacro __5 {
+    InMap new_5-1
+	timeout 30
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
 
 automacro room {
     InMap ac_cl_room

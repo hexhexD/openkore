@@ -86,10 +86,10 @@ automacro ghost_boss_death {
 		log 呪いの根源 dead xD
 		do move 202 38
 		do talknpc 196 44 r0 r0
-		pause 5
-		do move 198 27
-		do talknpc 204 29 r0 r0
-		do move 211 27
+		# pause 5
+		# do move 198 27
+		# do talknpc 204 29 r0 r0
+		# do move 211 27
     	}
 	}
 }
