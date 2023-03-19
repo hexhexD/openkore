@@ -3402,8 +3402,7 @@ dew_dun02 305 30 dew_fild01 50 65
 
 # Lasagna
 izlude 195 213 lasagna 206 297 200 c c r0 n
-lasagna 205 325 izlude 193 209 200 c c r1 n
-lasagna 205 325 malangdo 193 209 200 c c r2 n
+lasagna 300 242 prontera 117 72 0 r2 r0
 lasa_fild02 348 244 lasa_dun01 24 143
 lasa_dun01 18 143 lasa_fild02 344 243
 lasa_dun_q 190 14 lasa_dun01 152 98
