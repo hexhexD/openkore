@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword jitwabri
+adminPassword shobrure
 callSign
 commandPrefix ;
 callSignGM 0
@@ -56,14 +56,14 @@ whenInGame_requestCashPoints 0
 message_length_max 80
 
 ######## Main configuration ########
-BetterWalkPlan 1
+BetterWalkPlan 0
 
 alias_heal sp 28
 
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 2
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -166,7 +166,7 @@ cachePlayerNames_maxSize 100
 clientSight 30
 clientSight_removeBeyond 2
 
-dcPause 1
+dcPause 0
 dcOnDeath 0
 dcOnDualLogin 0
 dcOnDisconnect 0
@@ -991,10 +991,10 @@ debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 0
+debugPacket_sent 1
 debugPacket_exclude
-debugPacket_include 07FD
-debugPacket_include_dumpMethod 0
+debugPacket_include 0361
+debugPacket_include_dumpMethod 2
 debugDomains portalRecord
 logToFile_Debug
 logToFile_Errors

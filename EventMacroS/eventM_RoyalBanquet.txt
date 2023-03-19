@@ -1,5 +1,4 @@
 ### 異世界 ###
-
 # 150 meat for 300 jellopy
 # also need 1 emerald and 1 ruby from gem vender in
 macro exchange_jellopy {
@@ -103,18 +102,333 @@ automacro new_world_access_next6 {
 	}
 }
 
-
 ### 七王家とユミルの心臓 ###
-
 macro royal_quest {
 	do move prontera 120 72
 	do talknpc 121 72 r2 r0
+	do talknpc 121 72 r0
 }
-automacro royal {
+automacro royal_start {
 	InMap prt_castle
 	IsInCoordinate 102 24
 	call {
 		do talknpc 106 27 r0
+		pause 2
+		do move prt_cas_q 27 30
+		# servant in 貴賓室
+		do talknpc 26 30 r0 r0 r0
 	}
 }
 
+# 七王家とユミルの心臓〜ハイネン家〜 (7683) has been added.
+# 七王家とユミルの心臓〜ネリウス家〜 (73051) has been added.
+# 七王家とユミルの心臓〜バルター家〜 (73052) has been added.
+# 七王家とユミルの心臓〜リハルト家〜 (73053) has been added.
+# 七王家とユミルの心臓〜ウィグナー家〜 (73054) has been added.
+# 七王家とユミルの心臓〜レベンブルグ家〜 (73055) has been added.
+# 七王家とユミルの心臓〜ゲオルグ家〜 (73056) has been added
+
+automacro royal_ハイネン家 {
+	QuestActive 7683
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas_q 24 78
+		do talk resp 0
+		do move prt_cas_q 21 85
+		do move prt_cas_q 20 85
+		# two クロネカー・ハイネンoverlap
+		do talk 2
+		do talk resp 0
+	}
+}
+automacro royal_ネリウス家 {
+	QuestActive 73051
+	timeout 60
+	exclusive 1
+	priority 1
+	call {
+		do move prt_cas_q 20 133
+		do move prt_cas_q 20 134
+		do talknpc 20 139 r0 r0
+	}
+}
+automacro royal_バルター家 {
+	QuestActive 73052
+	timeout 60
+	exclusive 1
+	priority 2
+	call {
+		log 2
+		do move prt_cas_q 20 178
+		do move prt_cas_q 20 180
+		do talknpc 20 184 r0 r0 r0 r0
+	}
+}
+automacro royal_リハルト家 {
+	QuestActive 73053
+	timeout 60
+	exclusive 1
+	priority 3
+	call {
+		log 3
+		do move prt_cas_q 78 77
+		do talknpc 80 80
+		do move prt_cas_q 86 74
+		do talknpc 93 74 r0 r0
+		do talknpc 93 74 r0 r0 r0
+		do talknpc 80 80 r0
+	}
+}
+automacro royal_ウィグナー家 {
+	QuestActive 73054
+	timeout 60
+	exclusive 1
+	priority 4
+	call {
+		log 4
+		do move prt_cas_q 79 21
+		do talknpc 82 21 r0 r0
+		do move prt_cas_q 88 15
+		do talknpc 95 9
+	}
+}
+automacro royal_レベンブルグ家 {
+	QuestActive 73055
+	timeout 60
+	exclusive 1
+	priority 5
+	call {
+		log 5
+		do move prt_cas_q 87 186
+		do talknpc 90 186 r0
+		do talknpc 96 186 r0 r0 r0 r0
+	}
+}
+automacro royal_ゲオルグ家 {
+	QuestActive 73056
+	timeout 60
+	exclusive 1
+	priority 6
+	call {
+		log 6
+		do move prt_cas_q 78 131
+		do move prt_cas_q 84 129
+		do talknpc 93 129 r0 r0 r0
+
+		# all done go back to 貴賓室
+		do move prt_cas_q 27 30
+		# servant in 貴賓室
+		do talknpc 26 30
+	}
+}
+
+automacro royal_next {
+	QuestActive 7687
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas 106 235
+		do talknpc 106 240 r0 r0 r0 r0
+	}
+}
+automacro royal_next2 {
+	QuestActive 7689
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas 195 162
+		do talk resp 0
+	}
+}
+automacro royal_next3 {
+	QuestActive 7690
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas 31 117
+		do talknpc 29 117 r0
+	}
+}
+automacro royal_next4 {
+	QuestActive 7691
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas_q 27 30
+		do talknpc 26 30
+	}
+}
+automacro royal_bell_teleported_me {
+	QuestActive 7692
+	run-once 1
+	exclusive 1
+	call {
+		do move prt_lib 91 77
+		do talknpc 91 85 r0
+	}
+}
+automacro royal_md_ready {
+	QuestActive 7692, 7699
+	SimpleHookEvent instance_ready
+	call {
+		do talknpc 88 90 r0
+	}
+}
+automacro royal_in_md {
+	QuestActive 7692
+	InMap 2@mir
+	timeout 500
+	call {
+		do move 106 77
+		do conf attackAuto 2
+	}
+}
+automacro royal_killed_3 {
+	InMap 2@mir
+	timeout 10
+	LocalMsg /作戦班、撤収するぞ/
+	call {
+		do move 2@mir 101 87
+		do talknpc 101 93 r0
+		do move 2@mir 101 8
+		do talk resp 1
+	}
+}
+automacro royal_out_md {
+	QuestActive 7693
+	InMap prt_lib
+	timeout 120
+	exclusive 1
+	call {
+		do talknpc 85 82 r0 r0 r0
+		do talknpc 91 85 r0
+		do talknpc 76 80 r0
+		do talknpc 91 85
+		pause 5
+		do move prt_lib 63 61
+		do talknpc 56 61 r0
+	}
+}
+automacro royal_jail {
+	QuestActive 7695
+	timeout 120
+	exclusive 1
+	call {
+		do talknpc 58 128
+		do move prt_cas_q 27 30
+		# servant in 貴賓室
+		do talknpc 26 30 r0 r0
+		do talknpc 26 30
+	}
+}
+automacro royal_ネリウス家_again {
+	QuestActive 7697
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas_q 18 135
+		do talk 4
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+	}
+}
+automacro royal_ハイネン家_again {
+	QuestActive 7698
+	timeout 100
+	exclusive 1
+	call {
+		do move prt_cas_q 24 78
+		do talk 2
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+	}
+}
+automacro royal_final貴賓室 {
+	QuestActive 7699
+	timeout 120
+	exclusive 1
+	call {
+		do move prt_cas_q 27 30
+		# servant in 貴賓室
+		do talknpc 26 30
+		do talknpc 28 28 r0 r0 r0
+	}
+}
+automacro royal_md_again {
+	QuestActive 7699
+	InMap prt_lib
+	timeout 120
+	exclusive 1
+	call {
+		do move prt_lib 91 77
+		do talknpc 91 85
+	}
+}
+automacro royal_md_again2 {
+	QuestActive 7700
+	InMap prt_lib
+	timeout 120
+	exclusive 1
+	call {
+		do talknpc 94 82 r0
+	}
+}
+automacro royal_md_again3 {
+	QuestActive 7700
+	InMap prt_lib_q
+	timeout 120
+	exclusive 1
+	call {
+		do move prt_lib_q 91 77
+		do talknpc 91 85
+		do talknpc 88 90 r0
+	}
+}
+automacro royal_md_again4 {
+	QuestActive 7700
+	InMap mir_q
+	timeout 180
+	exclusive 1
+	call {
+		do move 101 88
+		do talknpc 101 90 r0 r0 r0 r0
+		pause 10
+		do talknpc 105 80
+		pause 5
+		do talknpc 91 85 r0 r0 r0
+		do move 9 24
+	}
+}
+automacro royal_end {
+	QuestActive 7700
+	InMap prt_q
+	timeout 120
+	exclusive 1
+	call {
+		do talknpc 157 334 r0 r0 r0 r0 r0 r0
+	}
+}
+automacro royal_end1 {
+	QuestActive 7703
+	InMap prt_lib
+	timeout 120
+	exclusive 1
+	call {
+		do talknpc 80 79 r0 r0 r0
+	}
+}
+automacro royal_end2 {
+	QuestActive 7704
+	timeout 120
+	exclusive 1
+	call {
+		do move prt_cas_q 24 78
+		do talknpc 21 83 r0
+		log royal quest line done!
+	}
+}
