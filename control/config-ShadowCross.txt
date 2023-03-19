@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword sinaihes
+adminPassword stuspewo
 callSign
 commandPrefix ;
 callSignGM 0
@@ -56,7 +56,7 @@ whenInGame_requestCashPoints 0
 message_length_max 80
 
 ######## Main configuration ########
-BetterWalkPlan 0
+BetterWalkPlan 1
 
 alias_heal sp 28
 
@@ -193,9 +193,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 0
+itemsTakeAuto 2
 itemsTakeAuto_party 0
-itemsGatherAuto 0
+itemsGatherAuto 2
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
