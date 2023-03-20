@@ -190,6 +190,7 @@ automacro sara_boss {
 
 automacro sara_boss_death {
 	InMap 1@sara
+	ChatMsg /誰の指示を受けてこんな事/
 	SimpleHookEvent target_died
 	call {
     if ($.SimpleHookEventLastMonster =~ /大長老アイリン/) {
