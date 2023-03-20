@@ -153,3 +153,15 @@ automacro dodge_player {
     ]
 	}
 }
+
+macro money {
+    do deal 3
+    call give_50m
+}
+
+macro give_50m {
+[
+    do send E8 00 00 00 80 F0 FA 02
+    do send EB 00
+]
+}
