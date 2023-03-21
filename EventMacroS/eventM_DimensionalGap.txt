@@ -58,13 +58,13 @@ automacro ghost_prison {
     call {
 		do move 40 51
 		do talknpc 32 54 c r0
-		pause 7
+		pause 5
 		do move 54 28
-		pause 7
+		pause 4
 		do move 202 209
 		do talknpc 199 214 c r0
 		do move 178 186
-		pause 7
+		pause 5
 		do move 203 42
 		do talknpc 216 43 c r0
 		# attrack first wave
@@ -79,6 +79,7 @@ automacro ghost_mob_start {
 	exclusive 1
     call {
 		do move 199 47
+		log abcd
 		do move 199 31
 	}
 }
@@ -88,6 +89,7 @@ automacro ghost_mob {
 	exclusive 1
     call {
 		do move 200 42
+		log adsf
 		do move 182 42
 	}
 }
@@ -96,6 +98,7 @@ automacro ghost_mob2 {
 	LocalMsg /別の命が犠牲/
     call {
 		do move 200 42
+		log yolo
 		do move 184 44
 	}
 }
@@ -247,7 +250,7 @@ automacro sara_boss {
 automacro sara_boss_death {
 	InMap 1@sara
 	SimpleHookEvent target_died
-	delay 3
+	delay 2
 	call {
 		if ($.SimpleHookEventLastMonster =~ /大長老アイリン/) {
 			log 大長老アイリン dead xD
@@ -418,6 +421,7 @@ automacro sara2_garden {
 	do talknpc 359 294 r0
 	do move 349 279
 	do talk resp 1
+	do conf attackAuto 1
 	}
 }
 
