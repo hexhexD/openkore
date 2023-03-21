@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword stalifri
+adminPassword paurahot
 callSign
 commandPrefix ;
 callSignGM 0
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 2
+itemsTakeAuto 1
 itemsTakeAuto_party 0
 itemsGatherAuto 2
 itemsGatherAuto_notInTown 1
@@ -590,7 +590,7 @@ attackSkillSlot {
 
 attackSkillSlot GC_ROLLINGCUTTER {
 	lvl 5
-	dist 2
+	dist 2.5
 }
 
 attackComboSlot {
@@ -697,6 +697,11 @@ useSelf_skill {
 	whenPartyMembersNearDist
 	inInventory
 	manualAI 0
+}
+useSelf_skill ASC_EDP {
+	monsters 呪いの根源
+	whenStatusInactive エンチャントデッドリーポイズン
+	timeout 5
 }
 
 useSelf_skill_smartHeal 1
@@ -929,7 +934,7 @@ buyAuto 601 {
 	distance 20
 	minAmount
 	maxAmount 50
-	disabled 0
+	disabled 1
 }
 
 buyAuto 656 {
@@ -937,7 +942,7 @@ buyAuto 656 {
 	distance 20
 	minAmount
 	maxAmount 6
-	disabled 0
+	disabled 1
 }
 
 buyAuto 602 {
@@ -945,13 +950,13 @@ buyAuto 602 {
 	distance 20
 	minAmount
 	maxAmount 5
-	disabled 0
+	disabled 1
 }
 
 sellAuto 1
-sellAuto_npc hu_in01 241 368
-sellAuto_standpoint
-sellAuto_distance 20
+sellAuto_npc lasagna 312 259
+sellAuto_standpoint lasagna 308 247
+sellAuto_distance 30
 sellAuto_maxDistance
 sellAuto_npc_steps s
 
@@ -989,12 +994,12 @@ getAuto {
 debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
-debugPacket_ro_sent 0
-debugPacket_sent 1
+debugPacket_ro_sent 1
+debugPacket_sent 0
 debugPacket_exclude
-debugPacket_include 0361
-debugPacket_include_dumpMethod 2
-debugDomains portalRecord
+debugPacket_include
+debugPacket_include_dumpMethod 0
+debugDomains parseMsg_move
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

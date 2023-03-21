@@ -70,33 +70,58 @@ automacro ghost_prison {
 		# attrack first wave
 		do conf attackAuto 1
 		do move 198 39
+		lock ghost_boss_death
+	}
+}
+automacro ghost_mob_start {
+	InMap 1@spa
+	LocalMsg /ただ、彼女と/
+	exclusive 1
+    call {
+		do move 199 47
+		do move 199 31
 	}
 }
 automacro ghost_mob {
 	InMap 1@spa
 	LocalMsg /現実から逃げ続/
+	exclusive 1
     call {
-		do move 192 42
+		do move 200 42
+		do move 182 42
 	}
 }
 automacro ghost_mob2 {
 	InMap 1@spa
 	LocalMsg /別の命が犠牲/
     call {
-		do move 187 42
+		do move 200 42
+		do move 184 44
 	}
 }
 automacro ghost_mob3 {
 	InMap 1@spa
 	LocalMsg /前は人を殺/
+	exclusive 1
     call {
-		do move 191 29
+		do move 186 28
 		do pause 2
-		do move 204 44
-		do move 200 33
+		do move 198 37
+		do move 198 45
+	}
+}
+automacro ghost_mob4 {
+	InMap 1@spa
+	LocalMsg /貴様の心の底から沸きあがる憎悪/
+	exclusive 1
+    call {
+		do move 200 38
 		pause 1
-		do move 192 40
-		do move 201 41
+		do move 198 29
+		do move 188 34
+		do move 188 34
+		do move 187 44
+		unlock ghost_boss_death
 	}
 }
 
@@ -107,8 +132,8 @@ automacro ghost_boss_death {
     	if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
 [
 		do move stop
-		do conf itemsTakeAuto 2
-		do conf itemsGatherAuto 2
+		do conf itemsTakeAuto 1
+		do conf itemsGatherAuto 1
 		do conf route_randomWalk 0
 ]
 		log 呪いの根源 dead xD
@@ -158,7 +183,6 @@ automacro sara_entered {
 	call {
 		lock sara_boss_death
 		do conf itemsTakeAuto 1
-		do conf itemsGatherAuto 1
 		do conf attackAuto 2
 		pause 1
 		do talknpc 261 156 c r0
@@ -209,20 +233,21 @@ automacro sara_boss {
 	IsInCoordinate 150..160 191..201
 	timeout 15
 	call {
+		do conf itemsGatherAuto 1
+		release sara_boss_death
 		do move 155 232
     	do talknpc 152 233 r0
 		pause 1
     	do talknpc 156 236 r2
-		do move 156 216
-		do move 155 225
-		release sara_boss_death
+		do move 156 218
+		do move 155 226
 	}
 }
 
 automacro sara_boss_death {
 	InMap 1@sara
 	SimpleHookEvent target_died
-	dealy 3
+	delay 3
 	call {
 		if ($.SimpleHookEventLastMonster =~ /大長老アイリン/) {
 			log 大長老アイリン dead xD
@@ -233,6 +258,8 @@ automacro sara_boss_death {
 			do talknpc 39 142 r0
 			pause 1
 			do talknpc 130 107 c r0
+			do conf itemsGatherAuto 0
+			lock sara_boss_death
 		}
 	}
 }
@@ -375,7 +402,7 @@ automacro sara2_garden {
 	timeout 30
 	call {
 	do conf itemsGatherAuto 2
-	do conf attackAuto 2
+	do conf attackAuto -1
 	do move 177 183
 	do talknpc 176 178
 	do move 131 130
@@ -388,7 +415,9 @@ automacro sara2_garden {
 	do talk resp 1
 	pause 3
 	do move 358 291
-	do talknpc
+	do talknpc 359 294 r0
+	do move 349 279
+	do talk resp 1
 	}
 }
 
