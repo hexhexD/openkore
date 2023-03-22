@@ -102,6 +102,16 @@ automacro new_world_access_next6 {
 	}
 }
 
+# 魔神殿 Prereqeusit 1 化け物のエサ needed
+# alberta_in 171 90 for esa
+### フレイムヴァレーへの道 ###
+
+macro flame_road_quest {
+	do move morocc 135 252
+	do talknpc 138 238 r0 r0
+}
+
+
 ### 七王家とユミルの心臓 ###
 macro royal_quest {
 	do move prontera 120 72

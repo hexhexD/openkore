@@ -66,11 +66,20 @@ automacro ghost_prison {
 		do move 178 186
 		pause 5
 		do move 203 42
-		do talknpc 216 43 c r0
+		# do talknpc 216 43 c r0
 		# attrack first wave
+		do conf route_randomWalk 0
 		do conf attackAuto 1
-		do move 198 39
-		lock ghost_boss_death
+		# first wave spawn here
+		do move 197 41
+	}
+}
+automacro ghost_mob_start0 {
+	InMap 1@spa
+	LocalMsg /世界を憎むのか/
+	exclusive 1
+    call {
+		do move 200 27
 	}
 }
 automacro ghost_mob_start {
@@ -78,52 +87,74 @@ automacro ghost_mob_start {
 	LocalMsg /ただ、彼女と/
 	exclusive 1
     call {
-		do move 199 47
+		do move 200 47
 		log abcd
-		do move 199 31
+		do move 199 41
 	}
 }
 automacro ghost_mob {
 	InMap 1@spa
-	LocalMsg /現実から逃げ続/
+	LocalMsg /世界を憎むのか/
 	exclusive 1
     call {
-		do move 200 42
-		log adsf
-		do move 182 42
+		do move 187 41
+		log abcd
 	}
 }
-automacro ghost_mob2 {
+automacro ghost_mob0 {
 	InMap 1@spa
-	LocalMsg /別の命が犠牲/
+	LocalMsg /そ、それは/
+	exclusive 1
     call {
-		do move 200 42
-		log yolo
-		do move 184 44
+		do move 186 41
 	}
 }
-automacro ghost_mob3 {
+automacro ghost_mob1 {
 	InMap 1@spa
 	LocalMsg /前は人を殺/
 	exclusive 1
     call {
-		do move 186 28
+		do move 186 27
 		do pause 2
 		do move 198 37
 		do move 198 45
 	}
 }
-automacro ghost_mob4 {
+automacro ghost_mob2 {
+	InMap 1@spa
+	LocalMsg /若い男の声 : ……。/
+	exclusive 1
+    call {
+		do move 194 29
+		pause 1
+		do move 200 23
+		do move 204 45
+	}
+}
+automacro ghost_mob3 {
 	InMap 1@spa
 	LocalMsg /貴様の心の底から沸きあがる憎悪/
 	exclusive 1
     call {
-		do move 200 38
-		pause 1
-		do move 198 29
-		do move 188 34
-		do move 188 34
-		do move 187 44
+		do move 205 32
+	}
+}
+automacro ghost_mob4 {
+	InMap 1@spa
+	LocalMsg /若い男の声 : …………。/
+	exclusive 1
+    call {
+		do move 205 42
+		do move 190 43
+		unlock ghost_boss_death
+	}
+}
+automacro ghost_boss {
+	InMap 1@spa
+	LocalMsg /冷たい声 : もう一つ/
+	exclusive 1
+    call {
+		do move 200 42
 		unlock ghost_boss_death
 	}
 }
@@ -131,6 +162,7 @@ automacro ghost_mob4 {
 automacro ghost_boss_death {
 	InMap 1@spa
 	SimpleHookEvent target_died
+	disabled 1
 	call {
     	if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
 [
