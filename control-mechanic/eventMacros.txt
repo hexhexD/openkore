@@ -145,6 +145,7 @@ automacro dodge_player {
     PlayerNear /.+?/
 	disabled 0
     timeout 1
+    overrideAI 1
 	call {
     [
         log Someone nearby

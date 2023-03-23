@@ -66,8 +66,7 @@ automacro ghost_prison {
 		do move 178 186
 		pause 5
 		do move 203 42
-		# do talknpc 216 43 c r0
-		# attrack first wave
+		do talknpc 216 43 c r0
 		do conf route_randomWalk 0
 		do conf attackAuto 1
 		# first wave spawn here
@@ -92,21 +91,24 @@ automacro ghost_mob_start {
 		do move 199 41
 	}
 }
-automacro ghost_mob {
+automacro ghost_mob0 {
 	InMap 1@spa
-	LocalMsg /世界を憎むのか/
+	LocalMsg /現実を認め/
 	exclusive 1
     call {
-		do move 187 41
-		log abcd
+		do move 186 41
+		pause 1
+		do move 203 40
+		log move to 203 40
 	}
 }
-automacro ghost_mob0 {
+automacro ghost_mob {
 	InMap 1@spa
 	LocalMsg /そ、それは/
 	exclusive 1
     call {
-		do move 186 41
+		do move 187 43
+		do move 186 27
 	}
 }
 automacro ghost_mob1 {
@@ -115,25 +117,15 @@ automacro ghost_mob1 {
 	exclusive 1
     call {
 		do move 186 27
-		do pause 2
-		do move 198 37
-		do move 198 45
+		do pause 2 
+		do move 192 24 	
+		do move 200 23
+		do move 200 44
 	}
 }
 automacro ghost_mob2 {
 	InMap 1@spa
 	LocalMsg /若い男の声 : ……。/
-	exclusive 1
-    call {
-		do move 194 29
-		pause 1
-		do move 200 23
-		do move 204 45
-	}
-}
-automacro ghost_mob3 {
-	InMap 1@spa
-	LocalMsg /貴様の心の底から沸きあがる憎悪/
 	exclusive 1
     call {
 		do move 205 32
