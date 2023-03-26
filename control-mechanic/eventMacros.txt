@@ -84,9 +84,8 @@ automacro rinseAndRepeat {
 automacro ranOutOfFly {
     InMap abyss_03
 	InInventory "ハエの羽" <= 1
-	timeout 5
+	timeout 10
 	overrideAI 1
-    disabled 1
     call {
         do respawn
     }

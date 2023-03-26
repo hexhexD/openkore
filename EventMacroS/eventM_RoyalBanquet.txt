@@ -109,6 +109,142 @@ automacro new_world_access_next6 {
 macro flame_road_quest {
 	do move morocc 135 252
 	do talknpc 138 238 r0 r0
+	do talknpc 138 238 r0 r0 r0
+}
+automacro flame_road1 {
+	QuestActive 11351
+	timeout 120
+	delay 2
+	call {
+		do move moc_ruins 106 135
+		do talknpc 106 140 r0 r0 r0
+	}
+}
+automacro flame_road2 {
+	QuestActive 11352
+	timeout 240
+	call {
+		do move dali 116 75
+		do talknpc 112 69
+	}
+}
+automacro flame_road3 {
+	QuestActive 11353
+	timeout 240
+	call {
+		do move dali 68 106
+		do talknpc 64 98 r0
+		pause 2
+		do talknpc 132 140
+	}
+}
+automacro flame_road4 {
+	QuestActive 11354
+	timeout 240
+	call {
+		do talknpc 142 131
+	}
+}
+automacro flame_road5 {
+	QuestActive 11355
+	timeout 60
+	call {
+[
+		do conf attackAuto 2
+		do conf itemsTakeAuto 1
+		do conf route_randomWalk 1
+]
+	}
+}
+automacro flame_road5_hunt {
+	QuestHuntCompleted 11355 3026
+	InInventory "フレイムバグの皮" > 0
+	timeout 5
+	call {
+[
+		do conf attackAuto 0
+		do conf route_randomWalk 0
+		do conf itemsTakeAuto 0
+]
+		do move 141 138
+		do talknpc 142 131
+	}
+}
+automacro flame_road6 {
+	QuestActive 11356
+	timeout 70
+	call {
+		do talknpc 132 140
+	}
+}
+automacro flame_road7 {
+	QuestActive 11357
+	timeout 60
+	disabled 1
+	call {
+[
+		do conf attackAuto 2
+		do conf itemsTakeAuto 1
+		do conf route_randomWalk 1
+]
+		$a = &invamount(ソニアの茎)
+		log ソニアの茎: $a
+	}
+}
+automacro flame_road7_done {
+	QuestActive 11357
+	InInventory "ソニアの茎" > $a
+	timeout 5
+	call {
+		lock flame_road7
+[
+		do conf attackAuto 0
+		do conf route_randomWalk 0
+		do conf itemsTakeAuto 0
+]
+		do move 200 172
+		do talknpc 198 179
+	}
+}
+automacro flame_road8 {
+	QuestActive 11358
+	timeout 120
+	call {
+		do move 141 138
+		do talknpc 142 131 r0 r0 r0
+	}
+}
+automacro flame_road9 {
+	QuestActive 11359
+	timeout 120
+	call {
+		do move moro_vol 112 73
+		do talknpc 105 71 r0 r0
+	}
+}
+automacro flame_road10 {
+	QuestActive 11360
+	timeout 120
+	call {
+		do move moro_vol 112 73
+		do talknpc 104 70
+	}
+}
+automacro flame_road11 {
+	QuestActive 11361
+	timeout 120
+	call {
+		do move moro_vol 112 73
+		do talknpc 105 71
+	}
+}
+automacro flame_road12 {
+	QuestActive 11362
+	timeout 120
+	call {
+		do move moro_vol 141 138
+		do talknpc 142 131 r0
+	}
 }
 
 

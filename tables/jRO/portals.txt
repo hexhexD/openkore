@@ -1797,6 +1797,7 @@ prontera 237 317 prt_church 100 56
 prontera 289 203 prt_fild06 23 193
 prontera 121 72 prt_cas 18 29 c r0
 
+morocc 152 97 prt_cas 18 29 c r0
 # Royal banquet
 prt_cas 27 27 prt_pri00 51 120 r3 r5
 prt_pri00 51 116 prt_prison 160 290 r0
