@@ -153,6 +153,14 @@ automacro dodge_player {
     ]
 	}
 }
+automacro got_PMed {
+	PrivMsg /.*/
+	timeout 60
+	call {
+		log $.PrivMsgLastName PMed me
+		do pm $.PrivMsgLastNamea (・・?
+	}
+}
 
 macro money {
     do deal 3

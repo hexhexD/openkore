@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword dastovie
+adminPassword vauprieb
 callSign
 commandPrefix ;
 callSignGM 0
@@ -314,7 +314,7 @@ verbose 0
 showDomain 0
 showDomain_NPC parseMsg_presence
 showDomain_Shop list
-squelchDomains drop, attacked, attackedMiss, exp
+squelchDomains drop, exp
 verboseDomains
 beepDomains
 beepDomains_notInTown
@@ -703,6 +703,10 @@ useSelf_skill ASC_EDP {
 	whenStatusInactive エンチャントデッドリーポイズン
 	timeout 5
 }
+useSelf_skill {
+	monsters
+	timeout
+}
 
 useSelf_skill_smartHeal 1
 
@@ -993,7 +997,7 @@ getAuto {
 
 debug 0
 debugPacket_unparsed 1
-debugPacket_received 0
+debugPacket_received 1
 debugPacket_ro_sent 1
 debugPacket_sent 1
 debugPacket_exclude
