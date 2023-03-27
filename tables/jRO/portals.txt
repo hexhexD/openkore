@@ -361,8 +361,8 @@ bif_fild01 318 159 dali 43 92 c r0 n
 dali 39 87 bif_fild01 318 155
 dic_fild02 241 31 dali 41 134 c r0 n
 dali 35 139 dic_fild02 237 32
-dali 93 68 moro_vol 136 135 c r0 n
-moro_vol 137 dali 91 63 136 c r0 n
+dali 64 98 moro_vol 136 135 r0
+moro_vol 137 136 dali 64 103 r0
 dali 64 129 dali02 66 101
 dali02 66 97 dali 64 125
 dali02 45 96 moc_fild22 36 196 c r0 c n
@@ -3315,6 +3315,8 @@ ecl_in01 47 8 eclage 297 307
 
 #Flame Basin
 moro_vol 91 105 ecl_in01 38 96 c c r0 n
+moro_vol 198 179 moro_cav 59 14 r0
+moro_cav 64 13 moro_vol 198 716
 ecl_in01 38 98 moro_vol 91 102 c r0 n
 
 aethra 71 132 aethra_in 127 126

@@ -246,6 +246,70 @@ automacro flame_road12 {
 		do talknpc 142 131 r0
 	}
 }
+automacro flame_cave_enter {
+	QuestActive 201705
+	InMap moro_vol
+	run-once 1
+	call {
+		do move moro_cav 47 65
+		do talknpc 45 60 r0
+		do talknpc 50 63 r0
+	}
+}
+automacro flame_bios_island_start {
+	QuestActive 201705
+	InMap moro_cav
+	run-once 1
+	call {
+		do move moro_cav 47 65
+		do talknpc 45 60 r0
+		do talknpc 50 63 r0
+	}
+}
+automacro flame_bios_island_ready {
+	SimpleHookEvent instance_ready
+    timeout 600
+	InMap moro_cav
+	IsInCoordinate 45..49 60..67
+	call {
+		do talknpc 50 63 r0
+	}
+}
+automacro flame_bios_island0 {
+	InMap 1@dth1
+	timeout 120
+	call {
+		do move 66 94
+		do talknpc 67 97 r0
+	}
+}
+automacro flame_bios_island1 {
+	InMap 1@dth1
+	PubMsg /先行する/
+	delay 1
+	call {
+		do move 325 104
+	}
+}
+automacro flame_bios_island2 {
+	InMap 1@dth2
+	timeout 180
+	call {
+		do move 221 145
+		pause 1
+		do 212 116
+		pause 1
+		do move 325 104
+	}
+}
+automacro flame_bios_island3 {
+	InMap 1@dth3
+	timeout 180
+	call {
+		do move 68 70
+		do talknpc 64 74
+	}
+}
 
 
 ### 七王家とユミルの心臓 ###

@@ -1,9 +1,9 @@
  macro regroup {
 	do party leave
+[
 	$number = &rand(666, 999)
 	$name = card お願いします$number
 	do party create $name
-[
 	do conf itemsTakeAuto 0
 	do conf itemsGatherAuto 0
 	do conf attackAuto 0
@@ -21,7 +21,14 @@ macro ghost {
 	do talknpc 43 129 c r0 c r0
 	lock ghost_boss_death
 }
-
+automacro ghost_test {
+	QuestInactive 114760
+	timeout 5
+	disabled 1
+	call {
+		log maye timer expired?
+	}
+}
 automacro ghost_ready {
 	SimpleHookEvent instance_ready
 	InMap dali02
@@ -32,7 +39,6 @@ automacro ghost_ready {
 		do talknpc 40 134 c r0
 	}
 }
-
 automacro ghost_first {
     InMap 1@spa
 	IsInCoordinate 35..47 191..201
@@ -138,7 +144,7 @@ automacro ghost_boss {
 	exclusive 1
     call {
 		do move 200 42
-		unlock ghost_boss_death
+		release ghost_boss_death
 	}
 }
 
@@ -300,7 +306,13 @@ automacro magic_ready {
 		do talknpc 100 147 c r0
 	}
 }
-
+automacro magic_defat_opponent {
+	InMap 1@ge_st
+	SimpleHookEvent target_died
+	call {
+		do move 110 50
+    }
+}
 automacro magic_register_auto {
 	InMap 1@gef
     timeout 600
@@ -339,7 +351,7 @@ automacro magic_battle {
 
 automacro magic_won {
 	InMap 1@ge_st
-	NpcMsg /優勝/
+	NpcMsg /優勝を祝って/
 	call {
 		do move 108 48
 		pause 3
@@ -350,13 +362,15 @@ automacro magic_won {
 automacro magic_leave {
 	InMap 1@gef
 	IsInCoordinate 120 104
-  timeout 60
+	timeout 60
 	call {
     do talknpc 115 105
     do talknpc 117 108
     do talknpc 120 108
     do talknpc 123 108
     do talknpc 125 105
+	do move 119 213
+	do talk resp 1
 	}
 }
 
