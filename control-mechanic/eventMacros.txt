@@ -158,7 +158,7 @@ automacro got_PMed {
 	timeout 60
 	call {
 		log $.PrivMsgLastName PMed me
-		do pm $.PrivMsgLastNamea (・・?
+		do pm "$.PrivMsgLastName" (・・?
 	}
 }
 
