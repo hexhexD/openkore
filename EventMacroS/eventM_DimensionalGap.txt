@@ -1,9 +1,10 @@
  macro regroup {
 	do party leave
 [
-	$number = &rand(666, 999)
-	$name = card お願いします$number
-	do party create $name
+	$ptnum = &rand(666, 999)
+	$ptname = &nick(#)card お願いします$ptnum
+
+	do party create $ptname
 	do conf itemsTakeAuto 0
 	do conf itemsGatherAuto 0
 	do conf attackAuto 0
@@ -90,6 +91,7 @@ automacro ghost_mob_start0 {
 automacro ghost_mob_start {
 	InMap 1@spa
 	LocalMsg /ただ、彼女と/
+	delay 1
     call {
 		do move 200 48
 		do move 199 41
@@ -98,7 +100,6 @@ automacro ghost_mob_start {
 automacro ghost_mob0 {
 	InMap 1@spa
 	LocalMsg /現実を認め/
-	exclusive 1
     call {
 		do move 184 41
 		do move 199 40
@@ -110,8 +111,15 @@ automacro ghost_mob {
 	LocalMsg /そ、それは/
 	exclusive 1
     call {
+		[
+		do conf attackAuto 0
 		do move 186 44
+		]
+		[
+		do conf attackAuto 2
 		do move 186 27
+		]
+		do conf attackAuto 0
 		log moving down to lattern
 	}
 }
@@ -143,7 +151,7 @@ automacro ghost_boss {
 	LocalMsg /冷たい声 : もう一つ/
 	exclusive 1
     call {
-		do move 200 42
+		do move 200 43
 		release ghost_boss_death
 	}
 }
@@ -153,15 +161,14 @@ automacro ghost_boss_death {
 	SimpleHookEvent target_died
 	call {
     	if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
-[
-		do move stop
-		do conf itemsTakeAuto 1
-		do conf itemsGatherAuto 1
-		do conf route_randomWalk 0
-]
 		log 呪いの根源 dead xD
 		do move 202 38
 		do talknpc 196 44 r0 r0
+		[
+		do conf itemsTakeAuto 1
+		do conf itemsGatherAuto 1
+		do conf route_randomWalk 0
+		]
     	}
 	}
 }
@@ -270,7 +277,7 @@ automacro sara_boss {
 automacro sara_boss_death {
 	InMap 1@sara
 	SimpleHookEvent target_died
-	delay 2
+	delay 1
 	call {
 		if ($.SimpleHookEventLastMonster =~ /大長老アイリン/) {
 			log 大長老アイリン dead xD

@@ -258,6 +258,8 @@ automacro flame_cave_enter {
 }
 automacro flame_bios_island_start {
 	QuestActive 201705
+	# Quest after clearing so it means we cleared it
+	QuestInactive 201720
 	InMap moro_cav
 	run-once 1
 	call {
@@ -272,21 +274,26 @@ automacro flame_bios_island_ready {
 	InMap moro_cav
 	IsInCoordinate 45..49 60..67
 	call {
-		do talknpc 50 63 r0
+		do talknpc 50 63 r1
+		do conf attackAuto 0
 	}
 }
 automacro flame_bios_island0 {
 	InMap 1@dth1
-	timeout 120
+	run-once 1
 	call {
 		do move 66 94
-		do talknpc 67 97 r0
+		do conf itemsTakeAuto 0
+		do conf attackAuto -1
+		log try cross bridge without talking
+		# do talknpc 67 97
 	}
 }
 automacro flame_bios_island1 {
 	InMap 1@dth1
 	PubMsg /先行する/
 	delay 1
+	exclusive 1
 	call {
 		do move 325 104
 	}
@@ -295,9 +302,11 @@ automacro flame_bios_island2 {
 	InMap 1@dth2
 	timeout 180
 	call {
+		do conf itemsTakeAuto 0
+		do conf attackAuto 2
 		do move 221 145
 		pause 1
-		do 212 116
+		do move 212 116
 		pause 1
 		do move 325 104
 	}
@@ -306,8 +315,39 @@ automacro flame_bios_island3 {
 	InMap 1@dth3
 	timeout 180
 	call {
-		do move 68 70
+		do move 70 86
 		do talknpc 64 74
+	}
+}
+automacro flame_morusu_start {
+	# We just finished island
+	QuestActive 201720
+	InMap moro_cav
+	run-once 1
+	call {
+		call regroup
+		do move moro_cav 60 67
+		do talknpc 61 69 r0
+	}
+}
+automacro flame_morusu_ready {
+	SimpleHookEvent instance_ready
+    timeout 600
+	InMap moro_cav
+	IsInCoordinate 57..63 64..70
+	call {
+		do talknpc 57 69 r0
+		do conf attackAuto 2
+	}
+}
+automacro morusu_begin {
+	InMap 1@rev
+	IsInCoordinate 24..28 179..183
+	LocalMsg /？？？ : 待ってくれ！/
+	call {
+		pause 4
+		do talk resp 0
+		do move 68 181
 	}
 }
 

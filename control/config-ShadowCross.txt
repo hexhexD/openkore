@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword kelagrak
+adminPassword wechaiwa
 callSign
 commandPrefix ;
 callSignGM 0
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 0
+itemsTakeAuto 1
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -588,9 +588,33 @@ attackSkillSlot {
 }
 
 
+useSelf_skill ASC_EDP {
+	monsters 呪いの根源, 大長老アイリン, 死神アンク
+	whenStatusInactive エンチャントデッドリーポイズン
+	lvl 5
+	timeout 10
+}
+useSelf_skill AS_ENCHANTPOISON {
+	monsters 呪いの根源, 大長老アイリン
+	whenStatusInactive 武器属性付与
+	lvl 10
+	timeout 10
+}
+attackSkillSlot GC_VENOMIMPRESS {
+	monsters 呪いの根源, 大長老アイリン
+	lvl 5
+	dist 10
+	timeout 50
+}
+attackSkillSlot GC_DARKCROW {
+	monsters 呪いの根源, 大長老アイリン, 死神アンク
+	lvl 5
+	dist 1
+	timeout 30
+}
 attackSkillSlot GC_ROLLINGCUTTER {
 	lvl 5
-	dist 2.5
+	dist 2
 }
 
 attackComboSlot {
@@ -697,11 +721,6 @@ useSelf_skill {
 	whenPartyMembersNearDist
 	inInventory
 	manualAI 0
-}
-useSelf_skill ASC_EDP {
-	monsters 呪いの根源
-	whenStatusInactive エンチャントデッドリーポイズン
-	timeout 5
 }
 useSelf_skill {
 	monsters
@@ -996,14 +1015,14 @@ getAuto {
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_unparsed 1
-debugPacket_received 1
+debugPacket_unparsed 2
+debugPacket_received 0
 debugPacket_ro_sent 1
-debugPacket_sent 1
+debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include
 debugPacket_include_dumpMethod 0
-debugDomains parseMsg_move
+debugDomains
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages
