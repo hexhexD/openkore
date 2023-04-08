@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword wechaiwa
+adminPassword wuwigrie
 callSign
 commandPrefix ;
 callSignGM 0
@@ -74,9 +74,9 @@ attackAuto_notWhile_storageAuto 1
 attackAuto_notWhile_buyAuto 1
 attackAuto_notWhile_sellAuto 1
 attackAuto_considerDamagedAggressive 0
-attackDistance 30
+attackDistance 1
 attackDistanceAuto 0
-attackMaxDistance 30
+attackMaxDistance 1
 attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
@@ -84,8 +84,8 @@ attackMinPortalDistance 4
 attackUseWeapon 0
 attackNoGiveup 0
 attackCanSnipe 0
-attackCheckLOS 0
-attackRouteMaxPathDistance 30
+attackCheckLOS 1
+attackRouteMaxPathDistance 50
 attackLooters 0
 attackChangeTarget 1
 aggressiveAntiKS 0
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -314,8 +314,8 @@ verbose 0
 showDomain 0
 showDomain_NPC parseMsg_presence
 showDomain_Shop list
-squelchDomains drop, exp
-verboseDomains
+squelchDomains exp
+verboseDomains drop
 beepDomains
 beepDomains_notInTown
 friendlyAID
@@ -588,10 +588,22 @@ attackSkillSlot {
 }
 
 
+attackSkillSlot GC_DARKILLUSION {
+	lvl 5
+	dist 8
+	timeout 4
+	disabled 0
+}
+attackSkillSlot GC_ROLLINGCUTTER {
+	disabled 0
+	lvl 5
+	dist 2
+}
 useSelf_skill ASC_EDP {
-	monsters 呪いの根源, 大長老アイリン, 死神アンク
+	monsters 呪いの根源, 死神アンク
 	whenStatusInactive エンチャントデッドリーポイズン
 	lvl 5
+	minCastTime 3
 	timeout 10
 }
 useSelf_skill AS_ENCHANTPOISON {
@@ -600,29 +612,19 @@ useSelf_skill AS_ENCHANTPOISON {
 	lvl 10
 	timeout 10
 }
-attackSkillSlot GC_VENOMIMPRESS {
-	monsters 呪いの根源, 大長老アイリン
+attackComboSlot GC_VENOMIMPRESS {
+	afterSkill AS_ENCHANTPOISON
 	lvl 5
 	dist 10
 	timeout 50
-}
-attackSkillSlot GC_DARKCROW {
-	monsters 呪いの根源, 大長老アイリン, 死神アンク
-	lvl 5
-	dist 1
-	timeout 30
-}
-attackSkillSlot GC_ROLLINGCUTTER {
-	lvl 5
-	dist 2
 }
 
 attackComboSlot {
 	afterSkill
 	waitBeforeUse
-	dist 1
-	maxDist 1
-	isSelfSkill 1
+	dist
+	maxDist
+	isSelfSkill
 	target_hp
 	target_deltaHp
 	monsters
@@ -1015,14 +1017,14 @@ getAuto {
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_unparsed 2
+debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 1
 debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include
 debugPacket_include_dumpMethod 0
-debugDomains
+debugDomains ai_attack
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

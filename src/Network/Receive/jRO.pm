@@ -14,6 +14,7 @@
 package Network::Receive::jRO;
 
 use strict;
+use Log qw(message warning error debug);
 use base qw(Network::Receive::ServerType0);
 
 sub new {
@@ -26,6 +27,11 @@ sub new {
 		'0A37' => ['inventory_item_added', 'a2 v V C3 a16 V C2 a4 v a25 C v', [qw(ID amount nameID identified broken upgrade cards type_equip type fail expire unknown options favorite viewID)]], # 69 bytes long and still a work in progress.
 		'0A4D' => ['account_server_info', 'v a4 a4 a4 a4 a26 C x17 a*', [qw(len sessionID accountID sessionID2 lastLoginIP lastLoginTime accountSex serverInfo)]],
 		'0ADD' => ['item_appeared', 'a4 V v C v2 C2 v C v', [qw(ID nameID type identified x y subx suby amount show_effect effect_type )]],
+		# '02C2' => ['gameguard_unknown'],
+		# '02A3' => ['gameguard_unknown'],
+		# '02BD' => ['gameguard_unknown'],
+		# '0B67' => ['gameguard_danger'],
+		# '0B30' => ['gameguard_danger'],
 	);
 
 	foreach my $switch (keys %packets) {
@@ -41,5 +47,13 @@ sub new {
 
 	return $self;
 }
+
+# sub gameguard_unknown {
+	# warning("Received unknown gameguard packet\n");
+# }
+
+# sub gameguard_danger {
+	# die("Received dangerous gameguard pacekt\n")
+# }
 
 1;
