@@ -39,7 +39,7 @@
 	"1@spa":{
 		"reverseOnEnd":0,
 		"random":0,
-		"timeout":60,
+		"timeout":15,
 		"instructions":[
 			{ "x":208, "y":55 },
 			{ "x":184, "y":56 },

@@ -75,76 +75,77 @@ automacro ghost_prison {
 		pause 5
 		do move 203 42
 		do talknpc 216 43 c r0
-		do conf route_randomWalk 0
-		do conf attackAuto 1
+		do conf route_randomWalk 1
+		do conf attackAuto 2
 		# first wave spawn here
 		do move 197 41
+		release ghost_boss_death
 	}
 }
-automacro ghost_mob_start0 {
-	InMap 1@spa
-	LocalMsg /世界を憎むのか/
-	exclusive 1
-    call {
-		do move 200 27
-	}
-}
-automacro ghost_mob_start {
-	InMap 1@spa
-	LocalMsg /ただ、彼女と/
-	exclusive 1
-    call {
-		do move 200 48
-		do move 199 41
-	}
-}
-automacro ghost_mob0 {
-	InMap 1@spa
-	LocalMsg /現実を認め/
-	exclusive 1
-    call {
-		do conf attackAuto -1
-		do move 184 41
-		do conf attackAuto 1
-		do move 199 40
-		log move to 199 40
-	}
-}
-automacro ghost_mob {
-	InMap 1@spa
-	LocalMsg /そ、それは/
-	exclusive 1
-    call {
-		do conf attackAuto -1
-		do move 186 44
-		do conf attackAuto 2
-		do move 186 27
-		log moving down to lattern
-		do conf attackAuto 1
-	}
-}
-automacro ghost_mob2 {
-	InMap 1@spa
-	LocalMsg /若い男の声 : ……。/
-	exclusive 1
-    call {
-		do move 192 29
-		pause 2
-		do move 205 32
-		do move 202 45
-		pause 1
-		do move 205 32
-	}
-}
-automacro ghost_mob4 {
-	InMap 1@spa
-	LocalMsg /若い男の声 : …………。/
-    call {
-		do move 205 42
-		do move 190 43
-		do move 188 41
-	}
-}
+# automacro ghost_mob_start0 {
+# 	InMap 1@spa
+# 	LocalMsg /世界を憎むのか/
+#     call {
+# 		do move 200 27
+# 	}
+# }
+# automacro ghost_mob_start {
+# 	InMap 1@spa
+# 	LocalMsg /ただ、彼女と/
+# 	delay 1
+# 	exclusive 1
+#     call {
+# 		do move 200 48
+# 		do move 199 41
+# 	}
+# }
+# automacro ghost_mob0 {
+# 	InMap 1@spa
+# 	LocalMsg /現実を認め/
+# 	exclusive 1
+#     call {
+# 		do conf attackAuto -1
+# 		do move 184 41
+# 		do conf attackAuto 1
+# 		do move 199 40
+# 		log move to 199 40
+# 	}
+# }
+# automacro ghost_mob {
+# 	InMap 1@spa
+# 	LocalMsg /そ、それは/
+# 	exclusive 1
+#     call {
+# 		do conf attackAuto -1
+# 		do move 186 44
+# 		do conf attackAuto 2
+# 		do move 186 27
+# 		log moving down to lattern
+# 		do conf attackAuto 1
+# 	}
+# }
+# automacro ghost_mob2 {
+# 	InMap 1@spa
+# 	LocalMsg /若い男の声 : ……。/
+# 	exclusive 1
+#     call {
+# 		do move 192 29
+# 		pause 2
+# 		do move 205 32
+# 		do move 202 45
+# 		pause 1
+# 		do move 205 32
+# 	}
+# }
+# automacro ghost_mob4 {
+# 	InMap 1@spa
+# 	LocalMsg /若い男の声 : …………。/
+#     call {
+# 		do move 205 42
+# 		do move 190 43
+# 		do move 188 41
+# 	}
+# }
 automacro ghost_boss {
 	InMap 1@spa
 	LocalMsg /冷たい声 : もう一つ/
