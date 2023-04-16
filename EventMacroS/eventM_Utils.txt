@@ -1,5 +1,4 @@
 ### airship ###
-
 macro yuno_rachel {
     set exclusive 1
 	$airship_dst = Rachel
@@ -54,5 +53,14 @@ automacro green_when_silenced {
 	timeout 5
 	call {
 		do is 緑ポーション
+	}
+}
+
+macro tele_lighthalzen {
+	if (&inventory(怨嗟の腕輪)) {
+		do eq 怨嗟の腕輪
+		do ss リヒタルゼンへの帰還
+	} else {
+		log Need 怨嗟の腕輪
 	}
 }

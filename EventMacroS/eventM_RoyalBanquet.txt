@@ -4,13 +4,15 @@
 macro exchange_jellopy {
 	do move morocc 166 90
 	do move umbala 65 242
-	do move moc_ruins 107 105
+	do move morocc 165 54
 }
 macro new_world_access {
 	do move prt_castle 90 61
 	do talknpc 83 67 r0
 
-	do move aldebaran 140 153
+	do move aldebaran 137 131
+	do talknpc 127 138 r0
+	# hand off jellopy
 	do talknpc 127 138 r0
 
 	do move geffen 90 65
@@ -25,6 +27,10 @@ macro new_world_access {
 
 	do move prt_castle 90 61
 	do talknpc 83 67 r0
+
+	pause 2
+	log Trying to teleport to lighthalzen
+	call tele_lighthalzen
 }
 # TODO: figure out how to go to lighthalzen without mimimi
 automacro new_world_access_next {
@@ -36,21 +42,25 @@ automacro new_world_access_next {
 		do talknpc 132 259
 		do talknpc 132 259 r0
 		do talknpc 132 259 r0
+		log Need to be in protera to trigger next step
 	}
 }
 # TODO: how to go from lighthalzen to prontera
 automacro new_world_access_next2 {
 	QuestActive 10068
+	InMap prontera
 	run-once 1
 	call {
 		do move prt_castle 119 51
 		do talknpc 121 51
+
+		call tele_lighthalzen
 	}
 }
 # TODO: figure out how to go to lighthalzen without mimimi
 automacro new_world_access_next3 {
 	QuestActive 10069
-	InMap lighthalze
+	InMap lighthalzen
 	run-once 1
 	call {
 		do move lhz_in01 125 256

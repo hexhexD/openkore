@@ -3740,7 +3740,6 @@ sub useTeleport {
 			$item = $char->inventory->getByNameID($config{teleportAuto_item1}) if (!($item) && $config{teleportAuto_item1} =~ /^\d{3,}$/);
 		}
 		$item = $char->inventory->getByNameID(23280) unless $item; # Beginner's Fly Wing
-		$item = $char->inventory->getByNameID(12323) unless $item; # Novice Fly Wing
 		$item = $char->inventory->getByNameID(601) unless $item;     # Fly Wing
 	} elsif ($use_lvl == 2) { # Butterfly Wing
 		if ($config{teleportAuto_item2}) {
