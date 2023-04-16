@@ -182,6 +182,8 @@ automacro ghost_exit {
 		do talknpc 204 29 r0 r0
 		do move 211 27
 		do conf itemsGatherAuto 0
+
+		MD(ghost)
 	}
 }
 
@@ -291,6 +293,8 @@ automacro sara_boss_death {
 			do talknpc 130 107 c r0
 			do conf itemsGatherAuto 0
 			lock sara_boss_death
+
+			MD(sara)
 		}
 	}
 }

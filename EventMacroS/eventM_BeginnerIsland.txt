@@ -52,3 +52,12 @@ automacro room {
 		do talknpc 44 65 r0 r0 r0
 	}
 }
+automacro theif {
+    InMap moc_prydb1
+    IsInCoordinate 41..45 123..124
+	timeout 60
+	call {
+		do talknpc 39 129 r0 r0 r0 r0
+		do talknpc 52 132 r0 r0
+	}
+}

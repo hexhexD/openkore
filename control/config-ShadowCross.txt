@@ -5,7 +5,7 @@
 
 master Japan - jRO: Urdr
 server
-username Shadow
+username SC
 password 123
 loginPinCode
 char 0
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword framiswe
+adminPassword botwowra
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 1
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -81,7 +81,7 @@ attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
 attackMinPortalDistance 4
-attackUseWeapon 0
+attackUseWeapon 1
 attackNoGiveup 0
 attackCanSnipe 0
 attackCheckLOS 1
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 2
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -261,13 +261,13 @@ sitAuto_look
 sitAuto_look_from_wall
 sitTensionRelax 0
 
-statsAddAuto 0
-statsAddAuto_list
+statsAddAuto 1
+statsAddAuto_list dex 30, agi 50, str 50, agi 90, str 90
 statsAddAuto_dontUseBonus 0
 statsAdd_over_99 1
 
 skillsAddAuto 1
-skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 8, TF_HIDING 10, TF_DETOXIFY 1, カタール修練 10, エンチャントポイズン 5, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソニックブロー 10, 右手修練 5, 左手修練 5
+skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 8, TF_HIDING 10, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 7, エンチャントポイズン 10, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 1, メテオアサルト 10
 tankMode 0
 tankModeTarget
 
@@ -588,24 +588,6 @@ attackSkillSlot {
 }
 
 
-attackSkillSlot GC_DARKILLUSION {
-	lvl 5
-	dist 8
-	timeout 4
-	disabled 0
-}
-attackSkillSlot GC_ROLLINGCUTTER {
-	disabled 0
-	lvl 5
-	dist 2
-}
-useSelf_skill ASC_EDP {
-	monsters 呪いの根源, 死神アンク
-	whenStatusInactive エンチャントデッドリーポイズン
-	lvl 5
-	minCastTime 3
-	timeout 10
-}
 useSelf_skill AS_ENCHANTPOISON {
 	monsters 呪いの根源, 大長老アイリン
 	whenStatusInactive 武器属性付与
@@ -617,6 +599,30 @@ attackComboSlot GC_VENOMIMPRESS {
 	lvl 5
 	dist 10
 	timeout 50
+}
+useSelf_skill ASC_EDP {
+	monsters 呪いの根源, 死神アンク
+	whenStatusInactive エンチャントデッドリーポイズン
+	lvl 5
+	minCastTime 3
+	timeout 10
+}
+attackSkillSlot GC_DARKCROW {
+	monsters 呪いの根源, 大長老アイリン
+	lvl 5
+	dist 1
+	timeout 60
+}
+attackSkillSlot GC_DARKILLUSION {
+	lvl 5
+	dist 9
+	timeout 4
+	disabled 0
+}
+attackSkillSlot GC_ROLLINGCUTTER {
+	disabled 0
+	lvl 5
+	dist 2
 }
 
 attackComboSlot {

@@ -3594,3 +3594,17 @@ tra_hall 113 185 tra_hall 49 175
 tra_hall 49 175 tra_hall 113 173
 tra_hall 45 113 tra_hall 59 166
 tra_hall 59 166 tra_hall 45 102
+que_job01 17 48 que_job01 68 96
+que_job01 68 96 que_job01 17 53
+lhz_cube 59 136 lhz_cube 75 193
+lhz_cube 75 193 lhz_cube 66 136
+lhz_cube 66 144 lhz_cube 67 193
+lhz_cube 10 185 lhz_cube 75 136
+lhz_cube 75 136 lhz_cube 10 193
+lhz_cube 59 75 lhz_cube 10 185
+lhz_cube 18 18 lhz_cube 66 66
+lhz_cube 66 66 lhz_cube 10 18
+lhz_cube 130 18 lhz_cube 10 10
+lhz_cube 10 10 lhz_cube 123 18
+lhz_cube 248 184 lhz_cube 114 18
+lhz_cube 114 18 lhz_cube 246 184

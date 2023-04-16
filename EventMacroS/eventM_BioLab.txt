@@ -46,9 +46,11 @@ automacro cube {
 	call {
 		# get axe
 		do talknpc 248 179 r0
+		do talknpc 237 183 r0 t=斧
 		pause 1
 		# book to get red key
 		do move 239 192
+		do talknpc 237 198 r0
 		# open drawer to get knife
 		do talknpc 242 201 r0 t=赤いカギ
 		pause 1
@@ -104,7 +106,7 @@ automacro got_long_stick {
 		log Got long stick
 		do talknpc 247 198 r1 t=長い棒
 		# 正六面体の模型
-		do move 234 192
+		do move 235 192
 		do talknpc 229 184 r1
 		# さびたカギ
 		do talknpc 231 202 r0 t=さびたカギ

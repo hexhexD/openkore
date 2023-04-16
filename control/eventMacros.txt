@@ -1,9 +1,9 @@
 !include ../EventMacroS/eventM_DimensionalGap.txt
 !include ../EventMacroS/eventM_EndlessTower.txt
+!include ../EventMacroS/eventM_Utils.txt
 !include ../EventMacroS/eventM_BeginnerIsland.txt
 !include ../EventMacroS/eventM_BioLab.txt
 !include ../EventMacroS/eventM_RoyalBanquet.txt
-!include ../EventMacroS/eventM_Utils.txt
 
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i
@@ -25,3 +25,45 @@ automacro HIT_training {
 		do talknpc $x $y c
     }
 }
+
+macro md {
+	MD(start)
+}
+
+sub MD {
+	my ($caller) = @_;
+	use Utils qw(getFormattedDate);
+	use v5.10;
+
+	my $logFile = $Settings::logs_folder . "/mdlog.txt";
+	open(FH, ">>:utf8", $logFile) or die("Failed to open MD log file\n");
+
+	message("MD caller is: ".$caller . "\n");
+	my $prefix = "[".getFormattedDate(int(time))."]"." char ".$config{char}." [MD] ";
+
+	given ($caller) {
+		when ($_ eq "start") {
+			message("start\n");
+			Commands::run("em stop");
+			Commands::run("em sara -orphan reregister_safe");
+			print(FH $prefix."Started with sara\n");
+		}
+		when ($_ eq "sara") {
+			print(FH $prefix."sara done\n");
+			Commands::run("em stop");
+			Commands::run("em ghost -orphan reregister_safe");
+		}
+		when ($_ eq "ghost") {
+			print(FH $prefix."ghost done\n");
+			# Commands::run("em ghost");
+		}
+		default {
+			Commands::run("move 309 280");
+			error "Unknown caller of MD function\n";
+			die "MD function died"
+		}
+	}
+
+	close(FH);
+}
+
