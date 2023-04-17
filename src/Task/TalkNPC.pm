@@ -96,8 +96,6 @@ sub new {
 	$self->{error_message} = undef;
 	$self->{map_change} = 0;
 	$self->{disconnected} = 0;
-
-	$ai_v{'npc_talk'}{'ID'} = $args{ID} if $args{ID};
 	
 	debug "Task::TalkNPC::new has been called with sequence '".$self->{sequence}."'.\n", "ai_npcTalk";
 	
@@ -128,7 +126,7 @@ sub handleNPCTalk {
 			debug "Npc which started autotalk has automatically sent a 'npc_talk_done'.\n", "ai_npcTalk";
 			return;
 			
-		} elsif ($self->{stage} != TALKING_TO_NPC || !$self->{target} || $self->{ID} ne $args->{ID}) {
+		} elsif ($self->{stage} != TALKING_TO_NPC || !$self->{target} || $self->{target}->{ID} != $args->{ID}) {
 			debug "We received an strange 'npc_talk_done', ignoring it.\n", "ai_npcTalk";
 			return;
 		}
@@ -238,7 +236,6 @@ sub setTarget {
 
 	if ($target) {
 		debug "Talking with $target at ($target->{pos}{x},$target->{pos}{y}), ID ".getHex($target->{ID})."\n", "ai_npcTalk";
-		$ai_v{'npc_talk'}{'ID'} = $target->{ID};
 	}
 
 	$self->{target} = $target;
