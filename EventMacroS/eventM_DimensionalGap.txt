@@ -66,21 +66,6 @@ automacro ghost_prison {
     call {
 		do move 40 51
 		do talknpc 32 54 c r0
-
-		# pause 5
-		# do move 54 28
-		# pause 4
-		# do move 202 209
-		# do talknpc 199 214 c r0
-		# do move 178 186
-		# pause 5
-		# do move 203 42
-		# do talknpc 216 43 c r0
-		# do conf route_randomWalk 1
-		# do conf attackAuto 2
-		# # first wave spawn here
-		# do move 197 41
-		# release ghost_boss_death
 	}
 }
 automacro ghost_prison2 {

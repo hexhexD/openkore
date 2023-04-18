@@ -66,8 +66,11 @@ automacro new_world_access_next3 {
 		do move lhz_in01 125 256
 		do talknpc 132 259
 		do talknpc 132 259
+
+		call yuno_rachel
 	}
 }
+# Airship only goes from yuno to rachel
 automacro new_world_access_next4 {
 	QuestActive 10071
 	InMap rachel
@@ -75,7 +78,7 @@ automacro new_world_access_next4 {
 	call {
 		do move ra_temple 117 113
 		do talknpc 119 113
-		call rachel_yuno
+
 	}
 }
 automacro new_world_access_next5 {
@@ -104,7 +107,7 @@ automacro new_world_access_next6 {
 		pause 1
 		do talknpc 230 197
 		do talknpc 230 197 r0
-		do move 310 201
+		do move 336 178
 		do move 229 200
 		do talknpc 230 197
 		# back to prontera
@@ -365,8 +368,8 @@ automacro morusu_begin {
 ### 七王家とユミルの心臓 ###
 macro royal_quest {
 	do move prontera 120 72
-	do talknpc 121 72 r2 r0
 	do talknpc 121 72 r0
+	do talknpc 121 72 r2 r1
 }
 automacro royal_start {
 	InMap prt_castle
@@ -462,7 +465,8 @@ automacro royal_レベンブルグ家 {
 		log 5
 		do move prt_cas_q 87 186
 		do talknpc 90 186 r0
-		do talknpc 96 186 r0 r0 r0 r0
+		do talknpc 96 186 r0 r0 r0 r0 r0
+		do talknpc 90 186 r0 r0 r0 r0 r0
 	}
 }
 automacro royal_ゲオルグ家 {
@@ -489,13 +493,14 @@ automacro royal_next {
 	exclusive 1
 	call {
 		do move prt_cas 106 235
-		do talknpc 106 240 r0 r0 r0 r0
+		do talknpc 106 240 r0 r0 r0 r0 r0
 	}
 }
 automacro royal_next2 {
 	QuestActive 7689
 	timeout 60
 	exclusive 1
+	delay 2
 	call {
 		do move prt_cas 195 162
 		do talk resp 0
@@ -507,6 +512,7 @@ automacro royal_next3 {
 	exclusive 1
 	call {
 		do move prt_cas 31 117
+		pause 1
 		do talknpc 29 117 r0
 	}
 }
@@ -522,14 +528,23 @@ automacro royal_next4 {
 automacro royal_bell_teleported_me {
 	QuestActive 7692
 	run-once 1
+	delay 2
 	exclusive 1
 	call {
 		do move prt_lib 91 77
+		call regroup
 		do talknpc 91 85 r0
 	}
 }
-automacro royal_md_ready {
-	QuestActive 7692, 7699
+automacro royal_first_md_ready {
+	QuestActive 7692
+	SimpleHookEvent instance_ready
+	call {
+		do talknpc 88 90 r0
+	}
+}
+automacro royal_second_md_ready {
+	QuestActive 7699
 	SimpleHookEvent instance_ready
 	call {
 		do talknpc 88 90 r0
@@ -538,7 +553,8 @@ automacro royal_md_ready {
 automacro royal_in_md {
 	QuestActive 7692
 	InMap 2@mir
-	timeout 500
+	timeout 10
+	delay 2
 	call {
 		do move 106 77
 		do conf attackAuto 2
@@ -548,6 +564,7 @@ automacro royal_killed_3 {
 	InMap 2@mir
 	timeout 10
 	LocalMsg /作戦班、撤収するぞ/
+	delay 2
 	call {
 		do move 2@mir 101 87
 		do talknpc 101 93 r0
@@ -565,6 +582,8 @@ automacro royal_out_md {
 		do talknpc 91 85 r0
 		do talknpc 76 80 r0
 		do talknpc 91 85
+		do talknpc 85 82 r0 r0 r0 r0
+
 		pause 5
 		do move prt_lib 63 61
 		do talknpc 56 61 r0
@@ -610,7 +629,8 @@ automacro royal_ハイネン家_again {
 }
 automacro royal_final貴賓室 {
 	QuestActive 7699
-	timeout 120
+	InMap prt_cas_q
+	timeout 240
 	exclusive 1
 	call {
 		do move prt_cas_q 27 30
@@ -626,6 +646,16 @@ automacro royal_md_again {
 	exclusive 1
 	call {
 		do move prt_lib 91 77
+		do talknpc 91 85
+	}
+}
+automacro royal_md_again1 {
+	QuestActive 7699
+	InMap prt_lib_q
+	timeout 120
+	exclusive 1
+	call {
+		do move prt_lib_q 91 77
 		do talknpc 91 85
 	}
 }
@@ -665,7 +695,7 @@ automacro royal_md_again4 {
 	}
 }
 automacro royal_end {
-	QuestActive 7700
+	QuestActive 7702
 	InMap prt_q
 	timeout 120
 	exclusive 1
@@ -676,7 +706,7 @@ automacro royal_end {
 automacro royal_end1 {
 	QuestActive 7703
 	InMap prt_lib
-	timeout 120
+	timeout 20
 	exclusive 1
 	call {
 		do talknpc 80 79 r0 r0 r0

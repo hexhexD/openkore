@@ -3608,3 +3608,5 @@ lhz_cube 130 18 lhz_cube 10 10
 lhz_cube 10 10 lhz_cube 123 18
 lhz_cube 248 184 lhz_cube 114 18
 lhz_cube 114 18 lhz_cube 246 184
+lhz_in01 11 24 lhz_in01 149 179
+lhz_in01 149 179 lhz_in01 15 24

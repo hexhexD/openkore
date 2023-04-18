@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword weazojot
+adminPassword jeawaili
 callSign
 commandPrefix ;
 callSignGM 0
@@ -194,7 +194,7 @@ followBot 0
 
 itemsTakeAuto 1
 itemsTakeAuto_party 0
-itemsGatherAuto 0
+itemsGatherAuto 1
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -1030,7 +1030,7 @@ debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include
 debugPacket_include_dumpMethod 0
-debugDomains ai_attack
+debugDomains ai_attack, npc
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

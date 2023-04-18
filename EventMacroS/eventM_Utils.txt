@@ -5,6 +5,7 @@ macro yuno_rachel {
 	do move y_airport 150 34
 	do talknpc 143 43 r0 r0
     do talknpc 140 63 r0
+	do move 7 260
 }
 macro yuno_hugel {
     set exclusive 1
