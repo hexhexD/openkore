@@ -51,9 +51,6 @@ CalcPath_init (CalcPath_session *session)
 	// Allocate enough memory in currentMap to hold all nodes in the map
 	// Here we use calloc instead of malloc (calloc sets all memory allocated to 0's) so all uninitialized cells have whichlist set to NONE
 	session->currentMap = (Node*) calloc(session->height * session->width, sizeof(Node));
-	if (session->customWeights) {
-		session->second_weight_map = (unsigned int*) calloc(session->height * session->width, sizeof(unsigned int));
-	}
 	
 	unsigned long goalAdress = (session->endY * session->width) + session->endX;
 	Node* goal = &session->currentMap[goalAdress];
@@ -66,7 +63,7 @@ CalcPath_init (CalcPath_session *session)
 	start->x = session->startX;
 	start->y = session->startY;
 	start->nodeAdress = startAdress;
-	start->h = heuristic_cost_estimate(start->x, start->y, goal->x, goal->y, session->useManhattan);
+	start->h = heuristic_cost_estimate(start->x, start->y, goal->x, goal->y);
 	start->f = start->h;
 	
 	session->initialized = 1;
@@ -113,7 +110,6 @@ CalcPath_pathStep (CalcPath_session *session)
 	int neighbor_y;
 	unsigned long neighbor_adress;
 	unsigned long distanceFromCurrent;
-	unsigned int c_randomFactor;
 	
 	unsigned int g_score = 0;
 	
@@ -188,15 +184,6 @@ CalcPath_pathStep (CalcPath_session *session)
 				distanceFromCurrent += session->map_base_weight[neighbor_adress];
 			}
 			
-			if (session->customWeights) {
-				distanceFromCurrent += session->second_weight_map[neighbor_adress];
-			}
-			
-			if (session->randomFactor) {
-				c_randomFactor = rand() % session->randomFactor;
-				distanceFromCurrent += c_randomFactor;
-			}
-			
 			// g_score is the summed weight of all nodes from start node to neighborNode, which is the g_score of currentNode + the weight to move from currentNode to neighborNode.
 			g_score = currentNode->g + distanceFromCurrent;
 			
@@ -207,7 +194,7 @@ CalcPath_pathStep (CalcPath_session *session)
 				neighborNode->nodeAdress = neighbor_adress;
 				neighborNode->predecessor = currentNode->nodeAdress;
 				neighborNode->g = g_score;
-				neighborNode->h = heuristic_cost_estimate(neighborNode->x, neighborNode->y, session->endX, session->endY, session->useManhattan);
+				neighborNode->h = heuristic_cost_estimate(neighborNode->x, neighborNode->y, session->endX, session->endY);
 				neighborNode->f = neighborNode->g + neighborNode->h;
 				openListAdd (session, neighborNode);
 			
@@ -227,21 +214,14 @@ CalcPath_pathStep (CalcPath_session *session)
 	return -1;
 }
 
-// The heuristic used is diagonal distance, unless specified to use manhattan (to mimic client)
+// The heuristic used is diagonal distance.
 int
-heuristic_cost_estimate (int currentX, int currentY, int goalX, int goalY, int useManhattan)
+heuristic_cost_estimate (int currentX, int currentY, int goalX, int goalY)
 {
 	int xDistance = abs(currentX - goalX);
 	int yDistance = abs(currentY - goalY);
 	
-	// # Game client uses the inadmissible (overestimating) heuristic of Manhattan distance
-	// #define heuristic(currentX, currentY, goalX, goalY) (10 * (xDistance + yDistance)) // Manhattan distance
-	int hScore;
-	if (useManhattan == 1) {
-		hScore = (10 * (xDistance + yDistance));
-	} else {
-		hScore = (10 * (xDistance + yDistance)) - (6 * ((xDistance > yDistance) ? yDistance : xDistance));
-	}
+	int hScore = (10 * (xDistance + yDistance)) - (6 * ((xDistance > yDistance) ? yDistance : xDistance));
 	
 	return hScore;
 }
@@ -427,9 +407,6 @@ void
 free_currentMap (CalcPath_session *session)
 {
 	free(session->currentMap);
-	if (session->customWeights) {
-		free(session->second_weight_map);
-	}
 }
 
 // Frees the memory allocated by openList
@@ -445,9 +422,6 @@ CalcPath_destroy (CalcPath_session *session)
 {
 	if (session->initialized) {
 		free(session->currentMap);
-		if (session->customWeights) {
-			free(session->second_weight_map);
-		}
 	}
 	if (session->run) {
 		free(session->openList);

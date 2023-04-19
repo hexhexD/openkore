@@ -154,14 +154,9 @@ sub iterate {
 		$self->setError(TOO_LONG, TF("%s tried too long to move", $self->{actor}));
 
 	} elsif (timeOut($self->{retry})) {
-		$self->{actor}->sendStopSkillUse() if $self->{actor}->{last_skill_used_is_continuous}; # avoid walk while using continuos skill (GC_ROLLINGCUTTER)
 		$self->{retry}{count}++;
 		debug "Move $self->{actor} (to $self->{x} $self->{y}) - trying ($self->{retry}{count})\n", "move";
 		$self->{actor}->sendMove(@{$self}{qw(x y)});
-		if ($self->{sendAttack}) {
-			debug "[Test Move Attack Buffer] Sending attack with move.\n";
-			$self->{actor}->sendAttack($self->{attackID});
-		}
 		$self->{retry}{time} = time;
 	}
 }
