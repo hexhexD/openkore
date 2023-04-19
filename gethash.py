@@ -100,9 +100,9 @@ while True:
     print("Waiting for keypress...")
     c = msvcrt.getch()
 
-    #  print("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
-    #  os.system("taskkill /im perl.exe /f /t")
-    #  os.system("taskkill /im wxstart.exe /f /t")
+    print("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
+    os.system("taskkill /im perl.exe /f /t")
+    os.system("taskkill /im wxstart.exe /f /t")
     print("Killing ragexe")
     os.system("taskkill /im Ragexe.exe")
     if c == b'q':
@@ -124,6 +124,11 @@ while True:
     print(onetime_key)
     passwd = re.search("-p:(\w+)", onetime_key).group(1)
     print(passwd)
+
+    print("Launching openkore before game starts")
+    subprocess.Popen(r"perl openkore.pl --interface=Wx --config=control\config-ShadowCross.txt",
+                     close_fds=True,
+                     creationflags=subprocess.DETACHED_PROCESS)
 
     print("Taking out the trash before game start")
     trash = glob.glob(args.g + "/GameGuard/*.erl")
@@ -160,9 +165,6 @@ while True:
     else:
         os.chdir(cwd)
         subprocess.Popen("Manualmap.exe", stdout=subprocess.DEVNULL)
-        #  subprocess.Popen(r"perl openkore.pl --interface=Wx --config=control\config-ShadowCross.txt",
-						 #  close_fds=True,
-						 #  creationflags=subprocess.DETACHED_PROCESS)
 
     print(ragproc.pid)
     # os.chdir(r"C:\dev\openkore")

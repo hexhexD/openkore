@@ -204,4 +204,4 @@ welcomeText 4
 patchserver 120
 
 # Time to wait before load map in xKore mode
-ai_clientSuspend 2
+ai_clientSuspend 0

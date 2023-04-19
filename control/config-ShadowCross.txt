@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword jeawaili
+adminPassword tredrith
 callSign
 commandPrefix ;
 callSignGM 0
@@ -94,7 +94,7 @@ attackBeyondMaxDistance_waitForAgressive 0
 attackBeyondMaxDistance_sendAttackWhileWaiting 0
 attackSendAttackWithMove 0
 attackWaitApproachFinish 0
-attackUpdateMonsterPos 1
+attackUpdateMonsterPos 0
 
 autoMoveOnDeath 0
 autoMoveOnDeath_x
@@ -192,9 +192,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 1
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -587,19 +587,6 @@ attackSkillSlot {
 	manualAI 0
 }
 
-
-useSelf_skill AS_ENCHANTPOISON {
-	monsters 呪いの根源, 大長老アイリン
-	whenStatusInactive 武器属性付与
-	lvl 10
-	timeout 10
-}
-attackComboSlot GC_VENOMIMPRESS {
-	afterSkill AS_ENCHANTPOISON
-	lvl 5
-	dist 10
-	timeout 50
-}
 useSelf_skill ASC_EDP {
 	monsters 呪いの根源, 死神アンク
 	whenStatusInactive エンチャントデッドリーポイズン
@@ -607,17 +594,11 @@ useSelf_skill ASC_EDP {
 	minCastTime 3
 	timeout 10
 }
-attackSkillSlot GC_DARKCROW {
-	monsters 呪いの根源, 大長老アイリン
-	lvl 5
-	dist 1
-	timeout 60
-}
 attackSkillSlot GC_DARKILLUSION {
 	lvl 5
 	dist 9
 	timeout 4
-	disabled 0
+	disabled 1
 }
 attackSkillSlot GC_ROLLINGCUTTER {
 	disabled 0

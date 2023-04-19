@@ -9,8 +9,21 @@ automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i
 	timeout 15
 	overrideAI 1
+	disabled 1
 	call {
 		do ss WL_TELEKINESIS_INTENSE
+	}
+}
+
+# 武器属性付与
+automacro gx_combo {
+	MobNear /(フェンリル|呪いの根源|大長老アイリン)/i
+	timeout 20
+	overrideAI 1
+	call {
+		do ss AS_ENCHANTPOISON
+		do sm GC_VENOMIMPRESS $.MobNearLastBinId
+		do sm GC_DARKCROW $.MobNearLastBinId
 	}
 }
 ####### mugi mugi event
@@ -63,7 +76,6 @@ sub MD {
 			die "MD function died"
 		}
 	}
-
 	close(FH);
 }
 
