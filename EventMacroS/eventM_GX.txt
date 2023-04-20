@@ -1,0 +1,53 @@
+# 武器属性付与
+
+
+automacro gx_edp {
+	MobNear /(フェンリル|呪いの根源)/i
+	StatusInactiveHandle ASC_EDP
+	timeout 15
+	overrideAI 1
+	call {
+		do ss ASC_EDP
+	}
+}
+automacro gx_combo {
+	MobNear /(フェンリル|呪いの根源|大長老アイリン)/i
+	timeout 15
+	overrideAI 1
+	priority 1
+	call {
+		do ss AS_ENCHANTPOISON
+		do ss AS_ENCHANTPOISON
+		do sm GC_VENOMIMPRESS $.MobNearLastBinId
+		do sm GC_VENOMIMPRESS $.MobNearLastBinId
+		do sm GC_VENOMIMPRESS $.MobNearLastBinId
+		do sm GC_DARKCROW $.MobNearLastBinId
+		do sm GC_DARKCROW $.MobNearLastBinId
+		do sm GC_DARKCROW $.MobNearLastBinId
+	}
+}
+automacro gx_hallu {
+	MobNear /(フェンリル|呪いの根源)/i
+	StatusInactiveHandle EFST_HALLUCINATIONWALK_POSTDELAY
+	priority 2
+	timeout 10
+	overrideAI 1
+	call {
+		do ss ハルシネーションウォーク
+	}
+}
+automacro gx_combo_magic {
+	MobNear /.*/
+	timeout 15
+	InMap 1@ge_st
+	overrideAI 1
+	call {
+		do ss AS_ENCHANTPOISON
+		pause 0.5
+		do sm GC_VENOMIMPRESS $.MobNearLastBinId
+		do sm GC_VENOMIMPRESS $.MobNearLastBinId
+		pause 0.5
+		do sm GC_DARKCROW $.MobNearLastBinId
+		do sm GC_DARKCROW $.MobNearLastBinId
+	}
+}

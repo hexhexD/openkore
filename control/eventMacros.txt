@@ -4,6 +4,7 @@
 !include ../EventMacroS/eventM_BeginnerIsland.txt
 !include ../EventMacroS/eventM_BioLab.txt
 !include ../EventMacroS/eventM_RoyalBanquet.txt
+!include ../EventMacroS/eventM_GX.txt
 
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i
@@ -12,18 +13,6 @@ automacro WL_TELEKINESIS_INTENSE {
 	disabled 1
 	call {
 		do ss WL_TELEKINESIS_INTENSE
-	}
-}
-
-# 武器属性付与
-automacro gx_combo {
-	MobNear /(フェンリル|呪いの根源|大長老アイリン)/i
-	timeout 20
-	overrideAI 1
-	call {
-		do ss AS_ENCHANTPOISON
-		do sm GC_VENOMIMPRESS $.MobNearLastBinId
-		do sm GC_DARKCROW $.MobNearLastBinId
 	}
 }
 ####### mugi mugi event
@@ -38,7 +27,6 @@ automacro HIT_training {
 		do talknpc $x $y c
     }
 }
-
 macro md {
 	MD(start)
 }
@@ -64,6 +52,7 @@ sub MD {
 		when ($_ eq "sara") {
 			print(FH $prefix."sara done\n");
 			Commands::run("em stop");
+			Commands::run("autostorage");
 			Commands::run("em ghost -orphan reregister_safe");
 		}
 		when ($_ eq "ghost") {

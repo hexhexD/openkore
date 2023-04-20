@@ -20,7 +20,6 @@ macro ghost {
 	do talknpc 43 129 c r0 c r0
 	pause 2
 	do talknpc 43 129 c r0 c r0
-	lock ghost_boss_death
 }
 automacro ghost_test {
 	QuestInactive 114760
@@ -84,7 +83,6 @@ automacro ghost_prison2 {
 		do conf attackAuto 2
 		# first wave spawn here
 		do move 197 41
-		release ghost_boss_death
 	}
 }
 # automacro ghost_mob_start0 {
@@ -154,10 +152,8 @@ automacro ghost_prison2 {
 automacro ghost_boss {
 	InMap 1@spa
 	LocalMsg /冷たい声 : もう一つ/
-	exclusive 1
     call {
 		do move 200 43
-		release ghost_boss_death
 		do conf route_randomWalk 0
 	}
 }

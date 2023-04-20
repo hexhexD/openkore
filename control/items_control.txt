@@ -38,8 +38,7 @@
 
 
 # All items not mentioned in this file will be automatically stored in storage.
-all 0 1 0
-
+all 0 0 0
 
 ドラゴンの牙 5 0 1
 ドラゴンの鱗 5 0 1
@@ -52,6 +51,8 @@ all 0 1 0
 四葉のクローバー 0 0 0 1
 
 # Heavy food to store or sell
+特製肉煮込み 0 1 1
+特大包み料理 0 1 1
 古代魚の活造り 0 1 1
 クラゲの和え物 0 1 1
 大学いも 0 1 1
@@ -82,6 +83,7 @@ all 0 1 0
 赤いきのこワイン 0 1 1
 串バーベキュー 0 1 1
 ソウルハントブレッド 0 1 1
+特製山海珍味 0 1 1
 
 # TRASH
 囚人の腕輪 0 0 1

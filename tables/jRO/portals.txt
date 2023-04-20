@@ -19,6 +19,9 @@ ayothaya 152 68 alberta 247 42 0 c r0 n
 ama_in02 115 177 ama_dun01 229 10 0 c r1 c r0 n
 ama_dun01 229 7 ama_in02 119 181 0 c r0 n
 
+# ミミミ
+yuno 205 316 prontera 116 72 0 r2 r0
+
 # VIP Warps
 #yuno 142 183 prontera 116 72 1800 c c c c c r0
 #yuno 142 183 izlude 94 103 1800 c c c c c r1
