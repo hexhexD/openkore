@@ -67,7 +67,7 @@ use constant {
 ##
 # Field->new(options...)
 #
-# Create a new Load a field (.fld2) file. 
+# Create a new Load a field (.fld2) file.
 #
 # This function also loads an associated .weight file
 # (the weight per cell file), which is used by pathfinding (for path choosing).
@@ -212,12 +212,12 @@ sub isOffMap {
 
 sub getCellInfo {
 	my ($self, $x, $y) = @_;
-	
+
 	if ($self->isOffMap($x, $y)) {
 		message "Cell $x $y is off the map.\n";
 		return;
 	}
-	
+
 	if ($self->isWalkable($x, $y)) {
 		message "Cell $x $y is walkable.\n";
 		my $weight = $self->getBlockWeight($x, $y);
@@ -225,19 +225,19 @@ sub getCellInfo {
 	} else {
 		message "Cell $x $y is not walkable.\n";
 	}
-	
+
 	if ($self->isSnipable($x, $y)) {
 		message "Cell $x $y is snipable.\n";
 	} else {
 		message "Cell $x $y is not snipable.\n";
 	}
-	
+
 	if ($self->isWater($x, $y)) {
 		message "Cell $x $y is water.\n";
 	} else {
 		message "Cell $x $y is not water.\n";
 	}
-	
+
 	if ($self->isCliff($x, $y)) {
 		message "Cell $x $y is a Cliff.\n";
 	} else {
@@ -314,17 +314,17 @@ sub getBlockDist {
 # Returns: walkable position in a reference to a position hash (which contains 'x' and 'y' keys) on success or undef on failure.
 sub closestWalkableSpot {
 	my ($self, $pos, $max_distance) = @_;
-	
+
 	my %center = ( x => $pos->{x}, y => $pos->{y} );
-	
+
 	if ($self->isWalkable($pos->{x}, $pos->{y})) {
 		return \%center;
 	}
-	
+
 	return if (!$max_distance);
-	
+
 	my @current_distance = (1..$max_distance);
-	
+
 	foreach my $distance (@current_distance) {
 		my @blocks = Misc::calcRectArea($center{x}, $center{y}, $distance, $self);
 		foreach my $block (@blocks) {
@@ -332,14 +332,19 @@ sub closestWalkableSpot {
 			return $block;
 		}
 	}
-	
+
 	return undef;
 }
 
+# Bresenham's algorithm
+#
+# Used for checking if there are no obstacles in the direct line of sight of 2 actors
+# Do not use for checking if you can walk between 2 cells, use checkPathFree for that
+#
+# Reference: hercules src\map\path.c path_search_long
 sub checkLOS {
 	my ($self, $from, $to, $can_snipe) = @_;
 
-	# Simulate tracing a line to the location (modified Bresenham's algorithm)
 	my ($X0, $Y0, $X1, $Y1) = ($from->{x}, $from->{y}, $to->{x}, $to->{y});
 
 	my $steep;
@@ -416,35 +421,92 @@ sub checkLOS {
 	return 1;
 }
 
+# Used for checking if there are no obstacles in a given walking solution
+#
+# get_client_solution already does this in the A* algorithm itself, so there is no need to check solutions made by it
+# get_client_easy_solution does not check for obstacles, so all solutions made by it *should* be checked when certainty is necessary
+#
+# Do not use for checking if you can attack between 2 cells, use checkLOS for that
+#
+# Reference: hercules src\map\path.c path_search - flag&1
+sub checkPathFree {
+	my ($self, $solution) = @_;
+
+	return 0 unless ($self->isWalkable($solution->[0]{x}, $solution->[0]{y}));
+
+	my %current_pos;
+	my %next_pos;
+
+	my $stepType = 0; # 1 - vertical or horizontal; 2 - diagonal
+
+	my $last = $#{$solution};
+
+	foreach my $current_step (0..$last) {
+		%current_pos = ( x => $solution->[$current_step]{x}, y => $solution->[$current_step]{y} );
+
+		my $next_step = $current_step+1;
+		%next_pos = ( x => $solution->[$next_step]{x}, y => $solution->[$next_step]{y} );
+		return 0 unless ($self->isWalkable($next_pos{x}, $next_pos{y}));
+
+		$stepType = 0;
+		if ($current_pos{x} != $next_pos{x}) {
+			$stepType++;
+		}
+		if ($current_pos{y} != $next_pos{y}) {
+			$stepType++;
+		}
+
+		if ($stepType == 2) {
+			return 0 unless ($self->isWalkable($current_pos{x}, $next_pos{y}));
+			return 0 unless ($self->isWalkable($next_pos{x}, $current_pos{y}));
+		}
+
+		return 1 if ($next_step == $last);
+	}
+}
+
+# Checks wheter you can send a move command from $from to $to
+#
+# Reference: hercules src\map\unit.c unit_walk_toxy
+#
+# Todo this should be used in a lot more places like Task::Route and Follow
 sub canMove {
 	my ($self, $from, $to) = @_;
-	
+
 	my $dist = blockDistance($from, $to);
+
+	# This 17 is actually set at
+	# hercules conf\map\battle\client.conf max_walk_path (which is by default 17, can be higher)
 	if ($dist > 17) {
-		return -1;
+		return 0;
 	}
-	
-	my $LOS = $self->checkLOS($from, $to, 0);
-	if ($LOS) {
-		return 1;
+
+	# If there are no obstacles return success
+	if ($dist < 2) {
+		return $self->checkLOS($from, $to, 0);
+	} else {
+		my $easy_solution = get_client_easy_solution($from, $to);
+		if ($self->checkPathFree($easy_solution)) {
+			return 1;
+		}
 	}
-	
-	my $solution = [];
-	my ($min_pathfinding_x, $min_pathfinding_y, $max_pathfinding_x, $max_pathfinding_y) = Utils::getSquareEdgesFromCoord($self, $from, 20);
-	my $dist_path = new PathFinding(
-		field => $self,
-		start => $from,
-		dest => $to,
-		avoidWalls => 0,
-		min_x => $min_pathfinding_x,
-		max_x => $max_pathfinding_x,
-		min_y => $min_pathfinding_y,
-		max_y => $max_pathfinding_y
-	)->run($solution);
+
+	# If there are obstacles and OFFICIAL_WALKPATH is defined (which is by default) then calculate a client pathfinding
+	my $solution = get_client_solution($self, $from, $to);
+	my $dist_path = scalar @{$solution};
+
+	if ($dist_path == 0) {
+		return 0;
+	}
+
+	# Pathfinding always returns the original cell in the solution, so remove 1 from it
+	$dist_path -= 1;
+
+	# If there are obstacles and the path is walkable the max solution dist acceptable is 14
 	if ($dist_path > 14) {
-		return -2;
+		return 0;
 	}
-	
+
 	return 1;
 }
 
@@ -530,7 +592,7 @@ sub loadFile {
 	$weightFile =~ s/\.fld2(\.gz)?$/.weight/i;
 	if ($loadWeightMap) {
 		if ((!-f $weightFile && !-f $weightFile.'.gz') || !$self->loadWeightMap($weightFile, $width, $height)) {
-			
+
 			# Load the associated distance map (.dist file)
 			my $distFile = $filename;
 			$distFile =~ s/\.fld2(\.gz)?$/.dist/i;
@@ -546,7 +608,7 @@ sub loadFile {
 					close $f;
 				}
 			}
-			
+
 			# (Re)create the weight map.
 			my $f;
 			$self->{weightMap} = Utils::makeWeightMap($self->{dstMap}, $width, $height);
@@ -557,7 +619,7 @@ sub loadFile {
 				print $f $self->{weightMap};
 				close $f;
 			}
-			
+
 			delete $self->{dstMap};
 		}
 	} else {
@@ -586,13 +648,13 @@ sub loadFile {
 sub loadWeightMap {
 	my ($self, $filename, $width, $height) = @_;
 	my ($f, $weightData);
-	
+
 	$filename .= '.gz' if (-f $filename.'.gz');
-	
+
 	if ($filename =~ /\.gz$/) {
 		use bytes;
 		no encoding 'utf8';
-		
+
 		my $gz = gzopen($filename, 'rb');
 		if (!$gz) {
 			IOException->throw("Cannot open $filename for reading.");
@@ -619,7 +681,7 @@ sub loadWeightMap {
 		IOException->throw("Cannot open distance map $filename for reading.");
 		return;
 	}
-	
+
 	# Get file version.
 	my $dversion = 0;
 	if (substr($weightData, 0, 2) eq "V#") {

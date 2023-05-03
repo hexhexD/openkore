@@ -171,7 +171,22 @@ sub mapChanged {
 }
 
 sub findAction {
-	return binFind(\@ai_seq, $_[0]);
+	my $wanted_action = shift;
+	my $skip = shift;
+	if (!defined $skip) {
+		$skip = 0;
+	}
+	
+	foreach my $i (0..$#ai_seq) {
+		next unless ($ai_seq[$i] eq $wanted_action);
+		if ($skip) {
+			$skip--;
+		} else {
+			return $i;
+		}
+	}
+	
+	return undef;
 }
 
 sub inQueue {
@@ -380,6 +395,7 @@ sub ai_slave_getAggressives {
 		next if (!timeOut($monster->{attack_failedLOS}, $timeout{ai_attack_failedLOS}{timeout}));
 		next if (!timeOut($monster->{$slave->{ai_attack_failed_timeout}}, $timeout{ai_attack_unfail}{timeout}));
 		next if (!Misc::slave_checkMonsterCleanness($slave, $ID));
+		# TODO: Is there any situation where we should use calcPosFromPathfinding or calcPosFromTime here?
 		my $pos = calcPosition($monster);
 		next if (blockDistance($char->position, $pos) > ($config{$slave->{configPrefix}.'followDistanceMax'} + $config{$slave->{configPrefix}.'attackMaxDistance'}));
 
@@ -575,7 +591,8 @@ sub ai_skillUse {
 		tag => shift,
 		ret => shift,
 		waitBeforeUse => { time => time, timeout => shift },
-		prefix => shift
+		prefix => shift,
+		isStartSkill => shift
 	);
 	$args{giveup}{time} = time;
 	$args{giveup}{timeout} = $timeout{ai_skill_use_giveup}{timeout};
@@ -602,7 +619,7 @@ sub ai_skillUse {
 #
 # FIXME: Finish and use Task::UseSkill instead.
 sub ai_skillUse2 {
-	my ($skill, $lvl, $maxCastTime, $minCastTime, $target, $prefix, $waitBeforeUse, $tag) = @_;
+	my ($skill, $lvl, $maxCastTime, $minCastTime, $target, $prefix, $waitBeforeUse, $tag, $isStartSkill) = @_;
 
 	ai_skillUse(
 		$skill->getHandle(),
@@ -612,7 +629,7 @@ sub ai_skillUse2 {
 		$skill->getTargetType == Skill::TARGET_LOCATION ? (@{$target->{pos_to}}{qw(x y)})
 			: $skill->getTargetType == Skill::TARGET_SELF ? ($skill->getOwner->{ID}, undef)
 			: ($target->{ID}, undef),
-		$tag, undef, $waitBeforeUse, $prefix
+		$tag, undef, $waitBeforeUse, $prefix, $isStartSkill
 	)
 }
 
