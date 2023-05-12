@@ -93,6 +93,7 @@ our @EXPORT = (
 	qw/chatLog
 	shopLog
 	monsterLog
+	playerLog
 	deadLog
 	searchStoreInfo/,
 
@@ -936,6 +937,14 @@ sub monsterLog {
 	open MONLOG, ">>:utf8", $Settings::monster_log_file;
 	print MONLOG "[".getFormattedDate(int(time))."] $crud\n";
 	close MONLOG;
+}
+
+sub playerLog {
+	my $crud = shift;
+	return if (!$config{'playerLog'});
+	open PLAYERLOG, ">>:utf8", $Settings::player_log_file;
+	print PLAYERLOG "[".getFormattedDate(int(time))."] $crud\n";
+	close PLAYERLOG;
 }
 
 sub deadLog {
@@ -3646,9 +3655,9 @@ sub useTeleport {
 
 	# only if we want to use skill ?
 	return if ($char->{muted});
-	if($char->{last_skill_used_is_continuous}) {
+	if ($char->{last_skill_used_is_continuous}) {
 		$messageSender->sendStopSkillUse($char->{last_continuous_skill_used});
-	} elsif(($char->{last_skill_used} == 2027 || $char->{last_skill_used} == 147) && !$char->{selected_craft}) {
+	} elsif (($char->{last_skill_used} == 2027 || $char->{last_skill_used} == 147) && !$char->{selected_craft}) {
 		error T("Cant use Teleport Skill due to open craft list!\n"), "useTeleport";
 		return;
 	}
@@ -4745,7 +4754,9 @@ sub checkSelfCondition {
 			if ($nowMonsters > 0 && $config{$prefix . "_notMonsters"}) {
 				for my $monster (@$monstersList) {
 					$nowMonsters-- if (existsInList($config{$prefix . "_notMonsters"}, $monster->{name}) ||
-										existsInList($config{$prefix . "_notMonsters"}, $monster->{nameID}));
+										existsInList($config{$prefix . "_notMonsters"}, $monster->{nameID}) ||
+										($config{$prefix."_monstersCountDist"} && !inRange(blockDistance(calcPosition($char), calcPosition($monster)), $config{$prefix."_monstersCountDist"}))
+									);
                 }
             }
 		return 0 unless (inRange($nowMonsters, $config{$prefix . "_monstersCount"}));

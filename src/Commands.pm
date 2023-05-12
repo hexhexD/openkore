@@ -481,6 +481,7 @@ sub initHandlers {
 		['poison', [
 			T("Apply Poison in Weapon."),
 			["", T("lists available Poisons")],
+			["use", T("use the Guillotine Cross Poisonous Weapon Skill")],
 			[T("<poison #>"), T("Apply poison using an item from the 'poison' list")],
 			], \&cmdPoison],
 		['portals', [
@@ -622,7 +623,9 @@ sub initHandlers {
 			], \&cmdUseSkill],
 		['ss', [
 			T("Use skill on self."),
-			[T("<skill #> [<level>]"), T("use skill on self")]
+			[T("<skill #> [<level>]"), T("use skill on self")],
+			[T("start <skill #> [<level>]"), T("start use skill on self")],
+			[T("stop"), T("stop use skill on self")]
 			], \&cmdUseSkill],
 		['ssl', [
 			T("Use skill on slave."),
@@ -1145,13 +1148,11 @@ sub cmdArrowCraft {
 		return;
 	}
 	my (undef, $args) = @_;
-	my ($arg1) = $args =~ /^(\w+)/;
-	my ($arg2) = $args =~ /^\w+ (\d+)/;
+	my ($command, $arg1) = parseArgs( $args );
 
-	#print "-$arg1-\n";
-	if ($arg1 eq "") {
+	if ($command eq "") {
 		if (@arrowCraftID) {
-			my $msg = center(T(" Item To Craft "), 50, '-') ."\n";
+			my $msg = center(" ". T("Item To Craft") ." ", 50, '-') ."\n";
 			for (my $i = 0; $i < @arrowCraftID; $i++) {
 				next if ($arrowCraftID[$i] eq "");
 				$msg .= swrite(
@@ -1162,27 +1163,27 @@ sub cmdArrowCraft {
 			message $msg, "list";
 		} else {
 			error T("Error in function 'arrowcraft' (Create Arrows)\n" .
-			 	"Type 'arrowcraft use' to get list.\n");
+			 	"Type 'arrowcraft' to get list.\n");
 		}
-	} elsif ($arg1 eq "use") {
+	} elsif ($command eq "use") {
 		if (defined binFind(\@skillsID, 'AC_MAKINGARROW')) {
 			main::ai_skillUse('AC_MAKINGARROW', 1, 0, 0, $accountID);
 		} else {
-			error T("Error in function 'arrowcraft' (Create Arrows)\n" .
+			error T("Error in function 'arrowcraft use' (Create Arrows)\n" .
 				"You don't have Arrow Making Skill.\n");
 		}
-	} elsif ($arg1 eq "forceuse") {
-		my $item = $char->inventory->get($arg2);
+	} elsif ($command eq "forceuse") {
+		my $item = $char->inventory->get($arg1);
 		if ($item) {
 			$messageSender->sendArrowCraft($item->{nameID});
 			$char->{selected_craft} = 1;
 		} else {
 			error TF("Error in function 'arrowcraft forceuse #' (Create Arrows)\n" .
-				"You don't have item %s in your inventory.\n", $arg2);
+				"You don't have item %s in your inventory.\n", $arg1);
 		}
 	} else {
-		if ($arrowCraftID[$arg1] ne "") {
-			$messageSender->sendArrowCraft($char->inventory->get($arrowCraftID[$arg1])->{nameID});
+		if ($arrowCraftID[$command] ne "") {
+			$messageSender->sendArrowCraft($char->inventory->get($arrowCraftID[$command])->{nameID});
 			$char->{selected_craft} = 1;
 		} else {
 			error T("Error in function 'arrowcraft' (Create Arrows)\n" .
@@ -1198,13 +1199,11 @@ sub cmdPoison {
 		return;
 	}
 	my (undef, $args) = @_;
-	my ($arg1) = $args =~ /^(\w+)/;
-	my ($arg2) = $args =~ /^\w+ (\d+)/;
+	my ($command) = parseArgs( $args );
 
-	#print "-$arg1-\n";
-	if ($arg1 eq "") {
+	if ($command eq "") {
 		if (@arrowCraftID) {
-			my $msg = center(T(" Poison List "), 50, '-') ."\n";
+			my $msg = center(" ". T("Poison List") ." ", 50, '-') ."\n";
 			for (my $i = 0; $i < @arrowCraftID; $i++) {
 				next if ($arrowCraftID[$i] eq "");
 				$msg .= swrite(
@@ -1217,13 +1216,21 @@ sub cmdPoison {
 			error T("Error in function 'poison' (Apply Poison)\n" .
 			 	"Type 'poison' to get list.\n");
 		}
+
+	} elsif ($command eq "use") {
+		if (defined binFind(\@skillsID, 'GC_POISONINGWEAPON')) {
+			main::ai_skillUse('GC_POISONINGWEAPON', 5, 0, 0, $accountID);
+		} else {
+			error T("Error in function 'poison use' (Use Poison)\n" .
+				"You don't have Poisonous Weapon Skill.\n");
+		}
 	} else {
-		if ($arrowCraftID[$arg1] ne "") {
-			$messageSender->sendArrowCraft($char->inventory->get($arrowCraftID[$arg1])->{nameID});
+		if ($arrowCraftID[$command] ne "") {
+			$messageSender->sendArrowCraft($char->inventory->get($arrowCraftID[$command])->{nameID});
 			$char->{selected_craft} = 1;
 		} else {
 			error T("Error in function 'poison' (Apply Poison)\n" .
-				"Usage: poison [<identify #>]\n" .
+				"Usage: poison [<poison #>]\n" .
 				"Type 'poison' to get list.\n");
 		}
 	}
@@ -5055,7 +5062,6 @@ sub cmdReputation {
 	if (!$net || $net->getState() != Network::IN_GAME) {
 		error TF("You must be logged in the game to use this command '%s'\n", shift);
 	} else {
-		my $msg = center(T(" Reputation Status "), 80, '-') ."\n";
 		$msg .= swrite(
 			"@<<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<<< @<<<<<<<<<",
 			[T("Type"), T("Name"), T("Lvl"), T("Points")]
@@ -5069,7 +5075,6 @@ sub cmdReputation {
 		$msg .= center("", 80, '-') ."\n";
 		message $msg;
 	}
-
 }
 
 sub cmdRespawn {
@@ -5442,9 +5447,9 @@ sub cmdStats {
 			$char->{'dex'}, $char->{'dex_bonus'}, $char->{'points_dex'}, $char->{'points_free'},
 			$char->{'luk'}, $char->{'luk_bonus'}, $char->{'points_luk'}, $guildName,
 			$haircolors{$char->hairColor()} . " (" . $char->hairColor() . ")"]);
-			if(exists $char->{need_pow}) {
+			if (exists $char->{need_pow}) {
 				$msg .= center("", 44, '-') ."\n";
-				$msg .= center(T(" Trait Stats "), 44, '-') ."\n".
+				$msg .= center(" ". T("Trait Stats") ." ", 44, '-') ."\n".
 				swrite(TF(
 				"Pow: \@<<<   #\@<< P.Atk:    \@<<<   Res:    \@<<<\n" .
 				"Sta: \@<<<   #\@<< S.Matk:   \@<<<   Mres:   \@<<<\n" .
@@ -6228,7 +6233,24 @@ sub cmdUseSkill {
 		# ($x, $y) = ($pos->{x}, $pos->{y});
 
 	} elsif ($cmd eq 'ss') {
-		if (@args < 1 || @args > 2) {
+		if (defined $args[0] && $args[0] eq 'start') {
+			if (@args < 2 || @args > 3) {
+				error T("Syntax error in function 'ss start' (Start Use Skill on Self)\n" .
+				"Usage: ss start <skill #> [level]\n");
+				return;
+			}
+			$isStartUseSkill = 1;
+			$target = $char;
+			$level = $args[2];
+		} elsif (defined $args[0] && $args[0] eq 'stop') {
+			if (!$char->{last_skill_used_is_continuous}) {
+				error T("Skill Stop failed (continuous skills not detected)\n");
+				return;
+			}
+			message T("Sending Skill Stop\n"), "skill";
+			$messageSender->sendStopSkillUse($char->{last_continuous_skill_used});
+			return;
+		} elsif (@args < 1 || @args > 2) {
 			error T("Syntax error in function 'ss' (Use Skill on Self)\n" .
 				"Usage: ss <skill #> [level]\n");
 			return;
@@ -6311,7 +6333,8 @@ sub cmdUseSkill {
 		$target = { %{$pos} };
 	}
 
-	$skill = new Skill(auto => $args[0], level => $level);
+	my $skill_arg = $isStartUseSkill ? $args[1] : $args[0];
+	$skill = new Skill(auto => $skill_arg, level => $level);
 
 	if ($char->{skills}{$skill->getHandle()}{lv} == 0) {
 		error TF("Skill '%s' cannot be used because you have no such skill.\n", $skill->getName());
