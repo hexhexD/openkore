@@ -3,7 +3,7 @@
 
 automacro gx_edp {
 	MobNear /(フェンリル|呪いの根源)/i
-	StatusInactiveHandle ASC_EDP
+	StatusInactiveHandle EFST_EDP
 	timeout 15
 	overrideAI 1
 	exclusive 1
@@ -19,6 +19,8 @@ automacro gx_combo {
 	call {
 		do ss AS_ENCHANTPOISON
 		do sm GC_VENOMIMPRESS $.MobNearLastBinId
+		do sm GC_VENOMIMPRESS $.MobNearLastBinId
+		do sm GC_DARKCROW $.MobNearLastBinId
 		do sm GC_DARKCROW $.MobNearLastBinId
 		do sm GC_DARKCROW $.MobNearLastBinId
 	}
