@@ -5062,6 +5062,7 @@ sub cmdReputation {
 	if (!$net || $net->getState() != Network::IN_GAME) {
 		error TF("You must be logged in the game to use this command '%s'\n", shift);
 	} else {
+		my $msg = center(" ". T("Reputation Status") ." ", 80, '-') ."\n";
 		$msg .= swrite(
 			"@<<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<<< @<<<<<<<<<",
 			[T("Type"), T("Name"), T("Lvl"), T("Points")]
