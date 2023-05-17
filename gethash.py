@@ -164,7 +164,7 @@ while True:
         print("Game launched as is")
     else:
         os.chdir(cwd)
-        subprocess.Popen("Manualmap.exe", stdout=subprocess.DEVNULL)
+        subprocess.Popen("Manualmap.exe -target Ragexe.exe -dll Raven.dll", stdout=subprocess.DEVNULL)
 
     print(ragproc.pid)
     # os.chdir(r"C:\dev\openkore")
