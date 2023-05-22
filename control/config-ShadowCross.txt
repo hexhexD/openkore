@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword sheclouk
+adminPassword moposwai
 callSign
 commandPrefix ;
 callSignGM 0
@@ -174,7 +174,7 @@ dcOnMaxReconnections 0
 dcOnMute 0
 dcOnPM 0
 dcOnZeny 0
-dcOnStorageFull 1
+dcOnStorageFull 0
 dcOnPlayer 0
 dcOnServerShutDown 0
 dcOnServerClose 0
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -1005,7 +1005,7 @@ getAuto {
 
 debug 0
 debugPacket_unparsed 1
-debugPacket_received 0
+debugPacket_received 1
 debugPacket_ro_sent 1
 debugPacket_sent 0
 debugPacket_exclude
