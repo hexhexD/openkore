@@ -155,10 +155,15 @@ automacro dodge_player {
 }
 automacro got_PMed {
 	PrivMsg /.*/
-	timeout 60
+	timeout 20
+    delay 10
+    exclusive 1
 	call {
 		log $.PrivMsgLastName PMed me
 		do pm "$.PrivMsgLastName" (・・?
+        pause 2
+        do respawn
+        pause 600
 	}
 }
 
