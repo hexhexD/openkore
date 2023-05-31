@@ -7,9 +7,22 @@ import shlex
 import subprocess
 import time
 import msvcrt
-
 import requests
 from bs4 import BeautifulSoup
+
+def delete_gg_files(rag_path):
+    trash = glob.glob(rag_path + "/GameGuard/*.erl")
+    trash += glob.glob(rag_path + "/GameGuard/*.erv")
+    trash += glob.glob(rag_path + "/GameGuard/*.ver")
+    for t in trash:
+        os.remove(t)
+
+def kill_all():
+    print("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
+    os.system("taskkill /im perl.exe /f /t")
+    os.system("taskkill /im wxstart.exe /f /t")
+    print("Killing ragexe")
+    os.system("taskkill /im Ragexe.exe")
 
 parser = argparse.ArgumentParser(description="Retrieve Rgarnok login hash and intial bring-up")
 parser.add_argument("-u", help="user name", required=True)
@@ -88,23 +101,18 @@ launch_url = host + target_tag['href']
 #  print(launch_url)
 # select roaccount if it's supplied
 if (args.a != None):
-	equal_idx = launch_url.find("=");
-	launch_url = launch_url[:equal_idx+1] + args.a;
-	print(launch_url)
+    equal_idx = launch_url.find("=");
+    launch_url = launch_url[:equal_idx+1] + args.a;
+    print(launch_url)
 
-stop_proxy = [wireguard, "/uninstalltunnelservice", "Japan"]
-subprocess.Popen(stop_proxy);
+stop_proxy_command = [wireguard, "/uninstalltunnelservice", "Japan"]
+subprocess.Popen(stop_proxy_command);
 time.sleep(2)
 while True:
-    #  input_data = input("Waiting for input")
     print("Waiting for keypress...")
     c = msvcrt.getch()
 
-    print("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
-    os.system("taskkill /im perl.exe /f /t")
-    os.system("taskkill /im wxstart.exe /f /t")
-    print("Killing ragexe")
-    os.system("taskkill /im Ragexe.exe")
+    kill_all();
     if c == b'q':
         print("byebye")
         exit()
@@ -125,17 +133,8 @@ while True:
     passwd = re.search("-p:(\w+)", onetime_key).group(1)
     print(passwd)
 
-    print("Launching openkore before game starts")
-    subprocess.Popen(r"perl openkore.pl --interface=Wx --config=control\config-ShadowCross.txt",
-                     close_fds=True,
-                     creationflags=subprocess.DETACHED_PROCESS)
-
     print("Taking out the trash before game start")
-    trash = glob.glob(args.g + "/GameGuard/*.erl")
-    trash += glob.glob(args.g + "/GameGuard/*.erv")
-    trash += glob.glob(args.g + "/GameGuard/*.ver")
-    for t in trash:
-        os.remove(t)
+    delete_gg_files(args.g)
 
     commandline = r"Ragexe.exe 1rag1 -w {}".format(onetime_key).rstrip("\x00")
     commandline = shlex.split(commandline)
@@ -147,11 +146,6 @@ while True:
 
     time.sleep(6)
     print("Taking out the trash after game start")
-    trash = glob.glob(args.g + "/GameGuard/*.erl")
-    trash += glob.glob(args.g + "/GameGuard/*.erv")
-    trash += glob.glob(args.g + "/GameGuard/*.ver")
-    for t in trash:
-        os.remove(t)
 
     # Chose if we want to inject netredirect or logging dll
     if b"1" == c:
@@ -164,9 +158,17 @@ while True:
         print("Game launched as is")
     else:
         os.chdir(cwd)
-        subprocess.Popen("Manualmap.exe -target Ragexe.exe -dll Raven.dll", stdout=subprocess.DEVNULL)
+        inject_antigg = "Manualmap.exe -target GameMon.des -dll AntiGG.dll"
+        ret = subprocess.run(inject_antigg, capture_output=True);
+        print(ret.stdout.decode())
+        time.sleep(1)
+        inject_raven = "Manualmap.exe -target Ragexe.exe -dll Raven.dll"
+        ret = subprocess.run(inject_raven, capture_output=True);
+        print(ret.stdout.decode())
 
     print(ragproc.pid)
-    # os.chdir(r"C:\dev\openkore")
-    # os.startfile("wxstart.exe")
-    # subprocess.Popen("TAKEOFF.bat", start_new_session=True)
+
+    print("Launching openkore")
+    subprocess.Popen(r"perl openkore.pl --interface=Wx --config=control\config-ShadowCross.txt",
+                     close_fds=True,
+                     creationflags=subprocess.DETACHED_PROCESS)
