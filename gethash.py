@@ -31,6 +31,7 @@ parser.add_argument("-k", help="website login cookie key", required=True)
 parser.add_argument("-v", help="webstie login cookie value", required=True)
 parser.add_argument("-g", help="Game path", default="C:/Gravity/Ragnarok")
 parser.add_argument("-a", help="roaccount")
+parser.add_argument("-f", help="forward to openkore")
 
 args = parser.parse_args()
 
@@ -144,7 +145,7 @@ while True:
     startupinfo.dwFlags |= subprocess.HIGH_PRIORITY_CLASS
     ragproc = subprocess.Popen(commandline, startupinfo=startupinfo)
 
-    time.sleep(6)
+    time.sleep(7)
     print("Taking out the trash after game start")
 
     # Chose if we want to inject netredirect or logging dll
@@ -168,7 +169,11 @@ while True:
 
     print(ragproc.pid)
 
-    print("Launching openkore")
-    subprocess.Popen(r"perl openkore.pl --interface=Wx --config=control\config-ShadowCross.txt",
+    if args.f is None:
+        continue
+
+    openkore = "perl openkore.pl " + args.f
+    print("Launching openkore: " + openkore)
+    subprocess.Popen(openkore,
                      close_fds=True,
                      creationflags=subprocess.DETACHED_PROCESS)
