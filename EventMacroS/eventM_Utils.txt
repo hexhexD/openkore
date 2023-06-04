@@ -15,6 +15,16 @@ macro yuno_hugel {
     do talknpc 145 63 r0
     do move 96 261
 }
+automacro getoff_hugel {
+    LocalMsg /現在、フィゲルに停船中です/
+    call {
+		if ($airship_dst == hugel) {
+			log Getting off at hugel
+			do move 242 72
+		}
+    }
+}
+
 macro rachel_yuno {
     set exclusive 1
 	$airship_dst = yuno
@@ -25,8 +35,8 @@ macro rachel_yuno {
 automacro getoff_yuno {
     LocalMsg /現在、ジュノーに停船中です/
     call {
-		log Getting off at Yuno
 		if ($airship_dst == yuno) {
+			log Getting off at Yuno
 			do move 242 72
 		}
     }
@@ -34,8 +44,8 @@ automacro getoff_yuno {
 automacro getoff_rachel {
     LocalMsg /現在、ラヘルに停船中です/
     call {
-		log Getting off at Rachel
 		if ($airship_dst == Rachel) {
+			log Getting off at Rachel
 			do move 242 72
 			do move rachel
 		}
