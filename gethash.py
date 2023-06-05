@@ -145,7 +145,7 @@ while True:
     startupinfo.dwFlags |= subprocess.HIGH_PRIORITY_CLASS
     ragproc = subprocess.Popen(commandline, startupinfo=startupinfo)
 
-    time.sleep(7)
+    time.sleep(8)
     print("Taking out the trash after game start")
 
     # Chose if we want to inject netredirect or logging dll
