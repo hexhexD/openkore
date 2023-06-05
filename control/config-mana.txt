@@ -961,7 +961,7 @@ useSelf_item 王級メロン {
 }
 
 useSelf_item 王級メロン {
-	sp < 90%
+	sp < 50%
 	notInTown 1
 	manualAI 0
 }
