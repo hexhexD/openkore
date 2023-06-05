@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword kaprewre
+adminPassword thefrear
 callSign
 commandPrefix ;
 callSignGM 0
@@ -193,7 +193,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 0
+itemsTakeAuto 1
 itemsTakeAuto_party 0
 itemsGatherAuto 2
 itemsGatherAuto_notInTown 1
@@ -214,7 +214,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 0
+route_randomWalk 1
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 60
 route_maxWarpFee
@@ -604,7 +604,7 @@ attackSkillSlot NC_MAGMA_ERUPTION {
 attackSkillSlot NC_POWERSWING {
 	lvl 10
 	dist 2
-	monstersCount < 2
+	aggressives < 2
 	disabled 0
 }
 attackSkillSlot NC_AXETORNADO {
