@@ -447,12 +447,13 @@ automacro sara2_garden {
 	timeout 30
 	call {
 	do conf itemsGatherAuto 2
-	do conf attackAuto -1
+	do conf attackAuto 2
 	do move 177 183
 	do talknpc 176 178
 	do move 131 130
 	do move 200 129
 	do talknpc 200 135
+	do conf attackAuto -1
 
 	do move 191 68
 	do move 356 140
