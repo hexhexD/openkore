@@ -165,7 +165,7 @@ automacro ghost_boss_death {
     	if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
 		log 呪いの根源 dead xD
 		do move 202 38
-		do talknpc 196 44 r0 r0
+		do talknpc 196 44 r0 r0 r0
 		[
 		do conf itemsTakeAuto 1
 		do conf itemsGatherAuto 1
