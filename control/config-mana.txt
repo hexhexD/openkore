@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword thefrear
+adminPassword fribreto
 callSign
 commandPrefix ;
 callSignGM 0
@@ -193,9 +193,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 2
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -214,7 +214,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 1
+route_randomWalk 0
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 60
 route_maxWarpFee
@@ -721,26 +721,31 @@ useSelf_skill {
 
 useSelf_skill WS_CARTBOOST {
 	whenStatusInactive EFST_CARTBOOST
+	timeout 1
 	aggressives 0
 	notInTown 0
 }
 useSelf_skill MC_LOUD {
 	whenStatusInactive EFST_SHOUT
+	timeout 1
 	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_ADRENALINE {
 	whenStatusInactive EFST_ADRENALINE
+	timeout 1
 	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_WEAPONPERFECT {
 	whenStatusInactive EFST_WEAPONPERFECT
+	timeout 1
 	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_MAXIMIZE {
 	whenStatusInactive EFST_MAXIMIZE
+	timeout 1
 	aggressives 0
 	notInTown 1
 }
@@ -750,6 +755,7 @@ useSelf_skill BS_OVERTHRUST {
 	aggressives 0
 	timeout 30
 	notInTown 1
+	disabled 1
 }
 useSelf_skill WS_OVERTHRUSTMAX {
 	whenStatusInactive EFST_OVERTHRUSTMAX
