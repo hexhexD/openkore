@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword moposwai
+adminPassword thestouh
 callSign
 commandPrefix ;
 callSignGM 0
@@ -194,7 +194,7 @@ followBot 0
 
 itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 0
+itemsGatherAuto 1
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -666,51 +666,6 @@ doCommand {
 	manualAI 0
 }
 
-useSelf_skill ASC_EDP {
-	lvl 5
-	maxCastTime
-	minCastTime 3
-	hp
-	sp
-	homunculus
-	homunculus_hp
-	homunculus_sp
-	homunculus_dead
-	homunculus_resting
-	homunculus_onAction
-	homunculus_notOnAction
-	homunculus_whenIdle
-	homunculus_whenNotIdle
-	mercenary
-	mercenary_hp
-	mercenary_sp
-	mercenary_whenStatusActive
-	mercenary_whenStatusInactive
-	mercenary_onAction
-	mercenary_notOnAction
-	mercenary_whenIdle
-	mercenary_whenNotIdle
-	onAction
-	whenStatusActive
-	whenStatusInactive エンチャントデッドリーポイズン
-	whenFollowing
-	spirit
-	amuletType
-	aggressives
-	monsters 呪いの根源, 死神アンク, フェンリル
-	notMonsters
-	monstersCount
-	stopWhenHit
-	inLockOnly
-	notWhileSitting
-	notInTown
-	timeout 15
-	disabled
-	whenPartyMembersNear
-	whenPartyMembersNearDist
-	inInventory
-	manualAI
-}
 useSelf_skill {
 	monsters
 	timeout 0

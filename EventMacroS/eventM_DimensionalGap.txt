@@ -168,7 +168,7 @@ automacro ghost_boss_death {
 		do talknpc 196 44 r0 r0 r0
 		[
 		do conf itemsTakeAuto 1
-		do conf itemsGatherAuto 1
+		do conf itemsGatherAuto 2
 		do conf route_randomWalk 0
 		]
     	}
@@ -267,7 +267,7 @@ automacro sara_boss {
 	IsInCoordinate 150..160 191..201
 	timeout 15
 	call {
-		do conf itemsGatherAuto 1
+		do conf itemsGatherAuto 2
 		release sara_boss_death
 		do move 155 232
     	do talknpc 152 233 r0
