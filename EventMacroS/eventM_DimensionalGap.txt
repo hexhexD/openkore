@@ -37,6 +37,7 @@ automacro ghost_ready {
 	call {
 		log instance ready let's go
 		do talknpc 40 134 c r0
+		lock ghost_boss_death
 	}
 }
 automacro ghost_first {
@@ -155,14 +156,14 @@ automacro ghost_boss {
     call {
 		do move 200 43
 		do conf route_randomWalk 0
+		release ghost_boss_death
 	}
 }
 
 automacro ghost_boss_death {
 	InMap 1@spa
-	SimpleHookEvent target_died
+	SimpleHookEvent packet_emotion
 	call {
-    	if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
 		log 呪いの根源 dead xD
 		do move 202 38
 		do talknpc 196 44 r0 r0 r0
@@ -171,7 +172,6 @@ automacro ghost_boss_death {
 		do conf itemsGatherAuto 2
 		do conf route_randomWalk 0
 		]
-    	}
 	}
 }
 automacro ghost_exit {
