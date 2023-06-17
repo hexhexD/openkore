@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword thestouh
+adminPassword gojawrai
 callSign
 commandPrefix ;
 callSignGM 0
@@ -194,7 +194,7 @@ followBot 0
 
 itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 1
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -960,7 +960,7 @@ getAuto {
 
 debug 0
 debugPacket_unparsed 1
-debugPacket_received 1
+debugPacket_received 0
 debugPacket_ro_sent 1
 debugPacket_sent 0
 debugPacket_exclude

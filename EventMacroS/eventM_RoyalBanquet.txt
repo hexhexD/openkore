@@ -12,8 +12,11 @@ macro new_world_access {
 
 	do move aldebaran 137 131
 	do talknpc 127 138 r0
+	# learnt 300 jellopy is required
+	do talknpc 127 138 r0
 	# hand off jellopy
 	do talknpc 127 138 r0
+
 
 	do move geffen 90 65
 	do talknpc 90 67 r0
@@ -29,10 +32,11 @@ macro new_world_access {
 	do talknpc 83 67 r0
 
 	pause 2
-	log Trying to teleport to lighthalzen
+	warning Trying to teleport to lighthalzen
+# TODO: figure out how to go to lighthalzen without mimimi
 	call tele_lighthalzen
 }
-# TODO: figure out how to go to lighthalzen without mimimi
+# TODO: how to go from lighthalzen to prontera
 automacro new_world_access_next {
 	QuestActive 10065
 	InMap lighthalzen
@@ -42,10 +46,9 @@ automacro new_world_access_next {
 		do talknpc 132 259
 		do talknpc 132 259 r0
 		do talknpc 132 259 r0
-		log Need to be in protera to trigger next step
+		warning Need to be in protera to trigger next step
 	}
 }
-# TODO: how to go from lighthalzen to prontera
 automacro new_world_access_next2 {
 	QuestActive 10068
 	InMap prontera
@@ -67,7 +70,7 @@ automacro new_world_access_next3 {
 		do talknpc 132 259
 		do talknpc 132 259
 
-		call yuno_rachel
+		do move reachel
 	}
 }
 # Airship only goes from yuno to rachel
@@ -79,6 +82,7 @@ automacro new_world_access_next4 {
 		do move ra_temple 117 113
 		do talknpc 119 113
 
+		call tele_lighthalzen
 	}
 }
 automacro new_world_access_next5 {
@@ -467,6 +471,7 @@ automacro royal_レベンブルグ家 {
 		do talknpc 90 186 r0
 		do talknpc 96 186 r0 r0 r0 r0 r0
 		do talknpc 90 186 r0 r0 r0 r0 r0
+		do talknpc 96 186 r0 r0 r0 r0 r0
 	}
 }
 automacro royal_ゲオルグ家 {
@@ -493,7 +498,7 @@ automacro royal_next {
 	exclusive 1
 	call {
 		do move prt_cas 106 235
-		do talknpc 106 240 r0 r0 r0 r0 r0
+		do talknpc 106 240 r0 r0 r0 c r0
 	}
 }
 automacro royal_next2 {
@@ -503,6 +508,7 @@ automacro royal_next2 {
 	delay 2
 	call {
 		do move prt_cas 195 162
+		do talk cont
 		do talk resp 0
 	}
 }
@@ -527,8 +533,8 @@ automacro royal_next4 {
 }
 automacro royal_bell_teleported_me {
 	QuestActive 7692
+	InMap prt_lib
 	run-once 1
-	delay 2
 	exclusive 1
 	call {
 		do move prt_lib 91 77
@@ -553,9 +559,9 @@ automacro royal_second_md_ready {
 automacro royal_in_md {
 	QuestActive 7692
 	InMap 2@mir
-	timeout 10
-	delay 2
+	run-once 1
 	call {
+		do talk no
 		do move 106 77
 		do conf attackAuto 2
 	}
@@ -565,11 +571,13 @@ automacro royal_killed_3 {
 	timeout 10
 	LocalMsg /作戦班、撤収するぞ/
 	delay 2
+	exclusive 1
 	call {
 		do move 2@mir 101 87
 		do talknpc 101 93 r0
 		do move 2@mir 101 8
 		do talk resp 1
+		do talk cont
 	}
 }
 automacro royal_out_md {
@@ -582,7 +590,7 @@ automacro royal_out_md {
 		do talknpc 91 85 r0
 		do talknpc 76 80 r0
 		do talknpc 91 85
-		do talknpc 85 82 r0 r0 r0 r0
+		do talknpc 85 82 r0 r0 c r0
 
 		pause 5
 		do move prt_lib 63 61
@@ -591,10 +599,11 @@ automacro royal_out_md {
 }
 automacro royal_jail {
 	QuestActive 7695
-	timeout 120
+	InMap prt_pri00
 	exclusive 1
 	call {
 		do talknpc 58 128
+		pause 2
 		do move prt_cas_q 27 30
 		# servant in 貴賓室
 		do talknpc 26 30 r0 r0

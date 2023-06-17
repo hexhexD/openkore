@@ -1,5 +1,6 @@
 ### airship ###
 macro yuno_rachel {
+	do conf attackAuto 0
     set exclusive 1
 	$airship_dst = Rachel
 	do move y_airport 150 34
@@ -72,6 +73,6 @@ macro tele_lighthalzen {
 		do eq 怨嗟の腕輪
 		do ss リヒタルゼンへの帰還
 	} else {
-		log Need 怨嗟の腕輪
+		warning Need 怨嗟の腕輪
 	}
 }

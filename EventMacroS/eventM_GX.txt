@@ -4,7 +4,7 @@
 automacro gx_edp {
 	MobNear /(フェンリル|呪いの根源)/i
 	StatusInactiveHandle EFST_EDP
-	timeout 15
+	timeout 5
 	overrideAI 1
 	exclusive 1
 	call {

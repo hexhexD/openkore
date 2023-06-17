@@ -2471,7 +2471,6 @@ ra_fild01 306 38 ra_fild04 322 371
 ra_fild04 322 378 ra_fild01 306 43
 ra_fild04 362 351 ra_fild05 39 353
 ra_fild05 33 353 ra_fild04 356 351
-ra_fild05 27 13 ra_fild09 30 337
 ra_fild09 29 343 ra_fild05 31 17
 ra_fild04 263 54 ra_fild08 287 365
 ra_fild08 287 370 ra_fild04 263 60

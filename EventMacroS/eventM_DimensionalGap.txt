@@ -163,15 +163,14 @@ automacro ghost_boss {
 automacro ghost_boss_death {
 	InMap 1@spa
 	SimpleHookEvent packet_emotion
-	delay 3
+	exclusive 1
 	call {
-		[
-		do conf itemsGatherAuto 2
-		do conf itemsTakeAuto 1
-		do conf route_randomWalk 0
-		]
 		log 呪いの根源 dead xD
 		do move 202 38
+		[
+		do conf itemsGatherAuto 2
+		do conf route_randomWalk 0
+		]
 		do talknpc 196 44 r0 r0 r0
 	}
 }

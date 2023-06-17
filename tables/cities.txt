@@ -19,6 +19,9 @@ payon_in02.rsw#Inside Payon#
 prontera.rsw#Prontera City#
 prt_in.rsw#Inside Prontera#
 prt_castle.rsw#Prontera Castle#
+prt_cas_q.rsw#royal#
+prt_cas.rsw#royal#
+prt_lib.rsw#royal#
 prt_church.rsw#the Santuary#
 izlude.rsw#Izlude Town#
 izlude_a.rsw#Satellite city Izlude#
