@@ -177,7 +177,7 @@ automacro ghost_boss_death {
 automacro ghost_exit {
 	LocalMsg /周辺の風景が歪み始めた/
 	InMap 1@spa
-	delay 3
+	delay 5
 	call {
 		do move 198 27
 		do talknpc 204 29 r0 r0

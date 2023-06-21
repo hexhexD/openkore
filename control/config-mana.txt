@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword fribreto
+adminPassword grotheyo
 callSign
 commandPrefix ;
 callSignGM 0
@@ -721,31 +721,31 @@ useSelf_skill {
 
 useSelf_skill WS_CARTBOOST {
 	whenStatusInactive EFST_CARTBOOST
-	timeout 1
+	timeout 3
 	aggressives 0
 	notInTown 0
 }
 useSelf_skill MC_LOUD {
 	whenStatusInactive EFST_SHOUT
-	timeout 1
+	timeout 3
 	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_ADRENALINE {
 	whenStatusInactive EFST_ADRENALINE
-	timeout 1
+	timeout 3
 	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_WEAPONPERFECT {
 	whenStatusInactive EFST_WEAPONPERFECT
-	timeout 1
+	timeout 3
 	aggressives 0
 	notInTown 1
 }
 useSelf_skill BS_MAXIMIZE {
 	whenStatusInactive EFST_MAXIMIZE
-	timeout 1
+	timeout 3
 	aggressives 0
 	notInTown 1
 }
