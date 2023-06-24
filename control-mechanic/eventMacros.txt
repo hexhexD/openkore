@@ -149,8 +149,9 @@ automacro dodge_player {
     [
         log Someone nearby
         log $.PlayerNearLast
-        do is ハエの羽
     ]
+    do ss グリード
+    do is ハエの羽
 	}
 }
 automacro got_PMed {
