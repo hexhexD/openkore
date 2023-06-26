@@ -3167,6 +3167,10 @@ sub processAutoAttack {
 			# List aggressive monsters
 			@aggressives = ai_getAggressives(1) if $attackOnRoute;
 
+			if (scalar(@aggressives) < 3 && $config{attackAuto} == 0) {
+				return;
+			}
+
 			# List party monsters
 			foreach (@monstersID) {
 				next if (!$_ || !checkMonsterCleanness($_));

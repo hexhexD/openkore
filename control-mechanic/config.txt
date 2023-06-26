@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword drouteyo
+adminPassword grebrido
 callSign
 commandPrefix ;
 callSignGM 0
@@ -744,7 +744,7 @@ useSelf_skill WS_OVERTHRUSTMAX {
 	whenStatusInactive EFST_OVERTHRUSTMAX
 	timeout 50
 	inMap abyss_03
-	disabled 0
+	disabled 1
 }
 useSelf_skill_smartHeal 1
 

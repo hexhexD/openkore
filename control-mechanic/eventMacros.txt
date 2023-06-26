@@ -143,15 +143,15 @@ automacro dodge_player {
 	# PlayerNearCount > 0
     PlayerNear /.+?/
 	disabled 0
-    timeout 1
     overrideAI 1
+    exclusive 1
+    timeout 1
 	call {
     [
         log Someone nearby
         log $.PlayerNearLast
+        do is ハエの羽
     ]
-    do ss グリード
-    do is ハエの羽
 	}
 }
 automacro got_PMed {
@@ -165,6 +165,7 @@ automacro got_PMed {
         pause 2
         do respawn
         pause 600
+        do quit
 	}
 }
 
