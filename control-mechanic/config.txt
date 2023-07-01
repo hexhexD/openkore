@@ -1038,7 +1038,7 @@ debug 0
 debugPacket_unparsed 0
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 1
+debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include 0361
 debugPacket_include_dumpMethod 2
