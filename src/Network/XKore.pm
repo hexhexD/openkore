@@ -254,7 +254,8 @@ sub checkConnection {
 			# new state so we don't enter this block of code again
 			$conState = 2.1;
 			$timeout{charSelectDelay}{time} = time;
-			$timeout{charSelectDelay}{timeout} = int(rand(30)) + 60;
+			# $timeout{charSelectDelay}{timeout} = int(rand(30)) + 60;
+			$timeout{charSelectDelay}{timeout} = 10;
 			message("Selecting char in random seconds\n");
 		}
 	} elsif ($self->getState() == 2.1 && timeOut($timeout{charSelectDelay})) {

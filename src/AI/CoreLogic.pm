@@ -3286,7 +3286,7 @@ sub processItemsTake {
 
 			$dist = distance($item->{pos}, AI::args->{pos});
 			$dist_to = distance($item->{pos}, AI::args->{pos_to});
-			if (($dist <= 7 || $dist_to <= 7) && $item->{take_failed} == 0) {
+			if (($dist <= 8 || $dist_to <= 8) && $item->{take_failed} == 0) {
 				$foundID = $_;
 				last;
 			}
