@@ -35,7 +35,7 @@ ai_homunculus_standby 0.5
 ai_mercenary_standby 0.5
 
 # Send the attack packet every x seconds, if it hasn't been send already
-ai_attack 1
+ai_attack 0
 ai_homunculus_attack 1
 ai_mercenary_attack 1
 
@@ -178,7 +178,7 @@ ai_sellAuto_wait_after_packet_giveup 15
 ai_storageAuto 0.5
 ai_storageAuto_giveup 15
 ai_storageAuto_useItem 2
-ai_storageAuto_wait_before_action 2
+ai_storageAuto_wait_before_action 0.5
 # delay between sending cart item add/get packets
 ai_cartAuto 0.15
 

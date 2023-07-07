@@ -364,7 +364,7 @@ automacro magic_battle {
 
 automacro magic_won {
 	InMap 1@ge_st
-	NpcMsg /優勝を祝って/
+	PubMsg /優勝を祝って/
 	call {
 		do move 108 48
 		pause 3
@@ -384,6 +384,8 @@ automacro magic_leave {
     do talknpc 125 105
 	do move 119 213
 	do talk resp 1
+	pause 4
+	do talknpc 98 141
 	}
 }
 

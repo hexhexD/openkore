@@ -1,9 +1,8 @@
 # 武器属性付与
-
-
 automacro gx_edp {
 	MobNear /(フェンリル|呪いの根源)/i
 	StatusInactiveHandle EFST_EDP
+	disabled 1
 	timeout 5
 	overrideAI 1
 	exclusive 1
@@ -16,6 +15,7 @@ automacro gx_combo {
 	timeout 30
 	overrideAI 1
 	priority 1
+	exclusive 1
 	call {
 		do ss AS_ENCHANTPOISON
 		do sm GC_VENOMIMPRESS $.MobNearLastBinId
@@ -42,12 +42,10 @@ automacro gx_combo_magic {
 	timeout 30
 	InMap 1@ge_st
 	overrideAI 1
+	exclusive 1
 	call {
 		do ss AS_ENCHANTPOISON
-		pause 0.5
 		do sm GC_VENOMIMPRESS $.MobNearLastBinId
-		do sm GC_VENOMIMPRESS $.MobNearLastBinId
-		pause 0.5
 		do sm GC_DARKCROW $.MobNearLastBinId
 		do sm GC_DARKCROW $.MobNearLastBinId
 	}

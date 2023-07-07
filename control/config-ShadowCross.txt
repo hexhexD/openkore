@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword gojawrai
+adminPassword thefreac
 callSign
 commandPrefix ;
 callSignGM 0
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 0
+itemsTakeAuto 1
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -604,6 +604,7 @@ attackSkillSlot GC_ROLLINGCUTTER {
 	disabled 0
 	lvl 5
 	dist 2
+	aggressives > 1
 }
 
 attackComboSlot {
@@ -932,9 +933,9 @@ storageAuto_npc dali02 106 93
 storageAuto_standpoint
 storageAuto_distance 3
 storageAuto_maxDistance 15
-storageAuto_npc_type 1
+storageAuto_npc_type 3
 storageAuto_type 0
-storageAuto_npc_steps c r1
+storageAuto_npc_steps
 storageAuto_password 1111
 storageEncryptKey
 storageAuto_keepOpen 0
