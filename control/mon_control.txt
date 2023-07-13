@@ -57,6 +57,7 @@
 # Monsters not found in this file, or flags not specified will default to:
 # <attack> = 1
 
+ピットマン 2 0 0
 ### mimimi quest
 アンバーナイト 2 0 0
 スリーパー 2 0 0

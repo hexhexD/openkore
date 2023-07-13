@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword thefreac
+adminPassword rousties
 callSign
 commandPrefix ;
 callSignGM 0
@@ -287,7 +287,7 @@ teleportAuto_allPlayers 0
 teleportAuto_notPlayers
 teleportAuto_atkCount 0
 teleportAuto_atkMiss 10
-teleportAuto_unstuck 1
+teleportAuto_unstuck 0
 teleportAuto_lostTarget 0
 teleportAuto_dropTarget 1
 teleportAuto_dropTargetKS 0
@@ -361,7 +361,7 @@ itemHistory 0
 autoTalkCont 1
 noAutoSkill 0
 portalCompile 1
-portalRecord 2
+portalRecord 1
 portalRecord_recompileAfter 1
 missDamage 0
 
@@ -587,13 +587,26 @@ attackSkillSlot {
 	manualAI 0
 }
 
-useSelf_skill ハルシネーションウォーク {
-	monsters フェンリル
-	whenStatusInactive
+attackSkillSlot ハルシネーションウォーク {
+	monsters フェンリル, 呪いの根源
 	lvl 5
 	minCastTime 3
+	isSelfSkill 1
 	timeout 120
 }
+attackSkillSlot AS_ENCHANTPOISON {
+	monsters フェンリル, 呪いの根源
+	lvl 5
+	isSelfSkill 1
+	timeout 30
+}
+attackSkillSlot GC_DARKCROW {
+	monsters フェンリル, 呪いの根源, 大長老アイリン
+	lvl 5
+	minCastTime 4
+	timeout 30
+}
+
 attackSkillSlot GC_DARKILLUSION {
 	lvl 5
 	dist 8
@@ -607,19 +620,9 @@ attackSkillSlot GC_ROLLINGCUTTER {
 	aggressives > 1
 }
 
-attackComboSlot {
-	afterSkill
-	waitBeforeUse
-	dist
-	maxDist
-	isSelfSkill
-	target_hp
-	target_deltaHp
-	monsters
-	notMonsters
-	monstersCount
-	whenPartyMembersNear
-	whenPartyMembersNearDist
+attackComboSlot GC_VENOMIMPRESS {
+	afterSkill AS_ENCHANTPOISON
+	lvl 5
 }
 
 doCommand {
@@ -929,13 +932,17 @@ sellAuto_maxDistance
 sellAuto_npc_steps s
 
 storageAuto 0
+### dimentional gap
 storageAuto_npc dali02 106 93
+### mimi storage
+# storageAuto_npc yuno 205 316
 storageAuto_standpoint
 storageAuto_distance 3
 storageAuto_maxDistance 15
 storageAuto_npc_type 3
 storageAuto_type 0
-storageAuto_npc_steps
+# storageAuto_npc_steps
+storageAuto_npc_steps c r1 r0
 storageAuto_password 1111
 storageEncryptKey
 storageAuto_keepOpen 0
@@ -962,12 +969,12 @@ getAuto {
 debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
-debugPacket_ro_sent 1
+debugPacket_ro_sent 0
 debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include
 debugPacket_include_dumpMethod 0
-debugDomains ai_attack, npc
+debugDomains
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

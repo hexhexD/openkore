@@ -168,7 +168,7 @@ automacro flame_road5 {
 	call {
 [
 		do conf attackAuto 2
-		do conf itemsTakeAuto 1
+		do conf itemsTakeAuto 2
 		do conf route_randomWalk 1
 ]
 	}
@@ -201,7 +201,7 @@ automacro flame_road7 {
 	call {
 [
 		do conf attackAuto 2
-		do conf itemsTakeAuto 1
+		do conf itemsTakeAuto 2
 		do conf route_randomWalk 1
 ]
 		$a = &invamount(ソニアの茎)
@@ -732,5 +732,341 @@ automacro royal_end2 {
 		do move prt_cas_q 24 78
 		do talknpc 21 83 r0
 		log royal quest line done!
+	}
+}
+
+### Terra Gloria ###
+# Need 3 古いつるはし
+macro terra_gloria_quest {
+	do move prt_cas_q 23 35
+	do talknpc 21 39 r0 r0
+	do talknpc 23 36
+	do talknpc 21 39 r0
+}
+automacro terra_gloria_1 {
+	QuestActive 7731
+	InMap lhz_airport
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talknpc 189 39
+	}
+}
+automacro terra_gloria_2 {
+	QuestActive 7732
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move lighthalzen 186 291
+	}
+}
+automacro terra_gloria_3 {
+	QuestActive 7733
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move lighthalzen 192 155
+		# teleport to ghetto
+		do talknpc 202 167
+		pause 2
+		# do talknpc 309 263
+		do talk 1
+	}
+}
+automacro terra_gloria_4 {
+	QuestActive 7734
+	InMap lighthalzen
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talk resp 0
+	}
+}
+automacro terra_gloria_4_1 {
+	QuestActive 7734
+	InMap prt_cas_q
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move prt_cas_q 23 35
+		do talknpc 21 39 r0 r0 r1 r0
+	}
+}
+automacro terra_gloria_5 {
+	QuestActive 7735
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talknpc 168 41 r0 r0 r0
+	}
+}
+automacro terra_gloria_6 {
+	QuestActive 7736
+	InMap lhz_airport
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talknpc 168 41 r0 r0 r0
+	}
+}
+automacro terra_gloria_6_1 {
+	QuestActive 7736
+	InMap lhz_in02
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move 238 169
+		do talknpc 239 148 r1 r0 r0
+	}
+}
+automacro terra_gloria_7 {
+	QuestActive 7737
+	InMap einbroch
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talknpc 239 269 r0 r0 r0 r0 r0 r0 r0 r0 r0 r0 r0
+	}
+}
+automacro terra_gloria_8 {
+	QuestActive 14595
+	InMap einbroch
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move 264 261
+		do talk 3
+		do talk resp 0
+	}
+}
+automacro terra_gloria_9 {
+	QuestActive 73151
+	InMap einbech
+	timeout 120
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 46 208
+	}
+}
+automacro terra_gloria_10 {
+	QuestActive 14596
+	InMap einbech
+	timeout 120
+	exclusive 1
+	delay 2
+	call {
+		do talk 1
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+	}
+}
+automacro terra_gloria_11 {
+	QuestActive 14597
+	InMap einbech
+	timeout 120
+	exclusive 1
+	delay 2
+	call {
+		do talk 1
+		do talk resp 0
+	}
+}
+automacro terra_gloria_12 {
+	QuestActive 14598
+	InMap einbech
+	timeout 120
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in
+		do talknpc 21 45 r0
+	}
+}
+automacro terra_gloria_13 {
+	QuestActive 14599
+	InMap rebel_in
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 82 55
+		do talknpc 86 61 r0 r0
+	}
+}
+# Quest: テラグローリア‐リベリオン交渉①‐ (14600) has been added.
+# Quest: テラグローリア‐リベリオン交渉②‐ (14602) has been added.
+# Quest: テラグローリア (14614) has been added.
+automacro terra_gloria_14 {
+	QuestActive 14602
+	InInventory "古いつるはし" < 3
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move ein_dun01
+[
+		do conf attackAuto 1
+		do conf itemsTakeAuto 2
+		do conf route_randomWalk 1
+]
+	}
+}
+automacro terra_gloria_14_1 {
+	QuestActive 14602
+	InInventory "古いつるはし" >= 3
+	timeout 360
+	delay 2
+	call {
+[
+		do conf attackAuto 1
+		do conf itemsTakeAuto 0
+		do conf route_randomWalk 0
+]
+		do move rebel_in 70 72
+		do talknpc 70 78 r0
+		do talknpc 70 78 r0 r0
+		do talknpc 70 78 r0 r0
+	}
+}
+automacro terra_gloria_15 {
+	QuestActive 73160
+	QuestActive 14600
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 114 74
+		do talknpc 122 71 r0 r0
+	}
+}
+automacro terra_gloria_16 {
+	QuestActive 11454
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 126 41
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+	}
+}
+automacro terra_gloria_17 {
+	QuestActive 11455
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 159 83
+		do talknpc 164 88 r0 r0 r0
+	}
+}
+automacro terra_gloria_18 {
+	QuestActive 11456
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 164 88
+	}
+}
+automacro terra_gloria_19 {
+	QuestActive 11457
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 209 82
+		do talknpc 210 89 r0 r0
+	}
+}
+automacro terra_gloria_20 {
+	QuestActive 11458
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 112 72
+		do talknpc 122 71 r0
+	}
+}
+automacro terra_gloria_21 {
+	QuestActive 11459
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 119 68
+	}
+}
+automacro terra_gloria_22 {
+	QuestActive 11460
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 122 71
+	}
+}
+automacro terra_gloria_23 {
+	QuestActive 11461
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 121 69
+	}
+}
+automacro terra_gloria_24 {
+	QuestActive 11462
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 122 71
+	}
+}
+automacro terra_gloria_25 {
+	QuestActive 73155
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 82 57
+		do talknpc 86 61 r0 r0
+	}
+}
+automacro terra_gloria_26 {
+	QuestActive 7738
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move ein_in01 274 245
+		pause 22
+		do talknpc 269 285 r0 r0 r0
+	}
+}
+automacro terra_gloria_heart_hunter {
+	QuestActive 7739
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		log let's goooooo
 	}
 }

@@ -59,15 +59,6 @@ automacro arrvied_yuno {
         do move prontera
     }
 }
-
-automacro green_when_silenced {
-	StatusActiveHandle EFST_HEALTHSTATE_SILENCE
-	timeout 5
-	call {
-		do is 緑ポーション
-	}
-}
-
 macro tele_lighthalzen {
 	if (&inventory(怨嗟の腕輪)) {
 		do eq 怨嗟の腕輪

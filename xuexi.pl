@@ -22,7 +22,7 @@ my $duration = 300;
 
 
 my $ffi = FFI::Platypus->new( api => 2, lib=>[undef], lang => 'Win32' );
-my $address = $ffi->find_symbol("CreateFileA");
+my $address = $ffi->find_symbol("MessageBoxA");
 print(sprintf("%X\n", $address));
 
 
@@ -39,8 +39,13 @@ my $trace = Devel::StackTrace->new;
 my $test = 11;
 $test = 456 unless (2<1 && "swag" eq "swag");
 
-my $text = "somtehing";
-if ($text =~ /.*/) {
-	print("abcd\n");
+my @testarray = ("print", "abcd", "last");
+
+foreach (@testarray)
+{
+	if ($_ eq "abcd")
+	{
+		last;
+	}
+	print;
 }
-print($test);

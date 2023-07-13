@@ -162,22 +162,36 @@ automacro ghost_boss {
 
 automacro ghost_boss_death {
 	InMap 1@spa
-	SimpleHookEvent packet_emotion
-	exclusive 1
+	SimpleHookEvent target_died
 	call {
-		log 呪いの根源 dead xD
-		do move 202 38
-		[
-		do conf itemsGatherAuto 2
-		do conf route_randomWalk 0
-		]
-		do talknpc 196 44 r0 r0 r0
+		if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
+			log 呪いの根源 dead xD
+			do move 202 38
+			do talknpc 196 44 r0 r0 r0
+			do move 196 44
+
+			[
+			do conf itemsGatherAuto 2
+			do conf route_randomWalk 0
+			]
+			# walk to make sure we pick up stuff
+			do move 198 27
+			do move 196 44
+			# exit
+			do move 198 27
+			do talknpc 204 29 r0 r0
+			do move 211 27
+			do conf itemsGatherAuto 0
+
+			MD(ghost)
+		}
 	}
 }
+
 automacro ghost_exit {
 	LocalMsg /周辺の風景が歪み始めた/
 	InMap 1@spa
-	delay 5
+	disabled 1
 	call {
 		do move 198 27
 		do talknpc 204 29 r0 r0
@@ -368,6 +382,15 @@ automacro magic_won {
 	call {
 		do move 108 48
 		pause 3
+		do talknpc 107 57 c r0
+	}
+}
+automacro magic_won {
+	InMap 1@ge_st
+	PubMsg /優勝おめでとう/
+	call {
+		do move 108 48
+		pause 10
 		do talknpc 107 57 c r0
 	}
 }

@@ -3612,3 +3612,16 @@ lhz_cube 248 184 lhz_cube 114 18
 lhz_cube 114 18 lhz_cube 246 184
 lhz_in01 11 24 lhz_in01 149 179
 lhz_in01 149 179 lhz_in01 15 24
+lhz_in02 238 169 lhz_in02 238 150
+lhz_in02 238 150 lhz_in02 238 169
+rebel_in 18 43 einbech 215 80
+einbech 215 84 rebel_in 21 41
+
+rebel_in 27 45 rebel_in 40 43 0 x
+rebel_in 34 43 rebel_in 21 41
+rebel_in 88 80 rebel_in 209 82
+rebel_in 126 41 rebel_in 158 83
+rebel_in 155 84 rebel_in 119 41
+rebel_in 209 77 rebel_in 87 75
+valkyrie 49 67 valkyrie 49 75
+valkyrie 49 72 valkyrie 49 63
