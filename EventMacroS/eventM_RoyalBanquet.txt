@@ -1061,12 +1061,289 @@ automacro terra_gloria_26 {
 		do talknpc 269 285 r0 r0 r0
 	}
 }
-automacro terra_gloria_heart_hunter {
+automacro terra_gloria_military_base01 {
 	QuestActive 7739
+	InMap ein_fild04
 	timeout 360
 	exclusive 1
 	delay 2
 	call {
-		log let's goooooo
+		call regroup
+		do talknpc 281 337 r1 r0
+		do talknpc 281 337 r0
 	}
 }
+automacro terra_gloria_heart_military_base01_ready {
+	QuestActive 7739
+	InMap ein_fild04
+	SimpleHookEvent instance_ready
+	call {
+		do talknpc 275 342 r0
+	}
+}
+automacro terra_gloria_heart_military_base01_enter {
+	QuestActive 7739
+	InMap 1@swat
+	IsInCoordinate 30..40 60..70
+	timeout 360
+	delay 1
+	call {
+		do talknpc 40 65
+	}
+}
+automacro terra_gloria_heart_military_base01_start {
+	QuestActive 7739
+	InMap 1@swat
+	PubMsg /散開/
+	delay 1
+	call {
+		do conf attackAuto 1
+		do move 101 53
+		do talknpc 105 50 r0
+		do move 60 88
+		do talknpc 58 90
+	}
+}
+automacro terra_gloria_heart_military_base01_start1 {
+	QuestActive 7739
+	InMap 1@swat
+	LocalMsg /接近制限区域に侵入者感知/
+	delay 1
+	timeout 360
+	call {
+		do move 103 50
+		do talknpc 105 50 r0
+		pause 10
+		do move 136 50
+		do talknpc 140 50
+		do move 147 118
+
+		warning Need to kill al 15 to proceed
+		do conf attackAuto 2
+		do talknpc 150 119 r1
+
+		do move 132 128
+		do move 133 105
+		do move 113 93
+		do move 117 121
+	}
+}
+automacro terra_gloria_heart_military_base01_start2 {
+	QuestActive 7739
+	InMap 1@swat
+	LocalMsg /すべてのハートハンターを倒しました/
+	call {
+		do conf attackAuto 1
+		do move 136 50
+		do talknpc 140 50
+		pause 5
+		do move 237 41
+	}
+}
+automacro terra_gloria_heart_military_base01_start3 {
+	QuestActive 7739
+	InMap 1@swat
+	PubMsg /近くで火薬を探してくれ/
+	exclusive 1
+	orphan reregister
+	call {
+		do move 165 54
+		log before talk
+		do talknpc 163 58
+
+		do move 178 50
+		do move 196 48
+
+		do move 236 40
+		pause 2
+		do talknpc 238 39 r0
+		pause 11
+
+		do move 311 47
+		do talknpc 310 47
+	}
+}
+automacro terra_gloria_heart_military_base01_end {
+	QuestActive 7739
+	InMap 1@swat
+	PubMsg /お前たちも早く引き上げるんだな/
+	exclusive 1
+	delay 20
+	call {
+		do talknpc 320 47
+	}
+}
+automacro terra_gloria_lab {
+	QuestActive 73161
+	InMap que_swat
+	exclusive 1
+	call {
+		do move 155 61
+		do move slabw01_qjp 234 86
+		do talknpc 236 91
+		do talknpc 236 91 r0
+	}
+}
+automacro terra_gloria_lab_ready {
+	SimpleHookEvent instance_ready
+    timeout 600
+	InMap slabw01_qjp
+	call {
+		do talknpc 246 88 r0
+	}
+}
+automacro terra_gloria_lab1{
+	InMap 1@slw
+	IsInCoordinate 182..192 19..29
+	timeout 15
+	call {
+		do move 188 38
+		do talknpc 188 42
+		do move 187 162
+		do talknpc 189 164
+
+		log TIME TO DO THE COLOR TRICK
+		do move 155 185
+		do talknpc 155 191
+	}
+}
+### 青文字:夢、黎明、永遠、純粋
+### So far the first reponse is always blue, try react on NPC?
+# This assumes the second response is always blue
+automacro lab_code {
+	InMap 1@slw
+	NpcMsgName /\[.+\]/ /保安装置/
+	timeout 2
+	call {
+		$lab_resp_code = 0
+		log $.NpcMsgNameLastMsg
+		if ($.NpcMsgNameLastMsg =~ /夢/ ) {
+			log 夢, talk resp 1
+			$lab_resp_code = 1
+		}
+		if ($.NpcMsgNameLastMsg =~ /黎明/ ) {
+			log 黎明, talk resp 1
+			$lab_resp_code = 1
+		}
+		if ($.NpcMsgNameLastMsg =~ /永遠/ ) {
+			log 永遠/, talk resp 1
+			$lab_resp_code = 1
+		}
+		if ($.NpcMsgNameLastMsg =~ /純粋/ ) {
+			log 純粋, talk resp 1
+			$lab_resp_code = 1
+		}
+		do talk resp $lab_resp_code
+	}
+}
+automacro lab_code_first_left_correct {
+	InMap 1@slw
+	NpcMsg /保安装置を稼働させた/
+	timeout 60
+	call {
+		# right device
+		do move 220 188
+		do talknpc 220 191
+	}
+}
+automacro lab_code_first_right_correct {
+	InMap 1@slw
+	NpcMsg /ゲートが稼働した/
+	timeout 60
+	call {
+		do move 188 169
+	}
+}
+automacro lab_code_second_left_correct {
+	InMap 1@slw
+	NpcMsgName /保安装置を稼働させた/ /保安装置#switch03_0ev/
+	timeout 60
+	call {
+		# right device
+		do move 122 57
+		do talknpc 122 61
+	}
+}
+automacro lab_code_second_right_correct {
+	InMap 1@slw
+	NpcMsgName /ゲートが稼働した/ /保安装置#switch04_0ev/
+	timeout 60
+	call {
+		do move 71 77
+	}
+}
+automacro lab_entered_gate {
+	InMap 1@slw
+	IsInCoordinate 66..76 27..37
+	timeout 10
+	call {
+		do move 70 66
+		do talknpc 72 70 r0 r0
+		do move 23 55
+		pause 1
+		do talknpc 22 61
+	}
+}
+automacro lab_entered_end {
+	InMap 1@slw
+	IsInCoordinate 49..59 129..139
+	timeout 60
+	call {
+		do talknpc 57 141
+		do move 54 146
+		pause 1
+		do move 55 168
+		do talknpc 53 171 r0
+		do talknpc 53 171 r0
+		pause 2
+		do talknpc 56 171
+	}
+}
+automacro terra_gloria_end{
+	InMap que_swat
+	QuestActive 7740
+	timeout 60
+	call {
+		do talknpc 150 58 r0
+	}
+}
+automacro terra_gloria_end1 {
+	InMap einbroch
+	QuestActive 7740
+	timeout 120
+	delay 2
+	call {
+		do move ein_in01 273 277
+		do talknpc 269 285 r0 r0 r0 r0 r0
+	}
+}
+automacro terra_gloria_end2 {
+	QuestActive 7741
+	timeout 120
+	delay 2
+	call {
+		do move prt_cas_q 20 30
+		do talknpc 18 37 r0 r0 r0 r0 r0
+	}
+}
+automacro terra_gloria_end3 {
+	QuestActive 73164
+	InMap que_swat
+	timeout 120
+	delay 2
+	call {
+		do talknpc 145 57 r0
+	}
+}
+automacro terra_gloria_end4 {
+	QuestActive 73166
+	timeout 120
+	delay 2
+	call {
+		do move prt_cas_q 22 31
+		do talknpc 21 39 r0
+		log WE DID IT
+	}
+}
+[2023.07.16 09:36:32.65] Quest: テラグローリア (73166) has been deleted.
+[2023.07.16 09:36:32.67] Quest: テラグローリア (201925) has been added.

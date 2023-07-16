@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword rousties
+adminPassword chouswut
 callSign
 commandPrefix ;
 callSignGM 0
@@ -192,7 +192,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -594,8 +594,20 @@ attackSkillSlot ハルシネーションウォーク {
 	isSelfSkill 1
 	timeout 120
 }
+attackSkillSlot ASC_EDP {
+	monsters フェンリル
+	lvl 5
+	isSelfSkill 1
+	whenStatusInactive EFST_EDP
+}
 attackSkillSlot AS_ENCHANTPOISON {
 	monsters フェンリル, 呪いの根源
+	lvl 5
+	isSelfSkill 1
+	timeout 30
+}
+attackSkillSlot AS_ENCHANTPOISON {
+	inMap 1@ge_st
 	lvl 5
 	isSelfSkill 1
 	timeout 30
@@ -603,20 +615,26 @@ attackSkillSlot AS_ENCHANTPOISON {
 attackSkillSlot GC_DARKCROW {
 	monsters フェンリル, 呪いの根源, 大長老アイリン
 	lvl 5
-	minCastTime 4
-	timeout 30
+	minCastTime 3
+	timeout 15
 }
-
+attackSkillSlot GC_DARKCROW {
+	inMap 1@ge_st
+	lvl 5
+	timeout 15
+	minCastTime 3
+}
 attackSkillSlot GC_DARKILLUSION {
 	lvl 5
-	dist 8
+	maxDist 8
 	timeout 4
 	disabled 0
 }
 attackSkillSlot GC_ROLLINGCUTTER {
+	label roller
 	disabled 0
 	lvl 5
-	dist 2
+	maxDist 2
 	aggressives > 1
 }
 
@@ -870,7 +888,16 @@ useSelf_item ハイスピードポーション {
 	timeout 100
 	manualAI 1
 }
-
+useSelf_item イグドラシルの種 {
+	hp < 50%
+	notInTown 1
+	timeout 1
+}
+useSelf_item イグドラシルの実 {
+	hp < 10%
+	notInTown 1
+	timeout 1
+}
 useSelf_item 王級メロン {
 	hp < 90%
 	notInTown 1

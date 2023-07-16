@@ -1,3 +1,7 @@
+macro test {
+	if ($.job =~ /Glt. Cross/) log abcd
+}
+
  macro regroup {
 	do party leave
 [
@@ -331,6 +335,11 @@ automacro magic_ready {
 	SimpleHookEvent instance_ready
 	call {
 		do talknpc 100 147 c r0
+
+		if ($.job =~ /Glt. Cross/) {
+			log Disabling rolling cutter for GX
+			conf roller.disabled 1
+		}
 	}
 }
 automacro magic_defat_opponent {
@@ -342,7 +351,7 @@ automacro magic_defat_opponent {
 }
 automacro magic_register_auto {
 	InMap 1@gef
-    timeout 600
+    timeout 660
 	call {
 [
 		do conf itemsTakeAuto 1
@@ -385,10 +394,15 @@ automacro magic_won {
 		do talknpc 107 57 c r0
 	}
 }
-automacro magic_won {
+automacro magic_won_1 {
 	InMap 1@ge_st
 	PubMsg /優勝おめでとう/
 	call {
+		if ($.job =~ /Glt. Cross/) {
+			log Re-enabling rolling cutter for GX
+			conf roller.disabled 0
+		}
+
 		do move 108 48
 		pause 10
 		do talknpc 107 57 c r0
@@ -399,6 +413,7 @@ automacro magic_leave {
 	InMap 1@gef
 	IsInCoordinate 120 104
 	timeout 60
+	exclusive 1
 	call {
     do talknpc 115 105
     do talknpc 117 108

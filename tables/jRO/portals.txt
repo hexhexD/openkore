@@ -1802,6 +1802,7 @@ prontera 121 72 prt_cas 18 29 c r0
 
 morocc 152 97 prt_cas 18 29 c r0
 # Royal banquet
+prt_castle 106 27 prt_cas 216 146 c r0
 prt_cas 27 27 prt_pri00 51 120 r3 r5
 prt_pri00 51 116 prt_prison 160 290 r0
 prt_cas 27 27 dali 109 86 c r3 c c r0
@@ -1809,6 +1810,8 @@ prt_cas 9 23 prontera 117 72 c r1 n
 prt_cas 216 184 prt_cas 93 212
 prt_cas 93 208 prt_cas 216 180
 prt_cas 152 163 prt_cas_q 150 8
+# rebel
+prt_cas 27 21 slabw01_qjp 233 88 c r3
 
 prt_castle 28 121 prt_castle 40 138
 prt_castle 31 113 prt_castle 54 113
@@ -3625,3 +3628,5 @@ rebel_in 155 84 rebel_in 119 41
 rebel_in 209 77 rebel_in 87 75
 valkyrie 49 67 valkyrie 49 75
 valkyrie 49 72 valkyrie 49 63
+1@slw 71 77 1@slw 54 134
+1@slw 54 146 1@slw 55 153
