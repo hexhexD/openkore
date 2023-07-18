@@ -1,5 +1,7 @@
 macro test {
-	if ($.job =~ /Glt. Cross/) log abcd
+	if ($.job =~ /Glt. Cross/) {
+		log abcd
+	}
 }
 
  macro regroup {
