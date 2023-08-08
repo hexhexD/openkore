@@ -1,10 +1,10 @@
-!include ../EventMacroS/eventM_DimensionalGap.txt
-!include ../EventMacroS/eventM_EndlessTower.txt
-!include ../EventMacroS/eventM_Utils.txt
-!include ../EventMacroS/eventM_BeginnerIsland.txt
-!include ../EventMacroS/eventM_BioLab.txt
-!include ../EventMacroS/eventM_RoyalBanquet.txt
-!include ../EventMacroS/eventM_GX.txt
+!include ../EventMacroS/DimensionalGap.txt
+!include ../EventMacroS/EndlessTower.txt
+!include ../EventMacroS/Utils.txt
+!include ../EventMacroS/BeginnerIsland.txt
+!include ../EventMacroS/BioLab.txt
+!include ../EventMacroS/RoyalBanquet.txt
+!include ../EventMacroS/GX.txt
 
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i
