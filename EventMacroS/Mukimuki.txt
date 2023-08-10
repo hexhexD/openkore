@@ -1,0 +1,23 @@
+####### muki muki event
+automacro HIT_training {
+    NpcNear /パワースポット/
+    timeout 0
+    disabled 0
+    call {
+		[
+		#log triggr npc: $.NpcNearLastPos
+		#log last npc: $lastHITPos
+
+		if ($.NpcNearLastPos == $lastHITPos) {
+			#log Not talking to same npc
+			stop
+		}
+
+		$HITx = &arg ("$.NpcNearLastPos", 1)
+		$HITy = &arg ("$.NpcNearLastPos", 2)
+		# log talking to npc
+		do talknpc $HITx $HITy
+		$lastHITPos = $.NpcNearLastPos
+		]
+    }
+}

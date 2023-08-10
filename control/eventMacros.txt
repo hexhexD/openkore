@@ -6,6 +6,8 @@
 !include ../EventMacroS/RoyalBanquet.txt
 !include ../EventMacroS/GX.txt
 
+!include ../EventMacroS/Mukimuki.txt
+
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i
 	timeout 15
@@ -14,18 +16,6 @@ automacro WL_TELEKINESIS_INTENSE {
 	call {
 		do ss WL_TELEKINESIS_INTENSE
 	}
-}
-####### mugi mugi event
-automacro HIT_training {
-    NpcNear /パワースポット/
-    timeout 1
-    disabled 1
-    call {
-		log $.NpcNearLastPos
-		$x = &arg ("$.NpcNearLastPos", 1)
-		$y = &arg ("$.NpcNearLastPos", 2)
-		do talknpc $x $y c
-    }
 }
 macro md {
 	MD(start)
