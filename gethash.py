@@ -10,6 +10,15 @@ import msvcrt
 import requests
 from bs4 import BeautifulSoup
 
+def wait_for_gamemonlaunch():
+    while(1):
+        output = subprocess.check_output(["tasklist", "/FI", "IMAGENAME eq GameMon.des"])
+        if "GameMon.des" in output.decode():
+            print("GameMon.des exists")
+            time.sleep(3)
+            return
+        print("Waiting for GameMon.des")
+
 def delete_gg_files(rag_path):
     trash = glob.glob(rag_path + "/GameGuard/*.erl")
     trash += glob.glob(rag_path + "/GameGuard/*.erv")
@@ -145,9 +154,7 @@ while True:
     startupinfo.dwFlags |= subprocess.HIGH_PRIORITY_CLASS
     ragproc = subprocess.Popen(commandline, startupinfo=startupinfo)
 
-    time.sleep(8)
     print("Taking out the trash after game start")
-
     # Chose if we want to inject netredirect or logging dll
     if b"1" == c:
         #  print("Game launched as is")
@@ -159,21 +166,21 @@ while True:
         print("Game launched as is")
     else:
         os.chdir(cwd)
+        wait_for_gamemonlaunch()
         inject_antigg = "Manualmap.exe -target GameMon.des -dll AntiGG.dll"
         ret = subprocess.run(inject_antigg, capture_output=True);
         print(ret.stdout.decode())
+
+        if args.f is None:
+            continue
+        openkore = "perl openkore.pl " + args.f
+        print("Launching openkore: " + openkore)
+        subprocess.Popen(openkore,
+                         close_fds=True,
+                         creationflags=subprocess.DETACHED_PROCESS)
+
         time.sleep(1)
         inject_raven = "Manualmap.exe -target Ragexe.exe -dll Raven.dll"
         ret = subprocess.run(inject_raven, capture_output=True);
         print(ret.stdout.decode())
 
-    print(ragproc.pid)
-
-    if args.f is None:
-        continue
-
-    openkore = "perl openkore.pl " + args.f
-    print("Launching openkore: " + openkore)
-    subprocess.Popen(openkore,
-                     close_fds=True,
-                     creationflags=subprocess.DETACHED_PROCESS)
