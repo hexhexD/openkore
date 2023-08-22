@@ -18,12 +18,15 @@ automacro HIT_training {
 		]
     }
 }
+
+# Needs more workn to remove actors when recieved high_jump in recieve.pm
 automacro HIT_test {
     NpcNear /パワースポット/
     timeout 0
     disabled 0
     call {
 		[
+		log $.NpcNearLastPos
 		click_on_npc($.NpcNearLastNameId)
 		]
     }

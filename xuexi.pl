@@ -1,5 +1,13 @@
 use strict;
 use warnings;
+use FindBin qw($RealBin);
+use lib "$RealBin";
+use lib "$RealBin/src";
+use lib "$RealBin/src/deps";
+
+use Utils;
+
+no Carp::Assert;
 use FFI::Platypus;
 use Data::Printer;
 use Devel::StackTrace;
@@ -10,42 +18,47 @@ use Devel::StackTrace;
 		# print STDERR $call_details[1].":".$call_details[2]." in function ".$call_details[3]."\n";
 	# }
 
-
 my %firstHash = (
 	"Newton"	=>	"Issac",
 	"Einstein"	=>	"Albert",
 	1 =>	"Charles",
 );
-
+#
 my $freq = 750;
 my $duration = 300;
-
 
 my $ffi = FFI::Platypus->new( api => 2, lib=>[undef], lang => 'Win32' );
 my $address = $ffi->find_symbol("MessageBoxA");
 print(sprintf("%X\n", $address));
+#
 
+use Devel::StackTrace;
+my $trace = Devel::StackTrace->new;
+# print $trace->as_string;
 
-my %args = (
-	skillHandle => "swag",
-	lv => 10,
+my $some = 41;
+print sprintf("%v02X\n",$some);
+
+my %account = (
+	"number" => "6666",
+	"opened" => "2010-11-11",
+	"owners" => [
+		{
+			"name" => "yolo",
+			"DOB" => "2222-04-04",
+		},
+		{
+			"name" => "swag",
+			"DOB" => "1111-09-09",
+		},
+	]
 );
 
-$args{giveup}{time} = 1345;
-$args{giveup}{timeout} = 20;
+my $owners = $account{owners};
+p ${$owners}[0]->{DOB};
 
-p %args;
-my $trace = Devel::StackTrace->new;
-my $test = 11;
-$test = 456 unless (2<1 && "swag" eq "swag");
+my $test = 0x41;
+my $result = Utils::getHex($test);
+p $result;
+assert("") if DEBUG;
 
-my @testarray = ("print", "abcd", "last");
-
-foreach (@testarray)
-{
-	if ($_ eq "abcd")
-	{
-		last;
-	}
-	print;
-}
