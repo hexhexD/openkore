@@ -109,6 +109,19 @@ sub process {
 					return;
 				}
 			}
+
+			if (($target->{statuses}->{EFFECTSTATE_BURROW} || $target->{statuses}->{EFFECTSTATE_HIDING}) && 
+			$config{avoidHiddenMonsters}) {
+				message TF("Dropping target %s - will not attack hidden monsters\n", $target), 'ai_attack';
+				$char->sendAttackStop;
+				$target->{ignore} = 1;
+
+				AI::dequeue while (AI::inQueue("attack"));
+				if ($config{teleportAuto_dropTargetHidden}) {
+					message T("Teleport due to dropping hidden target\n");
+					ai_useTeleport(1);
+				}
+			}
 		}
 	}
 

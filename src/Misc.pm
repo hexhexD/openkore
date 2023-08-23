@@ -2981,10 +2981,12 @@ sub processNameRequestQueue {
 		my $max_sight_extra = ($config{clientSight_removeBeyond} || 2);
 		my $max_sight = $max_sight_base + $max_sight_extra;
 		if (defined $actor->{pos_to} && (my $block_dist = blockDistance($char->{pos_to}, $actor->{pos_to})) >= $max_sight) {
-			debug "Removed actor at $actor->{pos_to}{x} $actor->{pos_to}{y} (distance: $block_dist)\n";
+			debug "[NameRequestQueue] Removed from list actor at $actor->{pos_to}{x} $actor->{pos_to}{y} (distance: $block_dist)\n";
 			shift @{$queue};
 			next;
 		}
+
+		next if ($actor->{avoid});
 
 		$messageSender->sendGetPlayerInfo($ID) if (isSafeActorQuery($ID) == 1); # Do not Query GM's
 		$actor = shift @{$queue};
@@ -3965,6 +3967,7 @@ sub isSafeActorQuery {
 					return 0;
 				}
 			}
+			return 0 if($actor->{avoid});
 		}
 	}
 	return 1;
