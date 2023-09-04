@@ -6,7 +6,21 @@
 !include ../EventMacroS/RoyalBanquet.txt
 !include ../EventMacroS/GX.txt
 
-!include ../EventMacroS/Mukimuki.txt
+#!include ../EventMacroS/Mukimuki.txt
+
+ macro regroup {
+	do party leave
+[
+	$ptnum = &rand(666, 999)
+	$ptname = &nick(#)card お願いします |$.name|
+
+	do party create $ptname
+	do conf itemsTakeAuto 0
+	do conf itemsGatherAuto 0
+	do conf attackAuto 0
+	do conf route_randomWalk 0
+]
+}
 
 automacro WL_TELEKINESIS_INTENSE {
 	MobNear /(フェンリル)/i

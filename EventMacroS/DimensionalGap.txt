@@ -4,22 +4,7 @@ macro test {
 	}
 }
 
- macro regroup {
-	do party leave
-[
-	$ptnum = &rand(666, 999)
-	$ptname = &nick(#)card お願いします$ptnum
-
-	do party create $ptname
-	do conf itemsTakeAuto 0
-	do conf itemsGatherAuto 0
-	do conf attackAuto 0
-	do conf route_randomWalk 0
-]
-}
-
 ####################################### Ghost Palace
-
 macro ghost {
 	call regroup
 	do move dali02 47 130
