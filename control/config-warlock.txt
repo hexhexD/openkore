@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword shocluce
+adminPassword pouclagu
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -192,9 +192,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 1
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore 60
@@ -938,14 +938,11 @@ sellAuto_npc_steps s
 
 storageAuto 0
 storageAuto_npc prt_cas 27 27
-storageAuto_npc_type 1
-storageAuto_npc_steps
+storageAuto_npc_type 3
+storageAuto_npc_steps c r1 r0
 storageAuto_standpoint
 storageAuto_distance 5
 storageAuto_maxDistance
-storageAuto_npc_type 1
-storageAuto_type 0
-storageAuto_npc_steps
 storageAuto_password
 storageEncryptKey
 storageAuto_keepOpen 0
