@@ -564,7 +564,7 @@ sub main {
 				noMapRoute => 1
 			);
 		} else {
-			message T("Unable to calculate a meetingPosition to target, dropping target\n"), "ai_attack";
+			message TF("Unable to calculate a meetingPosition to target, dropping target. Check %s in config.txt\n", 'attackRouteMaxPathDistance'), "ai_attack";
 			giveUp($args, $ID, 1);
 		}
 
