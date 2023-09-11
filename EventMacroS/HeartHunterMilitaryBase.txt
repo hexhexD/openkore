@@ -1,0 +1,48 @@
+macro  militarybase {
+	do move ein_fild04 280 332
+	call regroup
+	do talknpc 281 337 r0
+}
+automacro militarybase_ready {
+	SimpleHookEvent instance_ready
+	InMap ein_fild04
+    timeout 600
+	IsInCoordinate 278..282 330..334
+	call {
+		log instance ready let's go
+		do talknpc 275 342 r0
+	}
+}
+automacro militarybase_entered {
+	InMap 2@swat
+    timeout 600
+	IsInCoordinate 71..75 116..120
+	call {
+		do talknpc 70 126 r1
+		do conf attackAuto 2
+		do conf itemsTakeAuto 0
+
+		do move 53 146
+		do move 30 151
+
+		do move 48 172
+		do move 46 192
+		do move 38 203
+	}
+}
+automacro militarybase_area1 {
+	InMap 2@swat
+	LocalMsg /さすがだな。だがまだまだこれからだぞ/
+	call {
+		do move 46 244
+		do move 64 267
+		do move 35 271
+	}
+}
+automacro militarybase_area1_done {
+	InMap 2@swat
+	LocalMsg /なんなく突破したか/
+	call {
+		do move 35 271
+	}
+}

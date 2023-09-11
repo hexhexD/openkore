@@ -1,10 +1,13 @@
-!include ../EventMacroS/DimensionalGap.txt
-!include ../EventMacroS/EndlessTower.txt
 !include ../EventMacroS/Utils.txt
-!include ../EventMacroS/BeginnerIsland.txt
-!include ../EventMacroS/BioLab.txt
-!include ../EventMacroS/RoyalBanquet.txt
 !include ../EventMacroS/GX.txt
+
+#!include ../EventMacroS/BeginnerIsland.txt
+#!include ../EventMacroS/BioLab.txt
+#!include ../EventMacroS/RoyalBanquet.txt
+
+#!include ../EventMacroS/EndlessTower.txt
+!include ../EventMacroS/DimensionalGap.txt
+!include ../EventMacroS/HeartHunterMilitaryBase.txt
 
 #!include ../EventMacroS/Mukimuki.txt
 

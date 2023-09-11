@@ -369,6 +369,7 @@ moro_vol 137 136 dali 64 103 r0
 dali 64 129 dali02 66 101
 dali02 66 97 dali 64 125
 dali02 45 96 moc_fild22 36 196 c r0 c n
+prt_cas 27 21 ein_fild04 280 332 c r2
 
 #Cat Hand Agent Warper
 #moc_para01 17 33 moc_fild20 342 198 c r0 n

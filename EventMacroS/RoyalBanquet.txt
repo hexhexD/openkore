@@ -1345,5 +1345,5 @@ automacro terra_gloria_end4 {
 		log WE DID IT
 	}
 }
-[2023.07.16 09:36:32.65] Quest: テラグローリア (73166) has been deleted.
-[2023.07.16 09:36:32.67] Quest: テラグローリア (201925) has been added.
+# [2023.07.16 09:36:32.65] Quest: テラグローリア (73166) has been deleted.
+# [2023.07.16 09:36:32.67] Quest: テラグローリア (201925) has been added.
