@@ -26,7 +26,7 @@ automacro militarybase_entered {
 		do move 30 151
 
 		do move 48 172
-		do move 46 192
+		do move 51 199
 		do move 38 203
 	}
 }

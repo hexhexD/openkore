@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword pouclagu
+adminPassword prakiwre
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 2
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -73,7 +73,7 @@ attackAuto_notWhile_storageAuto 1
 attackAuto_notWhile_buyAuto 1
 attackAuto_notWhile_sellAuto 1
 attackAuto_considerDamagedAggressive 0
-attackDistance 30
+attackDistance 10
 attackDistanceAuto 0
 attackMaxDistance 30
 attackMaxRouteDistance 50
@@ -90,7 +90,7 @@ attackChangeTarget 1
 aggressiveAntiKS 0
 
 attackBeyondMaxDistance_waitForAgressive 0
-attackBeyondMaxDistance_sendAttackWhileWaiting 1
+attackBeyondMaxDistance_sendAttackWhileWaiting 0
 attackSendAttackWithMove 1
 attackWaitApproachFinish 1
 
