@@ -110,7 +110,7 @@ sub process {
 				}
 			}
 
-			if (($target->{statuses}->{EFFECTSTATE_BURROW} || $target->{statuses}->{EFFECTSTATE_HIDING}) && 
+			if (($target->{statuses}->{EFFECTSTATE_BURROW} || $target->{statuses}->{EFFECTSTATE_HIDING}) &&
 			$config{avoidHiddenMonsters}) {
 				message TF("Dropping target %s - will not attack hidden monsters\n", $target), 'ai_attack';
 				$char->sendAttackStop;
@@ -564,7 +564,7 @@ sub main {
 				noMapRoute => 1
 			);
 		} else {
-			message TF("Unable to calculate a meetingPosition to target, dropping target. Check %s in config.txt\n", 'attackRouteMaxPathDistance'), "ai_attack";
+			message T("Unable to calculate a meetingPosition to target, dropping target\n"), "ai_attack";
 			giveUp($args, $ID, 1);
 		}
 

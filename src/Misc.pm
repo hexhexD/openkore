@@ -2977,10 +2977,7 @@ sub processNameRequestQueue {
 		# Remove actors with a distance greater than clientSight. Some private servers (notably Freya) use
 		# a technique where they send actor_exists packets with ridiculous distances in order to automatically
 		# ban bots. By removingthose actors, we eliminate that possibility and emulate the client more closely.
-		my $max_sight_base = ($config{clientSight} || 15);
-		my $max_sight_extra = ($config{clientSight_removeBeyond} || 2);
-		my $max_sight = $max_sight_base + $max_sight_extra;
-		if (defined $actor->{pos_to} && (my $block_dist = blockDistance($char->{pos_to}, $actor->{pos_to})) >= $max_sight) {
+		if (defined $actor->{pos_to} && (my $block_dist = blockDistance($char->{pos_to}, $actor->{pos_to})) >= ($config{clientSight} || 16)) {
 			debug "[NameRequestQueue] Removed from list actor at $actor->{pos_to}{x} $actor->{pos_to}{y} (distance: $block_dist)\n";
 			shift @{$queue};
 			next;
@@ -3421,117 +3418,6 @@ sub updateDamageTables {
 
 
 		}
-
-=pod
-	} elsif ($targetID eq $accountID) {
-		if ((my $monster = $monstersList->getByID($sourceID))) {
-			# Monster attacks you
-			$monster->{dmgFrom} += $damage;
-			$monster->{dmgToYou} += $damage;
-			if ($damage == 0) {
-				$monster->{missedYou}++;
-			}
-			$monster->{attackedYou}++ unless (
-					scalar(keys %{$monster->{dmgFromPlayer}}) ||
-					scalar(keys %{$monster->{dmgToPlayer}}) ||
-					$monster->{missedFromPlayer} ||
-					$monster->{missedToPlayer}
-				);
-			$monster->{target} = $targetID;
-
-			if (AI::state == 2) {
-				my $teleport = 0;
-				if (mon_control($monster->{name},$monster->{nameID})->{teleport_auto} == 2 && $damage){
-					message TF("Teleporting due to attack from %s\n",
-						$monster->{name}), "teleport";
-					$teleport = 1;
-
-				} elsif ($config{teleportAuto_deadly} && $damage >= $char->{hp}
-				      && !$char->statusActive('EFST_ILLUSION')) {
-					message TF("Next %d dmg could kill you. Teleporting...\n",
-						$damage), "teleport";
-					$teleport = 1;
-
-				} elsif ($config{teleportAuto_maxDmg} && $damage >= $config{teleportAuto_maxDmg}
-				      && !$char->statusActive('EFST_ILLUSION')
-				      && !($config{teleportAuto_maxDmgInLock} && $field->baseName eq $config{lockMap})) {
-					message TF("%s hit you for more than %d dmg. Teleporting...\n",
-						$monster->{name}, $config{teleportAuto_maxDmg}), "teleport";
-					$teleport = 1;
-
-				} elsif ($config{teleportAuto_maxDmgInLock} && $field->baseName eq $config{lockMap}
-				      && $damage >= $config{teleportAuto_maxDmgInLock}
-				      && !$char->statusActive('EFST_ILLUSION')) {
-					message TF("%s hit you for more than %d dmg in lockMap. Teleporting...\n",
-						$monster->{name}, $config{teleportAuto_maxDmgInLock}), "teleport";
-					$teleport = 1;
-
-				} elsif (AI::inQueue("sitAuto") && $config{teleportAuto_attackedWhenSitting}
-				      && $damage > 0) {
-					message TF("%s attacks you while you are sitting. Teleporting...\n",
-						$monster->{name}), "teleport";
-					$teleport = 1;
-
-				} elsif ($config{teleportAuto_totalDmg}
-				      && $monster->{dmgToYou} >= $config{teleportAuto_totalDmg}
-				      && !$char->statusActive('EFST_ILLUSION')
-				      && !($config{teleportAuto_totalDmgInLock} && $field->baseName eq $config{lockMap})) {
-					message TF("%s hit you for a total of more than %d dmg. Teleporting...\n",
-						$monster->{name}, $config{teleportAuto_totalDmg}), "teleport";
-					$teleport = 1;
-
-				} elsif ($config{teleportAuto_totalDmgInLock} && $field->baseName eq $config{lockMap}
-				      && $monster->{dmgToYou} >= $config{teleportAuto_totalDmgInLock}
-				      && !$char->statusActive('EFST_ILLUSION')) {
-					message TF("%s hit you for a total of more than %d dmg in lockMap. Teleporting...\n",
-						$monster->{name}, $config{teleportAuto_totalDmgInLock}), "teleport";
-					$teleport = 1;
-
-				} elsif ($config{teleportAuto_hp} && percent_hp($char) <= $config{teleportAuto_hp}) {
-					message TF("%s hit you when your HP is too low. Teleporting...\n",
-						$monster->{name}), "teleport";
-					$teleport = 1;
-
-				} elsif ($config{attackChangeTarget} && ((AI::action eq "route" && AI::action(1) eq "attack") || (AI::action eq "move" && AI::action(2) eq "attack"))
-				   && AI::args->{attackID} && AI::args()->{attackID} ne $sourceID) {
-					my $attackTarget = Actor::get(AI::args->{attackID});
-					my $attackSeq = (AI::action eq "route") ? AI::args(1) : AI::args(2);
-					if (!$attackTarget->{dmgToYou} && !$attackTarget->{dmgFromYou} && distance($monster->{pos_to}, calcPosition($char)) <= $attackSeq->{attackMethod}{distance}) {
-						my $ignore = 0;
-						# Don't attack ignored monsters
-						if ((my $control = mon_control($monster->{name},$monster->{nameID}))) {
-							$ignore = 1 if ( ($control->{attack_auto} == -1)
-								|| ($control->{attack_lvl} ne "" && $control->{attack_lvl} > $char->{lv})
-								|| ($control->{attack_jlvl} ne "" && $control->{attack_jlvl} > $char->{lv_job})
-								|| ($control->{attack_hp}  ne "" && $control->{attack_hp} > $char->{hp})
-								|| ($control->{attack_sp}  ne "" && $control->{attack_sp} > $char->{sp})
-								|| ($control->{attack_auto} == 3 && ($monster->{dmgToYou} || $monster->{missedYou} || $monster->{dmgFromYou}))
-								);
-						}
-						if (!$ignore) {
-							# Change target to closer aggressive monster
-							message TF("Change target to aggressive : %s (%s)\n", $monster->name, $monster->{binID});
-							stopAttack();
-							AI::dequeue;
-							AI::dequeue if (AI::action eq "route");
-							AI::dequeue;
-							attack($sourceID);
-						}
-					}
-
-				} elsif (AI::action eq "attack" && mon_control($monster->{name},$monster->{nameID})->{attack_auto} == 3
-					&& ($monster->{dmgToYou} || $monster->{missedYou} || $monster->{dmgFromYou})) {
-
-					# Mob-training, stop attacking the monster if it has been attacking you
-					message TF("%s (%s) has been provoked, searching another monster\n", $monster->{name}, $monster->{binID});
-					stopAttack();
-					AI::dequeue();
-				}
-
-				ai_useTeleport(1) if ($teleport);
-			}
-		}
-=cut
 
 	} elsif ((my $monster = $monstersList->getByID($sourceID))) {
 		if (my $player = ($accountID eq $targetID && $char) || $playersList->getByID($targetID) || $slavesList->getByID($targetID)) {

@@ -448,7 +448,7 @@ sub main {
 				noMapRoute => 1
 			);
 		} else {
-			message TF("Unable to calculate a meetingPosition to target, dropping target. Check %s in config.txt\n", $config{$slave->{configPrefix}.'attackRouteMaxPathDistance'}), 'slave_attack';
+			message T("Unable to calculate a meetingPosition to target, dropping target\n"), "ai_attack";
 			giveUp($slave, $args, $ID, 1);
 		}
 
