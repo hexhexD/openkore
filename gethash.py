@@ -106,6 +106,7 @@ time.sleep(1)
 login_response = session.post(login_url, data=payload, headers=headers, cookies=jar)
 login_soup = BeautifulSoup(login_response.content, "lxml")
 print(login_soup)
+print("\n" + home_url + "\n")
 target_tag = login_soup.find(onclick=lambda x: x and 'ゲーム起動' in x)
 launch_url = host + target_tag['href']
 #  print(launch_url)
