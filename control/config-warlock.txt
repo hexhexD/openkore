@@ -8,7 +8,7 @@ server
 username wapi
 password 123
 loginPinCode
-char 1
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword prakiwre
+adminPassword crowriba
 callSign
 commandPrefix ;
 callSignGM 0
@@ -75,7 +75,7 @@ attackAuto_notWhile_sellAuto 1
 attackAuto_considerDamagedAggressive 0
 attackDistance 10
 attackDistanceAuto 0
-attackMaxDistance 30
+attackMaxDistance 14
 attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
@@ -86,12 +86,12 @@ attackCanSnipe 0
 attackCheckLOS 1
 attackRouteMaxPathDistance 30
 attackLooters 0
-attackChangeTarget 1
-aggressiveAntiKS 0
+attackChangeTarget 0
+aggressiveAntiKS 1
 
 attackBeyondMaxDistance_waitForAgressive 0
 attackBeyondMaxDistance_sendAttackWhileWaiting 0
-attackSendAttackWithMove 1
+attackSendAttackWithMove 0
 attackWaitApproachFinish 1
 
 attackUpdateMonsterPos 0
@@ -157,6 +157,7 @@ avoidList_reconnect 1800
 avoidList_ignoreList
 
 avoidHiddenActors 0
+avoidHiddenMonsters 1
 
 cachePlayerNames 1
 cachePlayerNames_duration 900
@@ -274,7 +275,7 @@ tankModeTarget
 
 teleportAuto_hp 10
 teleportAuto_sp 0
-teleportAuto_idle 0
+teleportAuto_idle 1
 teleportAuto_portal 0
 teleportAuto_search 0
 teleportAuto_minAggressives 0
@@ -283,7 +284,7 @@ teleportAuto_onlyWhenSafe 0
 teleportAuto_maxDmg 10000
 teleportAuto_maxDmgInLock 0
 teleportAuto_deadly 1
-teleportAuto_useSkill 1
+teleportAuto_useSkill 0
 teleportAuto_useChatCommand
 teleportAuto_allPlayers 0
 teleportAuto_notPlayers
@@ -293,6 +294,7 @@ teleportAuto_unstuck 1
 teleportAuto_lostTarget 0
 teleportAuto_dropTarget 0
 teleportAuto_dropTargetKS 0
+teleportAuto_dropTargetHidden 1
 teleportAuto_attackedWhenSitting 0
 teleportAuto_totalDmg 0
 teleportAuto_totalDmgInLock 0
@@ -300,7 +302,7 @@ teleportAuto_equip_leftAccessory
 teleportAuto_equip_rightAccessory
 teleportAuto_lostHomunculus
 teleportAuto_useItemForRespawn
-teleportAuto_item1
+teleportAuto_item1 初心者用ヴェルゼブブの羽
 teleportAuto_item2
 
 dealAuto 2
@@ -528,17 +530,33 @@ attackSkillSlot WL_DRAINLIFE {
 	maxAttempts 3
 	monstersCounter < 2
 }
-
 attackSkillSlot WL_SOULEXPANSION {
 	lvl 5
-	monstersCount >= 2
-	disabled 1
+	# monstersCount >= 2
+	notMonsters 黒いきのこ, 白い草, 青い草
 }
-
 attackSkillSlot WL_HELLINFERNO {
 	lvl 5
+	minCastTime 1
+}
+attackSkillSlot WL_CRIMSONROCK {
+	lvl 5
+	minCastTime 1
 }
 
+attackSkillSlot MG_FIREBALL {
+	disabled 1
+	minCastTime 1
+	lvl 10
+	timeout 1
+	maxDist 9
+}
+attackSkillSlot MG_FIREBOLT {
+	disabled 1
+	minCastTime 1
+	lvl 6
+	timeout 1
+}
 
 
 attackSkillSlot {
@@ -974,7 +992,7 @@ debugPacket_ro_sent 0
 debugPacket_exclude
 debugPacket_include
 debugPacket_include_dumpMethod 0
-debugDomains
+debugDomains ai_attack
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

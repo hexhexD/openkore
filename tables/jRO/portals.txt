@@ -3627,3 +3627,11 @@ valkyrie 49 67 valkyrie 49 75
 valkyrie 49 72 valkyrie 49 63
 1@slw 71 77 1@slw 54 134
 1@slw 54 146 1@slw 55 153
+prt_maze01 114 22 prt_maze01 177 71
+prt_maze01 194 54 prt_maze01 99 31
+prt_maze01 85 13 prt_maze01 22 88
+prt_maze01 17 114 prt_maze01 8 186
+prt_maze01 22 194 prt_maze01 16 31
+prt_maze01 23 5 prt_maze01 176 8
+prt_maze01 176 34 prt_maze01 8 186
+gef_dun00 107 169 gef_dun01 115 236

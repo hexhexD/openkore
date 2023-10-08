@@ -42,7 +42,107 @@ automacro militarybase_area1 {
 automacro militarybase_area1_done {
 	InMap 2@swat
 	LocalMsg /なんなく突破したか/
+	delay 3
 	call {
 		do move 35 271
+		call militarybase_area1_sentinel1
+    do conf roller.disabled 1
+	}
+}
+
+macro militarybase_area1_sentinel {
+	do move 22 291
+	do move 23 330
+	do move 38 329
+
+	do move 39 324
+	do move 55 324
+
+	do move 57 330
+	do move 75 330
+
+	do move 75 324
+	do move 93 324
+
+	do move 93 318
+	do move 111 318
+
+	do move 111 324
+	do move 128 324
+
+	do move 169 295
+}
+
+macro militarybase_area1_sentinel1 {
+	do move 22 291
+	do move 23 324
+	do move 55 324
+
+	do move 39 324
+	do move 55 324
+
+	do move 55 318
+	do move 75 318
+
+	do move 75 324
+	do move 91 324
+
+	do move 91 318
+	do move 111 318
+
+	do move 111 324
+	do move 128 324
+
+	do move 169 295
+}
+
+automacro militarybase_area2_start {
+	InMap 2@swat
+	LocalMsg /第三エリアから先に進むための扉にはロックがされている/
+	call {
+    do conf roller.disabled 0
+		do move 210 293
+		do talknpc 209 292 r0
+		do move 329 328
+		do talknpc 330 329 r0
+		do move 261 250
+		do talknpc 261 251 r0
+		do move 329 240
+		do talknpc 329 239 r0
+	}
+}
+automacro militarybase_area2_done {
+	InMap 2@swat
+	LocalMsg /南方向、第4エリアへの扉をオープンします/
+	call {
+		do move 281 243
+	}
+}
+automacro militarybase_area3 {
+	InMap 2@swat
+	LocalMsg /見つけた枚数に応じて別途報酬を追加しよう/
+	call {
+		do talknpc 285 199
+
+		do move 323 148
+
+		do move 268 133
+
+		do move 283 112
+		do talknpc 280 100
+
+		do move 246 107
+		do talknpc 242 107
+
+		do move 206 111
+		do talknpc 204 121
+		do talknpc 206 103
+
+		do move 214 158
+
+		do move 233 226
+
+		do move 244 218
+		do talknpc 245 208
 	}
 }

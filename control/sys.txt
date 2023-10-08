@@ -7,7 +7,7 @@ locale_compat 0
 
 ###### Wx interface settings ######
 wxHideConsole 1
-wxFont Iosevka SS10 Medium
+wxFont Sarasa Term J Semibold
 
 
 ###### Bus system settings ######
