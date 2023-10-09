@@ -11,6 +11,97 @@
 
 #!include ../EventMacroS/Mukimuki.txt
 
+# refine all the same euipment, starting from zero until + 7
+# e.g. em seiren -- "メロンワンド [1]" Don't forget the quote!!
+macro seiren {
+[
+  $sei_name = $.param[0]
+  log 精錬 $sei_name
+  @sei_base = &Inventory($sei_base)
+  if ($sei_base[0] == -1) {
+    log No +0 item found
+    $seiren_total = 0
+  } else {
+    $seiren_total = @sei_base
+  }
+  log Number of 0 refinement: $seiren_total
+
+  $seiren_i = 0
+  while ($seiren_i < $seiren_total) {
+    log Refining index $sei_base[$seiren_i]
+    call seiren_work $sei_base[$seiren_i] 0
+    $seiren_i++
+  }
+
+  $sei_plus4name = +4 $sei_name
+  @sei_plus4 = &Inventory($sei_plus4name)
+  if ($sei_plus4[0] == -1) {
+    log No $sei_plus4name found
+    $seiren_total = 0
+  } else {
+    $seiren_total = @sei_plus4
+  }
+  $seiren_i = 0
+  while ($seiren_i < $seiren_total) {
+    log Refining index $sei_plus4[$seiren_i]
+    call seiren_work $sei_plus4[$seiren_i] 4
+    $seiren_i++
+  }
+
+  $sei_plus5name = +5 $sei_name
+  @sei_plus5 = &Inventory($sei_plus5name)
+  if ($sei_plus5[0] == -1) {
+    log No $sei_plus5name found
+    $seiren_total = 0
+  } else {
+    $seiren_total = @sei_plus5
+  }
+  $seiren_i = 0
+  while ($seiren_i < $seiren_total) {
+    log Refining index $sei_plus5[$seiren_i]
+    call seiren_work $sei_plus5[$seiren_i] 5
+    $seiren_i++
+  }
+
+  $sei_plus6name = +6 $sei_name
+  @sei_plus6 = &Inventory($sei_plus6name)
+  if ($sei_plus6[0] == -1) {
+    log No $sei_plus6name found
+    $seiren_total = 0
+  } else {
+    $seiren_total = @sei_plus6
+  }
+  $seiren_i = 0
+  while ($seiren_i < $seiren_total) {
+    log Refining index $sei_plus6[$seiren_i]
+    call seiren_work $sei_plus6[$seiren_i] 6
+    $seiren_i++
+  }
+]
+}
+
+# melon normal refine guy
+macro seiren_work {
+  do eq $.param[0]
+  if ($.param[1] < 4) {
+    # instant + 4
+    do talknpc 105 61 r0 r3 r1 r0
+  } else {
+    do talknpc 105 61 r0 r3 r0 r0
+  }
+
+}
+
+automacro exchange_melon_wand {
+  InMap melon_f1
+  disabled 1
+  orphan reregister_safe
+  call {
+    do move 115 69
+    do talknpc 112 68 r0 r1
+  }
+}
+
  macro regroup {
 	do party leave
 [
