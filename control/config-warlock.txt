@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword crowriba
+adminPassword patreket
 callSign
 commandPrefix ;
 callSignGM 0
@@ -86,7 +86,7 @@ attackCanSnipe 0
 attackCheckLOS 1
 attackRouteMaxPathDistance 30
 attackLooters 0
-attackChangeTarget 0
+attackChangeTarget 1
 aggressiveAntiKS 1
 
 attackBeyondMaxDistance_waitForAgressive 0
@@ -318,7 +318,7 @@ verbose 1
 showDomain 0
 showDomain_NPC parseMsg_presence
 showDomain_Shop list
-squelchDomains
+squelchDomains exp, attackMon, attackMiss, skill
 verboseDomains
 beepDomains
 beepDomains_notInTown
@@ -985,14 +985,14 @@ getAuto {
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_sent 1
+debugPacket_sent 0
 debugPacket_received 0
 debugPacket_unparsed 1
 debugPacket_ro_sent 0
 debugPacket_exclude
-debugPacket_include
-debugPacket_include_dumpMethod 0
-debugDomains ai_attack
+debugPacket_include 0B3D
+debugPacket_include_dumpMethod 2
+debugDomains vending ai_attack
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages
