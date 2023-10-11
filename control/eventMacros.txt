@@ -2,7 +2,7 @@
 !include ../EventMacroS/GX.txt
 
 #!include ../EventMacroS/BeginnerIsland.txt
-#!include ../EventMacroS/BioLab.txt
+!include ../EventMacroS/BioLab.txt
 #!include ../EventMacroS/RoyalBanquet.txt
 
 #!include ../EventMacroS/EndlessTower.txt

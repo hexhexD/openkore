@@ -13,12 +13,57 @@ automacro entrance_fishbone {
 	}
 }
 
+# talk to fishbone with 20 jellopy, this might be better than above
+macro fishbone_start {
+  do talknpc 341 224 r0 r0 r0 r0 r0 r0 r0 r0 r0
+}
+
+automacro random_67_193 {
+	InMap lhz_cube
+	IsInCoordinate 67 193
+	timeout 15
+	call {
+		do move 67 201
+	}
+}
+automacro random_66_136 {
+	InMap lhz_cube
+	IsInCoordinate 66 136
+	timeout 15
+	call {
+		do move 75 135
+	}
+}
 automacro random_66_74 {
 	InMap lhz_cube
 	IsInCoordinate 66 74
 	timeout 15
 	call {
 		do move 66 66
+	}
+}
+automacro random_10_193 {
+	InMap lhz_cube
+	IsInCoordinate 10 201
+	timeout 15
+	call {
+		do move 10 185
+	}
+}
+automacro random_10_136 {
+	InMap lhz_cube
+	IsInCoordinate 10 136
+	timeout 15
+	call {
+		do move 19 136
+	}
+}
+automacro random_10_74 {
+	InMap lhz_cube
+	IsInCoordinate 10 74
+	timeout 15
+	call {
+		do move 10 66
 	}
 }
 automacro random_10_18 {
