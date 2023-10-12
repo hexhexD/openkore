@@ -23,14 +23,6 @@ typedef struct {
 
 typedef struct {
 	bool avoidWalls;
-	const char *map_base_weight;
-	
-	bool customWeights;
-	unsigned int *second_weight_map;
-	
-	unsigned int randomFactor;
-	
-	int useManhattan;
 	
 	unsigned long time_max;
 	
@@ -53,6 +45,7 @@ typedef struct {
 	
 	long openListSize;
 	
+	const char *map_base_weight;
 	Node *currentMap;
 	
 	unsigned long *openList;
@@ -64,7 +57,7 @@ void CalcPath_init (CalcPath_session *session);
 
 int CalcPath_pathStep (CalcPath_session *session);
 
-int heuristic_cost_estimate(int currentX, int currentY, int goalX, int goalY, int useManhattan);
+int heuristic_cost_estimate(int currentX, int currentY, int goalX, int goalY);
 
 void reconstruct_path(CalcPath_session *session, Node* goal, Node* start);
 

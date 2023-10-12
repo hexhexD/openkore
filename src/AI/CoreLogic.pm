@@ -48,9 +48,7 @@ use Utils::Exceptions;
 sub iterate {
 	Benchmark::begin("ai_prepare") if DEBUG;
 	processWipeOldActors();
-	# Not necessary in xkore1 and looks more legit
-	# Comment out is better than a branch
-	# processGetPlayerInfo();
+	processGetPlayerInfo();
 	processMisc();
 	processReAddMissingPortals();
 	processPortalRecording();
@@ -635,7 +633,6 @@ sub processEscapeUnknownMaps {
 		if ($config{route_escape_randomWalk} && !$skip) { #randomly search for portals...
 			my ($randX, $randY);
 			my $i = 500;
-			# TODO: Is there any situation where we should use calcPosFromPathfinding or calcPosFromTime here?
 			my $pos = calcPosition($char);
 			do {
 				if ((rand(2)+1)%2) {
@@ -669,8 +666,7 @@ sub processEscapeUnknownMaps {
 ##### DELAYED-TELEPORT #####
 sub processDelayedTeleport {
 	if (AI::action eq 'teleport') {
-		if($char->{last_skill_used_is_continuous}) {
-			message "stoping rolling \n";
+		if ($char->{last_skill_used_is_continuous}) {
 			$messageSender->sendStopSkillUse($char->{last_continuous_skill_used});
 		}
 		if ($timeout{ai_teleport_delay}{time} && timeOut($timeout{ai_teleport_delay})) {
@@ -3166,10 +3162,6 @@ sub processAutoAttack {
 			# List aggressive monsters
 			@aggressives = ai_getAggressives(1) if $attackOnRoute;
 
-			if (scalar(@aggressives) < 3 && $config{attackAuto} == 0) {
-				return;
-			}
-
 			# List party monsters
 			foreach (@monstersID) {
 				next if (!$_ || !checkMonsterCleanness($_));
@@ -3231,7 +3223,6 @@ sub processAutoAttack {
 				 && !$ai_v{sitAuto_forcedBySitCommand}
 				 && $attackOnRoute >= 2
 				 && !$monster->{dmgFromYou}
-				 # TODO: Is there any situation where we should use calcPosFromPathfinding or calcPosFromTime here?
 				 && ($control->{dist} eq '' || blockDistance($monster->{pos}, calcPosition($char)) <= $control->{dist})
 				 && timeOut($monster->{attack_failed}, $timeout{ai_attack_unfail}{timeout})
 				 && timeOut($monster->{attack_failedLOS}, $timeout{ai_attack_failedLOS}{timeout})) {
@@ -3291,7 +3282,7 @@ sub processItemsTake {
 
 			$dist = distance($item->{pos}, AI::args->{pos});
 			$dist_to = distance($item->{pos}, AI::args->{pos_to});
-			if (($dist <= 8 || $dist_to <= 8) && $item->{take_failed} == 0) {
+			if (($dist <= 4 || $dist_to <= 4) && $item->{take_failed} == 0) {
 				$foundID = $_;
 				last;
 			}
@@ -3489,7 +3480,6 @@ sub processAutoTeleport {
 				$timeout{ai_teleport_away}{time} = time;
 				return;
 			} elsif ($teleAuto < 0 && !$char->{dead}) {
-				# TODO: Is there any situation where we should use calcPosFromPathfinding or calcPosFromTime here?
 				my $pos = calcPosition($monsters{$_});
 				my $myPos = calcPosition($char);
 				my $dist = blockDistance($pos, $myPos);
