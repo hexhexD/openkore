@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword patreket
+adminPassword remoroud
 callSign
 commandPrefix ;
 callSignGM 0
@@ -193,7 +193,7 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 0
+itemsTakeAuto 2
 itemsTakeAuto_party 0
 itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
@@ -532,7 +532,7 @@ attackSkillSlot WL_DRAINLIFE {
 }
 attackSkillSlot WL_SOULEXPANSION {
 	lvl 5
-	# monstersCount >= 2
+	monstersCount >= 2
 	notMonsters 黒いきのこ, 白い草, 青い草
 }
 attackSkillSlot WL_HELLINFERNO {
@@ -985,14 +985,14 @@ getAuto {
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_sent 0
+debugPacket_sent 1
 debugPacket_received 0
 debugPacket_unparsed 1
 debugPacket_ro_sent 0
 debugPacket_exclude
 debugPacket_include 0B3D
 debugPacket_include_dumpMethod 2
-debugDomains vending ai_attack
+debugDomains vending ai_attack teleport
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages
