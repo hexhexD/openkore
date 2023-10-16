@@ -3635,3 +3635,13 @@ prt_maze01 22 194 prt_maze01 16 31
 prt_maze01 23 5 prt_maze01 176 8
 prt_maze01 176 34 prt_maze01 8 186
 gef_dun00 107 169 gef_dun01 115 236
+prt_prison 167 15 prt_prison 137 15
+prt_prison 137 15 prt_prison 160 16
+prt_prison 159 198 prt_prison 159 206
+prt_prison 159 206 prt_prison 159 195
+prt_prison 274 213 prt_prison 278 236
+prt_prison 278 236 prt_prison 276 208
+prt_prison 87 254 prt_prison 85 202
+prt_prison 85 202 prt_prison 90 254
+prt_prison 248 90 prt_prison 267 143
+prt_prison 267 143 prt_prison 238 90

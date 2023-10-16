@@ -1,15 +1,24 @@
 !include ../EventMacroS/Utils.txt
-!include ../EventMacroS/GX.txt
+#!include ../EventMacroS/GX.txt
 
 #!include ../EventMacroS/BeginnerIsland.txt
 !include ../EventMacroS/BioLab.txt
-#!include ../EventMacroS/RoyalBanquet.txt
+!include ../EventMacroS/RoyalBanquet.txt
 
 #!include ../EventMacroS/EndlessTower.txt
 !include ../EventMacroS/DimensionalGap.txt
 !include ../EventMacroS/HeartHunterMilitaryBase.txt
 
 #!include ../EventMacroS/Mukimuki.txt
+
+automacro frostAfterMapChange {
+    # InMap abyss_03
+    SimpleHookEvent Network::Receive::map_changed
+    disabled 1
+    call {
+        do ss WL_FROSTMISTY
+    }
+}
 
 # refine all the same euipment, starting from zero until + 7
 # e.g. em seiren -- "メロンワンド [1]" Don't forget the quote!!
@@ -116,15 +125,6 @@ automacro exchange_melon_wand {
 ]
 }
 
-automacro WL_TELEKINESIS_INTENSE {
-	MobNear /(フェンリル)/i
-	timeout 15
-	overrideAI 1
-	disabled 1
-	call {
-		do ss WL_TELEKINESIS_INTENSE
-	}
-}
 macro md {
 	MD(start)
 }
