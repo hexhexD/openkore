@@ -1,10 +1,10 @@
 ### 異世界 ###
 # 150 meat for 300 jellopy
-# also need 1 emerald and 1 ruby from gem vender in
+# also need 1 emerald and 1 ruby from gem vender in morocc
 macro exchange_jellopy {
 	do move morocc 166 90
 	do move umbala 65 242
-	do move morocc 165 54
+	# do move morocc 165 54
 }
 macro new_world_access {
 	do move prt_castle 90 61
@@ -70,7 +70,8 @@ automacro new_world_access_next3 {
 		do talknpc 132 259
 		do talknpc 132 259
 
-		do move reachel
+		do is ペコペコの手綱
+		call yuno_rachel
 	}
 }
 # Airship only goes from yuno to rachel
@@ -126,7 +127,7 @@ automacro new_world_access_next6 {
 macro flame_road_quest {
 	do move morocc 135 252
 	do talknpc 138 238 r0 r0
-	do talknpc 138 238 r0 r0 r0
+	do talknpc 138 238 r0 r0 r0 r0
 }
 automacro flame_road1 {
 	QuestActive 11351
@@ -197,7 +198,7 @@ automacro flame_road6 {
 automacro flame_road7 {
 	QuestActive 11357
 	timeout 60
-	disabled 1
+	disabled 0
 	call {
 [
 		do conf attackAuto 2
@@ -303,7 +304,7 @@ automacro flame_bios_island0 {
 		do conf itemsTakeAuto 0
 		do conf attackAuto -1
 		log try cross bridge without talking
-		# do talknpc 67 97
+		do talknpc 67 97 r0 r0
 	}
 }
 automacro flame_bios_island1 {
@@ -321,6 +322,7 @@ automacro flame_bios_island2 {
 	call {
 		do conf itemsTakeAuto 0
 		do conf attackAuto 2
+    do conf CrC.disabled 1
 		do move 221 145
 		pause 1
 		do move 212 116
@@ -518,7 +520,7 @@ automacro royal_next3 {
 	exclusive 1
 	call {
 		do move prt_cas 31 117
-		pause 1
+		pause 2
 		do talknpc 29 117 r0
 	}
 }
@@ -561,6 +563,7 @@ automacro royal_in_md {
 	InMap 2@mir
 	run-once 1
 	call {
+    pause 6
 		do talk no
 		do move 106 77
 		do conf attackAuto 2
@@ -573,6 +576,7 @@ automacro royal_killed_3 {
 	delay 2
 	exclusive 1
 	call {
+    pause 5
 		do move 2@mir 101 87
 		do talknpc 101 93 r0
 		do move 2@mir 101 8
@@ -589,10 +593,10 @@ automacro royal_out_md {
 		do talknpc 85 82 r0 r0 r0
 		do talknpc 91 85 r0
 		do talknpc 76 80 r0
-		do talknpc 91 85
+		do talknpc 91 85 r0
 		do talknpc 85 82 r0 r0 c r0
 
-		pause 5
+		pause 6
 		do move prt_lib 63 61
 		do talknpc 56 61 r0
 	}
@@ -685,6 +689,7 @@ automacro royal_md_again3 {
 	InMap prt_lib_q
 	timeout 120
 	exclusive 1
+  delay 2
 	call {
 		do move prt_lib_q 91 77
 		do talknpc 91 85
@@ -696,6 +701,7 @@ automacro royal_md_again4 {
 	InMap mir_q
 	timeout 180
 	exclusive 1
+  delay 1
 	call {
 		do move 101 88
 		do talknpc 101 90 r0 r0 r0 r0
