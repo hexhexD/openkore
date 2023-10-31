@@ -499,17 +499,42 @@ automacro sara2_garden {
 }
 
 automacro sara2_boss_death {
-	InMap 0f41@glast
+	InMap 1@glast
 	SimpleHookEvent target_died
 	delay 1
 	call {
-		if ($.SimpleHookEventLastMonster =~ /サラの幻影/) {
-			log サラの幻影 slayed
-			do move 352 279
-      pause 1
-      do talk resp 1
+	if ($.SimpleHookEventLastMonster =~ /サラの幻影/) {
+		log サラの幻影 slayed
+		do move 352 279
+		pause 1
+		do talk resp 1
 		}
 	}
 }
 
-
+macro devils_tower {
+	call regroup
+	do move dali02 136 114
+	do talknpc 130 121 r0
+}
+automacro devils_tower_ready {
+	SimpleHookEvent instance_ready
+	InMap dali02
+    timeout 600
+	IsInCoordinate 130..140 110..120
+	call {
+		log instance ready let's go
+		do talknpc 141 120 r0
+	}
+}
+automacro devils_tower_first_map {
+	InMap 1@tnm1
+    timeout 600
+	call {
+		do talknpc 57 112
+		pause 1
+		do talknpc 56 110
+		# Skip heal injured
+		# do talknpc 47 109 r0
+	}
+}

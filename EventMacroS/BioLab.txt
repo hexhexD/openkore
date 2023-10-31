@@ -9,7 +9,9 @@ automacro entrance_fishbone {
 		do talknpc 341 224 r0
 		do talknpc 341 224 r1
 		# will say 準備が出来てからまた来い after above
-		do talknpc 341 224 r0
+		do talknpc 341 224 r0 r0 r0 r0 r0 r0 r0 r0
+		do talknpc 341 224 r1
+		do talknpc 341 224 r1
 	}
 }
 
@@ -44,7 +46,7 @@ automacro random_66_74 {
 }
 automacro random_10_193 {
 	InMap lhz_cube
-	IsInCoordinate 10 201
+	IsInCoordinate 10 193
 	timeout 15
 	call {
 		do move 10 185

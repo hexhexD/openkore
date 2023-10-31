@@ -5,10 +5,10 @@
 
 master Japan - jRO: Urdr
 server
-username ShadowCross
+username SX
 password 123
 loginPinCode 1111
-char 0
+char 1
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword tispegri
+adminPassword trifrota
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 2
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -263,11 +263,11 @@ sitTensionRelax 0
 
 statsAddAuto 1
 statsAddAuto_list dex 30, str 30, agi 50, str 50, agi 90, str 90
-statsAddAuto_dontUseBonus 0
+statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
 skillsAddAuto 1
-skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 8, TF_HIDING 10, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 7, エンチャントポイズン 10, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 1, メテオアサルト 10
+skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 7, エンチャントポイズン 10, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 1, メテオアサルト 10
 tankMode 0
 tankModeTarget
 
@@ -635,7 +635,7 @@ attackSkillSlot GC_ROLLINGCUTTER {
 	disabled 0
 	lvl 5
 	maxDist 2
-	aggressives > 1
+	# aggressives > 0
 }
 
 attackComboSlot GC_VENOMIMPRESS {
@@ -886,7 +886,7 @@ useSelf_item ハイスピードポーション {
 	whenStatusInactive EFST_ATTHASTE_POTION2
 	notInTown 1
 	timeout 100
-	manualAI 1
+	manualAI 2
 }
 useSelf_item イグドラシルの種 {
 	hp < 55%
@@ -896,17 +896,17 @@ useSelf_item イグドラシルの種 {
 useSelf_item イグドラシルの実 {
 	hp < 15%
 	notInTown 1
-	timeout 1
+	timeout 2
 }
 useSelf_item 王級メロン {
 	hp < 90%
 	notInTown 1
-	manualAI 0
+	manualAI 2
 }
 useSelf_item 王級メロン {
 	sp < 20%
 	notInTown 1
-	manualAI 0
+	manualAI 2
 }
 
 ######## Autostorage/autosell ########

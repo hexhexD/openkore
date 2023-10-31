@@ -1,0 +1,129 @@
+macro glastheim {
+  call regroup
+  do move glast_01 245 286
+  do talknpc 241 290 r0 r0 r0 r0 r0
+  do talknpc 241 290 r0
+}
+
+automacro glastheim_ready {
+  SimpleHookEvent instance_ready
+  InMap glast_01
+  timeout 600
+	IsInCoordinate 240..250 281..291
+	call {
+		log instance ready let's go
+		do talknpc 241 290 r1
+		lock ghost_boss_death
+	}
+}
+automacro glastheim_start {
+  InMap 1@gl_prq
+  timeout 600
+	IsInCoordinate 294..304 14..24
+	call {
+    do move 299 28
+    do talknpc 299 30 r0 r0
+
+    do move 280 30
+    do talknpc 280 32 r0 r0
+
+    do move 273 49
+    do talk 1
+    do talk resp 0
+	}
+}
+automacro glastheim_surviving {
+  timeout 600
+  NpcMsg /開いてから5分後に閉じます/
+  delay 4
+	call {
+		do conf attackAuto 2
+
+    do move 289 52
+    do talknpc 290 51
+
+    do move 295 100
+    do talknpc 290 102
+
+    do move 294 132
+    do talknpc 294 134
+    
+    do move 285 157
+    do talknpc 287 156
+
+    do move 299 177
+    do talknpc 299 179
+
+    do move 299 177
+    do talknpc 299 179
+
+    do move 281 166
+    do talknpc 278 165
+
+    do move 299 195
+    do talknpc 300 193
+
+    # Gate
+    do move 283 214
+    do talknpc 284 217
+    pause 3
+
+    do move 284 217
+	}
+}
+automacro glastheim_first_half_3rd_map {
+  timeout 600
+  InMap 1@gl_prq
+	IsInCoordinate 279..289 224..234
+	call {
+    do move 284 245
+    do talk 1
+
+    do move 299 292
+    do talknpc 301 294
+    do talknpc 297 294
+    do talknpc 297 294
+    do talknpc 299 297
+
+    # cut scene stuff not done yet
+	}
+}
+automacro glastheim_first_half_reward {
+  timeout 600
+  InMap 1@gl_prq
+	IsInCoordinate 49..58 258..268
+	call {
+    do conf itemsGatherAuto 2
+    do talknpc 52 273
+    do move 52 272
+    do talk 2
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk 2
+    do talk resp 1
+	}
+}
+
+automacro glastheim_second_half_first {
+  InMap 1@gl_prq
+  LocalMsg /時間が正常に流れ始めたようですね/
+	call {
+    do move 79 69
+	}
+}
+automacro glastheim_second_half_second {
+  InMap 2@gl_prq
+  LocalMsg /時間が正常に流れ始めたようですね/
+	call {
+    do move 153 73
+	}
+}
+automacro glastheim_second_half_third {
+  InMap 2@gl_prq
+  LocalMsg /時間が正常に流れ始めたようですね/
+	call {
+    do move 106 129
+	}
+}
