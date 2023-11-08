@@ -1,6 +1,6 @@
 automacro __1 {
     InMap new_1-1
-	timeout 30
+	timeout 15
 	call {
 		do talk 2
 		do talk resp 3
@@ -8,7 +8,7 @@ automacro __1 {
 }
 automacro __2 {
     InMap new_2-1
-	timeout 30
+	timeout 15
 	call {
 		do talk 2
 		do talk resp 3
@@ -16,7 +16,7 @@ automacro __2 {
 }
 automacro __3 {
     InMap new_3-1
-	timeout 30
+	timeout 15
 	call {
 		do talk 2
 		do talk resp 3
@@ -24,7 +24,7 @@ automacro __3 {
 }
 automacro __4 {
     InMap new_4-1
-	timeout 30
+	timeout 15
 	call {
 		do talk 2
 		do talk resp 3
@@ -32,7 +32,7 @@ automacro __4 {
 }
 automacro __5 {
     InMap new_5-1
-	timeout 30
+	timeout 15
 	call {
 		do talk 2
 		do talk resp 3
@@ -55,9 +55,17 @@ automacro room {
 automacro theif {
     InMap moc_prydb1
     IsInCoordinate 41..45 123..124
-	timeout 60
+	timeout 30
 	call {
 		do talknpc 39 129 r0 r0 r0 r0
 		do talknpc 52 132 r0 r0
+	}
+}
+automacro archer {
+    InMap payon_in02
+    IsInCoordinate 60..65 64..70
+	timeout 30
+	call {
+		do talknpc 64 71 r0 r0 r0
 	}
 }

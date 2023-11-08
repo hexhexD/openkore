@@ -524,15 +524,9 @@ pet_return 20
 # You can copy & paste any block multiple times. So if you want to
 # configure two attack skills, just duplicate the attackSkillSlot block.
 
-attackSkillSlot WL_TELEKINESIS_INTENSE {
-	monsters フェンリル
-	lvl 5
-	isSelfSkill 1
-	timeout 120
-}
 attackSkillSlot WL_DRAINLIFE {
 	lvl 5
-	hp < 80%
+	hp < 60%
 	maxAttempts 3
 	monstersCounter < 2
 }
@@ -553,14 +547,6 @@ attackSkillSlot WZ_VERMILION {
 	notInMap moro_vol
 	disabled 0
 }
-attackSkillSlot WL_SOULEXPANSION {
-	lvl 5
-	monsters
-	disabled 1
-}
-attackSkillSlot WL_HELLINFERNO {
-	lvl 5
-}
 attackSkillSlot MG_FIREBALL {
 	disabled 1
 	lvl 10
@@ -571,6 +557,21 @@ attackSkillSlot MG_FIREBOLT {
 	disabled 1
 	lvl 6
 	timeout 1
+}
+attackSkillSlot WL_TELEKINESIS_INTENSE {
+	monsters フェンリル
+	lvl 5
+	isSelfSkill 1
+	timeout 120
+  disabled 1
+}
+attackSkillSlot WL_SOULEXPANSION {
+	lvl 5
+	monsters
+	disabled 1
+}
+attackSkillSlot WL_HELLINFERNO {
+	lvl 5
 }
 
 attackSkillSlot {

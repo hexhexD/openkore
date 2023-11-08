@@ -501,6 +501,7 @@ automacro sara2_garden {
 automacro sara2_boss_death {
 	InMap 1@glast
 	SimpleHookEvent target_died
+	IsInCoordinate 180..220 327..360
 	delay 1
 	call {
 	if ($.SimpleHookEventLastMonster =~ /サラの幻影/) {
@@ -511,7 +512,6 @@ automacro sara2_boss_death {
 		}
 	}
 }
-
 macro devils_tower {
 	call regroup
 	do move dali02 136 114
