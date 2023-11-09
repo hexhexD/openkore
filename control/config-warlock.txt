@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword cufrabri
+adminPassword veesoupe
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 2
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -195,7 +195,7 @@ followBot 0
 
 itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 0
+itemsGatherAuto 2
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore 60
@@ -528,7 +528,6 @@ attackSkillSlot WL_DRAINLIFE {
 	lvl 5
 	hp < 60%
 	maxAttempts 3
-	monstersCounter < 2
 }
 attackSkillSlot WL_CRIMSONROCK {
 	label CrC
@@ -563,7 +562,7 @@ attackSkillSlot WL_TELEKINESIS_INTENSE {
 	lvl 5
 	isSelfSkill 1
 	timeout 120
-  disabled 1
+	disabled 1
 }
 attackSkillSlot WL_SOULEXPANSION {
 	lvl 5
@@ -745,6 +744,13 @@ useSelf_skill {
 	whenPartyMembersNearDist
 	inInventory
 	manualAI 0
+}
+
+useSelf_skill MG_ENERGYCOAT {
+	lvl 1
+	whenStatusInactive
+	manualAI 2
+	disabled 1
 }
 
 useSelf_skill_smartHeal 1

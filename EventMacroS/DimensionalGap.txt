@@ -163,7 +163,7 @@ automacro ghost_boss_death {
 
 			[
 			do conf itemsGatherAuto 2
-      do conf itemsTakeAuto 1
+      do conf itemsTakeAuto 2
 			do conf route_randomWalk 0
 			]
 			# walk to make sure we pick up stuff
@@ -198,7 +198,7 @@ automacro ghost_exit {
 
 ########################################### Sara's Memory
 macro sara {
-    call regroup
+  call regroup
 	do move dali 135 111
 	do talknpc 130 107 c r0
 	do talknpc 130 107 c r0
@@ -221,8 +221,9 @@ automacro sara_entered {
 	IsInCoordinate 245..255 150..160
 	timeout 5
 	call {
+		do conf itemsTakeAuto 0
+		do conf itemsGatherAuto 0
 		lock sara_boss_death
-		do conf itemsTakeAuto 1
 		do conf attackAuto 2
 		pause 1
 		do talknpc 261 156 c r0
@@ -274,6 +275,7 @@ automacro sara_boss {
 	timeout 15
 	call {
 		do conf itemsGatherAuto 2
+		do conf itemsTakeAuto 2
 		release sara_boss_death
 		do move 155 232
     	do talknpc 152 233 r0
@@ -342,7 +344,7 @@ automacro magic_register_auto {
     timeout 660
 	call {
 [
-		do conf itemsTakeAuto 1
+		do conf itemsTakeAuto 2
  		do conf attackAuto 2
 ]
 		do move 130 135
@@ -494,7 +496,8 @@ automacro sara2_garden {
 
   pause 5
   do move 202 349
-  do talknpc 200 346 r0
+  do talk "サラの幻影#ex_battle_0k"
+  do talk resp 0
 	}
 }
 
