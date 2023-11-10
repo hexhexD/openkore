@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword veesoupe
+adminPassword geaswaiy
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 1
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -89,10 +89,10 @@ attackLooters 0
 attackChangeTarget 1
 aggressiveAntiKS 1
 
-attackBeyondMaxDistance_waitForAgressive 0
+attackBeyondMaxDistance_waitForAgressive 1
 attackBeyondMaxDistance_sendAttackWhileWaiting 0
 attackSendAttackWithMove 0
-attackWaitApproachFinish 0
+attackWaitApproachFinish 1
 
 attackUpdateMonsterPos 0
 
@@ -748,9 +748,9 @@ useSelf_skill {
 
 useSelf_skill MG_ENERGYCOAT {
 	lvl 1
-	whenStatusInactive
+	whenStatusInactive EFST_ENERGYCOAT
 	manualAI 2
-	disabled 1
+	disabled 0
 }
 
 useSelf_skill_smartHeal 1
@@ -1045,9 +1045,9 @@ debugPacket_received 0
 debugPacket_unparsed 1
 debugPacket_ro_sent 1
 debugPacket_exclude
-debugPacket_include 0B3D
+debugPacket_include 0B3D, 0087
 debugPacket_include_dumpMethod 2
-debugDomains parseMsg_damage, ai_attack
+debugDomains parseMsg_damage, ai_attack, parseMsg_move
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

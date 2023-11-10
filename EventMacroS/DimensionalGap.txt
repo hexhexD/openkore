@@ -477,7 +477,7 @@ automacro sara2_garden {
 	timeout 30
 	call {
 	do conf itemsGatherAuto 2
-	do conf attackAuto 2
+	do conf attackAuto 1
 	do move 177 183
 	do talknpc 176 178
 	do move 131 130
@@ -494,7 +494,6 @@ automacro sara2_garden {
 	do move 349 279
 	do talk resp 1
 
-  pause 5
   do move 202 349
   do talk "サラの幻影#ex_battle_0k"
   do talk resp 0
@@ -510,7 +509,7 @@ automacro sara2_boss_death {
 	if ($.SimpleHookEventLastMonster =~ /サラの幻影/) {
 		log サラの幻影 slayed
 		do move 352 279
-		pause 1
+		pause 2
 		do talk resp 1
 		}
 	}
