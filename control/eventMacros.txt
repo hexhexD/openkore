@@ -125,44 +125,47 @@ automacro exchange_melon_wand {
 ]
 }
 
-macro md {
-	MD(start)
+macro mdStart {
+	do eval MD::MD(start)
 }
 
 sub MD {
-	my ($caller) = @_;
-	use Utils qw(getFormattedDate);
-	use v5.10;
-
-	my $logFile = $Settings::logs_folder . "/mdlog.txt";
-	open(FH, ">>:utf8", $logFile) or die("Failed to open MD log file\n");
-
-	message("MD caller is: ".$caller . "\n");
-	my $prefix = "[".getFormattedDate(int(time))."]"." char ".$config{char}." [MD] ";
-
-	given ($caller) {
-		when ($_ eq "start") {
-			message("start\n");
-			Commands::run("em stop");
-			Commands::run("em sara -orphan reregister_safe");
-			print(FH $prefix."Started with sara\n");
-		}
-		when ($_ eq "sara") {
-			print(FH $prefix."sara done\n");
-			Commands::run("em stop");
-			Commands::run("autostorage");
-			Commands::run("em ghost -orphan reregister_safe");
-		}
-		when ($_ eq "ghost") {
-			print(FH $prefix."ghost done\n");
-			# Commands::run("em ghost");
-		}
-		default {
-			Commands::run("move 309 280");
-			error "Unknown caller of MD function\n";
-			die "MD function died"
-		}
-	}
-	close(FH);
+  MD::MD(@_);
 }
 
+#sub MD {
+#	my ($caller) = @_;
+#	use Utils qw(getFormattedDate);
+#	use v5.10;
+#
+#	my $logFile = $Settings::logs_folder . "/mdlog.txt";
+#	open(FH, ">>:utf8", $logFile) or die("Failed to open MD log file\n");
+#
+#	message("MD caller is: ".$caller . "\n");
+#	my $prefix = "[".getFormattedDate(int(time))."]"." char ".$config{char}." [MD] ";
+#
+#	given ($caller) {
+#		when ($_ eq "start") {
+#			message("start\n");
+#			Commands::run("em stop");
+#			Commands::run("em sara -orphan reregister_safe");
+#			print(FH $prefix."Started with sara\n");
+#		}
+#		when ($_ eq "sara") {
+#			print(FH $prefix."sara done\n");
+#			Commands::run("em stop");
+#			Commands::run("autostorage");
+#			Commands::run("em ghost -orphan reregister_safe");
+#		}
+#		when ($_ eq "ghost") {
+#			print(FH $prefix."ghost done\n");
+#			# Commands::run("em ghost");
+#		}
+#		default {
+#			Commands::run("move 309 280");
+#			error "Unknown caller of MD function\n";
+#			die "MD function died"
+#		}
+#	}
+#	close(FH);
+#}

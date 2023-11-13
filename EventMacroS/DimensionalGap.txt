@@ -1,9 +1,3 @@
-macro test {
-	if ($.job =~ /Glt. Cross/) {
-		log abcd
-	}
-}
-
 ####################################### Ghost Palace
 macro ghost {
 	call regroup
@@ -224,7 +218,7 @@ automacro sara_entered {
 		do conf itemsTakeAuto 0
 		do conf itemsGatherAuto 0
 		lock sara_boss_death
-		do conf attackAuto 2
+		do conf attackAuto 1
 		pause 1
 		do talknpc 261 156 c r0
 		do move 241 146
@@ -414,6 +408,8 @@ automacro magic_leave {
 	do talk resp 1
 	pause 4
 	do talknpc 98 141
+
+  MD(magic)
 	}
 }
 
@@ -493,6 +489,7 @@ automacro sara2_garden {
 	do talknpc 359 294 r0
 	do move 349 279
 	do talk resp 1
+	do conf attackAuto 2
 
   do move 202 349
   do talk "サラの幻影#ex_battle_0k"
@@ -511,6 +508,8 @@ automacro sara2_boss_death {
 		do move 352 279
 		pause 2
 		do talk resp 1
+
+    MD(sara2)
 		}
 	}
 }
