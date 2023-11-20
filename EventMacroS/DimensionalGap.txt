@@ -215,10 +215,10 @@ automacro sara_entered {
 	IsInCoordinate 245..255 150..160
 	timeout 5
 	call {
-		do conf itemsTakeAuto 0
-		do conf itemsGatherAuto 0
+		do conf itemsTakeAuto 2
+		do conf itemsGatherAuto 2
 		lock sara_boss_death
-		do conf attackAuto 1
+		do conf attackAuto 2
 		pause 1
 		do talknpc 261 156 c r0
 		do move 241 146
@@ -268,13 +268,12 @@ automacro sara_boss {
 	IsInCoordinate 150..160 191..201
 	timeout 15
 	call {
-		do conf itemsGatherAuto 2
-		do conf itemsTakeAuto 2
 		release sara_boss_death
+
 		do move 155 232
-    	do talknpc 152 233 r0
+    do talknpc 152 233 r0
 		pause 1
-    	do talknpc 156 236 r2
+    do talknpc 156 236 r2
 		do move 156 218
 		do move 155 226
 	}
@@ -295,7 +294,6 @@ automacro sara_boss_death {
 			pause 1
 			do talknpc 130 107 c r0
 			do conf itemsGatherAuto 0
-			lock sara_boss_death
 
 			MD(sara)
 		}
@@ -429,6 +427,7 @@ automacro sarah2_ready {
 	call {
 		log instance ready let's go
 		do talknpc 99 148 c r0
+    lock sara2_boss_death
 	}
 }
 automacro sara2 {
@@ -461,7 +460,7 @@ automacro sara2_crossedbridge {
 }
 automacro sara2_sarah {
 	InMap 1@glast
-	timeout 240
+	timeout 660
 	IsInCoordinate 199 333
 	call {
 	do talknpc 200 340 r0
@@ -473,7 +472,7 @@ automacro sara2_garden {
 	timeout 30
 	call {
 	do conf itemsGatherAuto 2
-	do conf attackAuto 1
+	do conf attackAuto 2
 	do move 177 183
 	do talknpc 176 178
 	do move 131 130
@@ -489,7 +488,6 @@ automacro sara2_garden {
 	do talknpc 359 294 r0
 	do move 349 279
 	do talk resp 1
-	do conf attackAuto 2
 
   do move 202 349
   do talk "サラの幻影#ex_battle_0k"

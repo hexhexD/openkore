@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword geaswaiy
+adminPassword laipeeca
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 1
+attackAuto 2
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
 attackAuto_followTarget 1
@@ -1046,8 +1046,8 @@ debugPacket_unparsed 1
 debugPacket_ro_sent 1
 debugPacket_exclude
 debugPacket_include 0B3D, 0087
-debugPacket_include_dumpMethod 2
-debugDomains parseMsg_damage, ai_attack, parseMsg_move
+debugPacket_include_dumpMethod 0
+debugDomains parseMsg_damage, ai_attack, #parseMsg_move
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

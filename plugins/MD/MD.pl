@@ -143,18 +143,22 @@ sub MD {
 	}
 	elsif ($caller eq "sara") {
 		print(FH $prefix."Sara's memory done\n");
+		Commands::run("autostorage");
 		runEventMacro("ghost");
 	}
 	elsif ($caller eq "ghost") {
 		print(FH $prefix."Ghost palace done\n");
+		# TODO: weak char stops here
 		runEventMacro("magic");
 	}
 	elsif ($caller eq "magic") {
 		print(FH $prefix."Magic tournament done\n");
+		Commands::run("autostorage");
 		runEventMacro("sara2");
 	}
 	elsif ($caller eq "sara2") {
 		print(FH $prefix."sara2 done\n");
+		Commands::run("autostorage");
 	}
 	else {
 		Commands::run("move 309 280");
