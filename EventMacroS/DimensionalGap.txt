@@ -486,11 +486,13 @@ automacro sara2_garden {
 	pause 3
 	do move 358 291
 	do talknpc 359 294 r0
-	do move 349 279
+	do move 352 279
 	do talk resp 1
 
   do move 202 349
-  do talk "サラの幻影#ex_battle_0k"
+  pause 2
+  release sara2_boss_death
+  do talk "サラの幻影#ex_battle_0q"
   do talk resp 0
 	}
 }
