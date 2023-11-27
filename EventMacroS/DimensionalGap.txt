@@ -485,7 +485,10 @@ automacro sara2_garden {
 	do talk resp 1
 	pause 3
 	do move 358 291
-	do talknpc 359 294 r0
+  pause 1
+  do move 352 288
+  pause 2
+	do talknpc 359 294
 	do move 352 279
 	do talk resp 1
 
@@ -509,6 +512,8 @@ automacro sara2_boss_death {
 		pause 2
 		do talk resp 1
 
+    do conf itemsGatherAuto 0
+    do conf attackAuto 0
     MD(sara2)
 		}
 	}
