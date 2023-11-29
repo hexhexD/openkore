@@ -496,6 +496,7 @@ automacro sara2_garden {
   pause 2
   release sara2_boss_death
   do talk 9
+  do talk 10
   do talk resp 0
 	}
 }
