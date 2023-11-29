@@ -495,7 +495,7 @@ automacro sara2_garden {
   do move 202 349
   pause 2
   release sara2_boss_death
-  do talk "サラの幻影#ex_battle_0q"
+  do talk 9
   do talk resp 0
 	}
 }
@@ -509,7 +509,6 @@ automacro sara2_boss_death {
 	if ($.SimpleHookEventLastMonster =~ /サラの幻影/) {
 		log サラの幻影 slayed
 		do move 352 279
-		pause 2
 		do talk resp 1
 
     do conf itemsGatherAuto 0

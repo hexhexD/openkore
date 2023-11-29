@@ -1,5 +1,5 @@
-# Script for militarybase, illusion
-
+# Script for militarybase, illusion, legacy of the wise one
+# name of quest chain macros: illusion, legacy
 macro  militarybase {
 	do move ein_fild04 280 332
 	call regroup
@@ -149,6 +149,7 @@ automacro militarybase_area3 {
 	}
 }
 
+### Illusion ###
 macro illusion {
 	do move einbech 208 78
 	do talk resp 0
@@ -972,3 +973,84 @@ automacro illusion_end_MD_done {
     log LET'S FUCKING GO ILLUSION WAS LONG AF
 	}
 }
+### End of Illusion
+
+### Legacu of The Wise one ###
+
+macro legacy {
+	do move sp_cor 258 284
+  pause 2
+	do talk 6
+}
+automacro legacy_start {
+  QuestActive 18000
+  InMap sp_cor
+  timeout 600
+  call {
+    do talk 6
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro legacy_power_plant {
+  QuestActive 18001
+  InMap ba_pw02
+  timeout 600
+  delay 1
+  call {
+    do talk 3
+    do talk resp 0
+  }
+}
+automacro legacy_power_plant1 {
+  QuestActive 11615
+  InMap ba_pw02
+  timeout 600
+  delay 1
+  call {
+    do talknpc 93 93 r0 r0
+  }
+}
+automacro legacy_power_plant2 {
+  QuestActive 11616
+  InMap ba_pw01
+  timeout 600
+  delay 1
+  call {
+    do talk "マギスティン#発電所"
+    do talk resp 0
+  }
+}
+automacro legacy_power_plant3 {
+  QuestActive 11617
+  InMap ba_pw01
+  timeout 600
+  delay 1
+  call {
+    do talk "アルプオカート#発電所"
+  }
+}
+automacro legacy_power_plant4 {
+  QuestActive 11618
+  InMap ba_in01
+  timeout 600
+  delay 1
+  call {
+    do talknpc 20 319
+    pause 1
+    do move 12 321
+  }
+}
+automacro legacy_maison {
+  QuestActive 128650
+  InMap ba_maison
+  timeout 600
+  delay 1
+  call {
+    do talknpc 20 319
+  }
+}
+### WIP
+### End of Legacy of The Wise One

@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword fromieca
+adminPassword nepraige
 callSign
 commandPrefix ;
 callSignGM 0
@@ -527,7 +527,7 @@ pet_return 20
 attackSkillSlot WL_HELLINFERNO {
 	label Hell
 	lvl 5
-	disabled 0
+	disabled 1
 }
 attackSkillSlot WL_DRAINLIFE {
 	lvl 5
@@ -952,8 +952,9 @@ useSelf_item ハイスピードポーション {
 }
 useSelf_item イグドラシルの種 {
 	hp < 55%
+  hp > 40%
 	notInTown 1
-	timeout 1
+	timeout 2
 	manualAI 2
 }
 useSelf_item イグドラシルの実 {

@@ -1809,6 +1809,8 @@ prt_cas 93 208 prt_cas 216 180
 prt_cas 152 163 prt_cas_q 150 8
 # rebel
 prt_cas 27 21 slabw01_qjp 233 88 c r3
+prt_cas 27 21 sp_cor 258 284 c r17
+prt_cas 27 21 ba_maison 74 146 c r18
 
 prt_castle 28 121 prt_castle 40 138
 prt_castle 31 113 prt_castle 54 113
@@ -3645,3 +3647,5 @@ prt_prison 87 254 prt_prison 85 202
 prt_prison 85 202 prt_prison 90 254
 prt_prison 248 90 prt_prison 267 143
 prt_prison 267 143 prt_prison 238 90
+lighthalzen 324 322 lhz_in03 15 162
+lhz_in03 12 162 lighthalzen 320 321

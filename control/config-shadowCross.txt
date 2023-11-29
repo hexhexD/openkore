@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword cubuheet
+adminPassword bijeerau
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -890,13 +890,16 @@ useSelf_item ハイスピードポーション {
 }
 useSelf_item イグドラシルの種 {
 	hp < 55%
+  hp > 40%
 	notInTown 1
-	timeout 1
+	timeout 2
+	manualAI 2
 }
 useSelf_item イグドラシルの実 {
 	hp < 15%
 	notInTown 1
-	timeout 2
+	timeout 1
+	manualAI 2
 }
 useSelf_item 王級メロン {
 	hp < 90%
@@ -907,6 +910,11 @@ useSelf_item 王級メロン {
 	sp < 20%
 	notInTown 1
 	manualAI 2
+}
+useSelf_item {
+	sp
+	notInTown
+	manualAI
 }
 
 ######## Autostorage/autosell ########
