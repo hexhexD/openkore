@@ -3649,3 +3649,4 @@ prt_prison 248 90 prt_prison 267 143
 prt_prison 267 143 prt_prison 238 90
 lighthalzen 324 322 lhz_in03 15 162
 lhz_in03 12 162 lighthalzen 320 321
+lhz_airport 142 60 lighthalzen 296 76
