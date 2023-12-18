@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword bijeerau
+adminPassword wretheca
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 1
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -267,7 +267,7 @@ statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
 skillsAddAuto 1
-skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 3, エンチャントポイズン 10, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 1, メテオアサルト 10
+skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 3, エンチャントポイズン 6, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 10, メテオアサルト 9, GC_ROLLINGCUTTER 5, クローキングエクシード 5, クロスインパクト 5, ダークイリュージョン 5, ダーククロー 5, ファントムメナス 1, ハルシネーションウォーク 5, ウェポンブロッキング 3, ウェポンクラッシュ 5, カウンタースラッシュ 10, ベナムインプレス 5, 新毒研究 9, 新毒製造 1, ポイズニングウェポン 5, SHC_SHADOW_SENSE 3, SHC_SAVAGE_IMPACT 10
 tankMode 0
 tankModeTarget
 
@@ -889,8 +889,8 @@ useSelf_item ハイスピードポーション {
 	manualAI 2
 }
 useSelf_item イグドラシルの種 {
-	hp < 55%
-  hp > 40%
+	hp > 40%
+	hp > 40%
 	notInTown 1
 	timeout 2
 	manualAI 2
