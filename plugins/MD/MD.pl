@@ -16,8 +16,8 @@ Plugins::register('MD', 'Message discord and managa MDs', \&onUnload, \&onUnload
 my $hooks = Plugins::addHooks(
 	['packet_privMsg', \&receivedPM],
 	['disconnected',	\&disconnected], ['self_died',	\&self_died],
-	['base_level_changed',	\&base_level_changed],
-	['job_level_changed',	\&job_level_changed],
+	# ['base_level_changed',	\&base_level_changed],
+	# ['job_level_changed',	\&job_level_changed],
 	['Network::Receive::map_changed',	\&map_changed],			
 	['eventMacro/ppp', \&MD]
 );

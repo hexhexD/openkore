@@ -171,3 +171,4 @@ dali.rsw#Dimensional Gap#
 dali02.rsw#Dimensional Gap#
 valkyrie.rsw#ヴァルキリー神殿#
 d_port01.rsw#悠久の商港#
+moc_prydb1.rsw#シーフギルド#
