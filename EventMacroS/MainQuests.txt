@@ -2,7 +2,7 @@
 ## 異世界: macro new_world_access
 ## フレイムヴァレーへの道: search for detail, biosisland included
 ## 七王家とユミルの心臓: macro royal_quest
-## Terra Gloria:
+## Terra Gloria: macro terra_gloria_quest
 ## Illusion:
 ## 賢者の遺産: macro legacy
 
@@ -177,11 +177,13 @@ automacro got_long_stick {
 ### 異世界 ###
 
 # 150 meat for 300 jellopy
-# also need 1 emerald and 1 ruby from gem vender in morocc
 macro exchange_jellopy {
+# also need 1 emerald and 1 ruby from gem vender in morocc
 	do move morocc 165 54
 	do move morocc 166 90
 	do move umbala 65 242
+
+  do talknpc 59 243 r0 r1
 }
 macro new_world_access {
 	do move prt_castle 90 61
@@ -193,7 +195,6 @@ macro new_world_access {
 	do talknpc 127 138 r0
 	# hand off jellopy
 	do talknpc 127 138 r0
-
 
 	do move geffen 90 65
 	do talknpc 90 67 r0
@@ -223,6 +224,8 @@ automacro new_world_access_next {
 		do talknpc 132 259
 		do talknpc 132 259 r0
 		do talknpc 132 259 r0
+		do is ペコペコの手綱
+    do move prontera
 		warning Need to be in protera to trigger next step
 	}
 }
@@ -754,11 +757,11 @@ automacro royal_killed_3 {
 	InMap 2@mir
 	timeout 10
 	LocalMsg /作戦班、撤収するぞ/
-	delay 2
+	delay 3
 	exclusive 1
 	call {
     pause 5
-		do move 2@mir 101 87
+		do move 101 87
 		do talknpc 101 93 r0
 		do move 2@mir 101 8
 		do talk resp 1
@@ -775,7 +778,11 @@ automacro royal_out_md {
 		do talknpc 91 85 r0
 		do talknpc 76 80 r0
 		do talknpc 91 85 r0
+    pause 2
 		do talknpc 85 82 r0 r0 c r0
+    pause 1
+		do talknpc 91 85 r0
+		do talknpc 91 85 r0
 
 		pause 6
 		do move prt_lib 63 61
@@ -983,6 +990,7 @@ automacro terra_gloria_4_1 {
 	delay 1
 	call {
 		do move prt_cas_q 23 35
+		do talknpc 21 39 r0 r0 r1 r0
 		do talknpc 21 39 r0 r0 r1 r0
 	}
 }
@@ -1440,7 +1448,7 @@ automacro lab_code {
 automacro lab_code_first_left_correct {
 	InMap 1@slw
 	NpcMsg /保安装置を稼働させた/
-	timeout 60
+	timeout 600
 	call {
 		# right device
 		do move 220 188
@@ -1450,7 +1458,7 @@ automacro lab_code_first_left_correct {
 automacro lab_code_first_right_correct {
 	InMap 1@slw
 	NpcMsg /ゲートが稼働した/
-	timeout 60
+	timeout 600
 	call {
 		do move 188 169
 	}
@@ -1497,7 +1505,7 @@ automacro lab_entered_end {
 		do talknpc 53 171 r0
 		do talknpc 53 171 r0
 		do talknpc 53 171 r0
-		pause 2
+		pause 4
 		do talknpc 56 171
 	}
 }

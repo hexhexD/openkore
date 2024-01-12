@@ -164,12 +164,12 @@ automacro ghost_boss_death {
 			do move 198 27
 			do move 196 44
 			# exit
-			do move 198 27
-			do talknpc 204 29 r0 r0
-			do move 211 27
-			do conf itemsGatherAuto 0
+			# do move 198 27
+			# do talknpc 204 29 r0 r0
+			# do move 211 27
+			# do conf itemsGatherAuto 0
 
-			MD(ghost)
+			# MD(ghost)
 		}
 	}
 }
@@ -177,7 +177,7 @@ automacro ghost_boss_death {
 automacro ghost_exit {
 	LocalMsg /周辺の風景が歪み始めた/
 	InMap 1@spa
-	disabled 1
+	disabled 0
 	call {
 		do move 198 27
 		do talknpc 204 29 r0 r0

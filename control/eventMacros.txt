@@ -3,7 +3,7 @@
 
 !include ../EventMacroS/BeginnerIsland.txt
 !include ../EventMacroS/DimensionalGap.txt
-#!include ../EventMacroS/HeartHunterMilitaryBase.txt
+!include ../EventMacroS/HeartHunterMilitaryBase.txt
 !include ../EventMacroS/GlastHeim.txt
 
 #!include ../EventMacroS/EndlessTower.txt

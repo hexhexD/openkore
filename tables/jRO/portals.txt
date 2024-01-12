@@ -3650,3 +3650,5 @@ prt_prison 267 143 prt_prison 238 90
 lighthalzen 324 322 lhz_in03 15 162
 lhz_in03 12 162 lighthalzen 320 321
 lhz_airport 142 60 lighthalzen 296 76
+x_prt_evt 48 87 x_prt_in 31 39
+que_swat 155 61 slabw01_qjp 14 88
