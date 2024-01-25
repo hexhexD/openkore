@@ -1,0 +1,6 @@
+---
+plugins/fileReload/fileReload.pl : ["plugin reload fileReload"]
+control/reloadList.yaml: ["reload reloadList.yaml"]
+
+src/AI/CoreLogic.pm: ["rc CoreLogic.pm"]
+src/AI/Attack.pm : ["rc Attack.pm"]
