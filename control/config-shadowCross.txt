@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword theswest
+adminPassword pouwreel
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -192,9 +192,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 2
+itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 2
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -213,7 +213,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 1
+route_randomWalk 0
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 60
 route_maxWarpFee
@@ -262,7 +262,7 @@ sitAuto_look_from_wall
 sitTensionRelax 0
 
 statsAddAuto 1
-statsAddAuto_list dex 30, str 30, agi 50, str 50, agi 90, str 90, vit 90, luk 90
+statsAddAuto_list dex 30, str 30, agi 50, str 50, agi 90, str 90, vit 90, dex 90, luk 70, str 120
 statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
@@ -615,8 +615,8 @@ attackSkillSlot AS_ENCHANTPOISON {
 attackSkillSlot GC_DARKCROW {
 	monsters フェンリル, 呪いの根源, 大長老アイリン
 	lvl 5
-	minCastTime 3
-	timeout 15
+	minCastTime 0
+	timeout 30
 }
 attackSkillSlot GC_DARKCROW {
 	inMap 1@ge_st
@@ -901,6 +901,11 @@ useSelf_item イグドラシルの実 {
 	timeout 1
 	manualAI 2
 }
+useSelf_item おいしいイワシ {
+	hp < 90%
+	notInTown 1
+	manualAI 2
+}
 useSelf_item 王級メロン {
 	hp < 90%
 	notInTown 1
@@ -1007,9 +1012,9 @@ debugPacket_received 0
 debugPacket_ro_sent 0
 debugPacket_sent 0
 debugPacket_exclude
-debugPacket_include  0090
+debugPacket_include  09FF
 debugPacket_include_dumpMethod 0
-debugDomains sendPacket
+debugDomains
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

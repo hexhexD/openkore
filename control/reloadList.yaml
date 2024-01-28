@@ -1,6 +1,7 @@
 ---
 plugins/fileReload/fileReload.pl : ["plugin reload fileReload"]
 control/reloadList.yaml: ["reload reloadList.yaml"]
+control/config-shadowCross.txt: ["reload config"]
 
-src/AI/CoreLogic.pm: ["rc CoreLogic.pm"]
-src/AI/Attack.pm : ["rc Attack.pm"]
+src/AI.pm: ["rc AI"]
+src/AI/CoreLogic.pm: ["rc CoreLogic"]
