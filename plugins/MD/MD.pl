@@ -1,6 +1,7 @@
 package MD;
 
 use strict;
+use utf8;
 use Plugins;
 use Utils qw( existsInList getFormattedDate timeOut makeIP compactArray calcPosition distance);
 use Time::HiRes qw(time);
@@ -15,15 +16,63 @@ Plugins::register('MD', 'Message discord and managa MDs', \&onUnload, \&onUnload
 
 my $hooks = Plugins::addHooks(
 	['packet_privMsg', \&receivedPM],
-	['disconnected',	\&disconnected], ['self_died',	\&self_died],
+	# ['disconnected',	\&disconnected], ['self_died',	\&self_died],
+	['item_gathered', \&gotItem],
 	# ['base_level_changed',	\&base_level_changed],
 	# ['job_level_changed',	\&job_level_changed],
-	['Network::Receive::map_changed',	\&map_changed],			
-	['eventMacro/ppp', \&MD]
+	# ['Network::Receive::map_changed',	\&map_changed],			
 );
 
 sub onUnload {
 	Plugins::delHooks($hooks);
+}
+
+sub test {
+	use DDP;
+	use Data::Dumper qw(Dumper);
+	use Task::Chained;
+	use Task::SitStand;
+	use Task::Wait;
+	# my $task = Task::Chained->new(
+		# tasks => [
+			# new Task::Wait(seconds => 3, inGame => 1),
+			# new Task::Function(function => sub {
+					# warning("TASK FUNC\n");
+					# $_[0]->setDone();
+				# })
+		# ]
+	# );
+	my $task = Task::Timeout->new(
+		function=> sub { warning("YOOO\n"); },
+		seconds => 2,
+	);
+	$taskManager->add($task);
+	warning(np($task->{tasks}->[1]->{function}) . "\n");
+	# my $activeTasks = $taskManager->{activeTasks};
+	# for (my $i = 0; $i < @{$activeTasks}; $i++) {
+		# my $task = $activeTasks->get($i);
+		# warning(np($task->{tasks}->[0]->{fuction}) . "\n");
+	# }
+}
+
+sub gotItem {
+	my ($self, $args) = @_;
+
+	# List of regex patterns you want to match
+	my @keyworkds = (
+			qr/カード\z/,  # Matches strings ending with "カード"
+	);
+
+	if (!($args->{item} =~ @keyworkds)) {
+		return; 
+	}
+
+	my $msg .= "```css\n";	
+	$msg .= "================ [Openkore Notifier] ===============\n";
+	$msg .= "Got item: " . $args->{item} . "\n",
+	$msg .= "====================================================\n";
+	$msg .= "```\n";	
+	messageDiscord($msg);
 }
 
 sub receivedPM {
@@ -39,7 +88,6 @@ sub receivedPM {
 	$msg .= "```\n";	
 	messageDiscord($msg);
 }
-
 
 sub disconnected {
 	my $time = getFormattedDate(time);
