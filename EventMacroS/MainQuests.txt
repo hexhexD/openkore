@@ -3,8 +3,10 @@
 ## フレイムヴァレーへの道: search for detail, biosisland included
 ## 七王家とユミルの心臓: macro royal_quest
 ## Terra Gloria: macro terra_gloria_quest
-## Illusion:
+## Illusion: macro illusion
 ## 賢者の遺産: macro legacy
+
+## SX job quest: macro shadowcross
 
 ### Biolabs Entrance Quest ###
 
@@ -2464,3 +2466,11 @@ automacro legacy_maison {
 }
 ### WIP
 ### End of Legacy of The Wise One
+
+### Shadow Cross job quest
+macro shadowcross {
+  # log Make sure you are in yuno
+  # call yuno_rachel
+  do move veins 256 255
+
+}

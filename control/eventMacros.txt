@@ -1,12 +1,13 @@
 !include ../EventMacroS/Utils.txt
 !include ../EventMacroS/GX.txt
-
 !include ../EventMacroS/BeginnerIsland.txt
+
+# MDs
 !include ../EventMacroS/DimensionalGap.txt
 !include ../EventMacroS/HeartHunterMilitaryBase.txt
 !include ../EventMacroS/GlastHeim.txt
-
 #!include ../EventMacroS/EndlessTower.txt
+
 #!include ../EventMacroS/Mukimuki.txt
 
 !include ../EventMacroS/MainQuests.txt

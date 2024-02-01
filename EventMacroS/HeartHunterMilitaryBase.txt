@@ -1,5 +1,5 @@
-# Script for militarybase, illusion, legacy of the wise one
-# name of quest chain macros: illusion, legacy
+# Military base MD: macro militarybase
+
 macro  militarybase {
 	do move ein_fild04 280 332
 	call regroup
@@ -54,23 +54,23 @@ automacro militarybase_area1_done {
 
 macro militarybase_area1_sentinel {
 	do move 22 291
-	do move 23 330
-	do move 38 329
+	do move 25 318
+	do move 39 318
 
-	do move 39 324
-	do move 55 324
+	do move 39 313
+	do move 55 313
 
-	do move 57 330
-	do move 75 330
+	do move 57 306
+	do move 75 306
 
-	do move 75 324
-	do move 93 324
+	do move 75 300
+	do move 93 300
 
-	do move 93 318
-	do move 111 318
+	do move 93 306
+	do move 111 306
 
-	do move 111 324
-	do move 128 324
+	do move 111 300
+	do move 128 300
 
 	do move 169 295
 }
