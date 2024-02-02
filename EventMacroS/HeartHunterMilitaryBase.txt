@@ -105,10 +105,13 @@ automacro militarybase_area2_start {
     do conf roller.disabled 0
 		do move 210 293
 		do talknpc 209 292 r0
+
 		do move 329 328
 		do talknpc 330 329 r0
+
 		do move 261 250
 		do talknpc 261 251 r0
+
 		do move 329 240
 		do talknpc 329 239 r0
 	}

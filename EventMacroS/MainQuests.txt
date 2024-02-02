@@ -1670,6 +1670,7 @@ automacro illusion_armory {
   InMap pub_cat
   QuestActive 7860
   timeout 600
+  delay 2
   call {
     do move 156 104
     do talknpc 160 102 r0 r0 r0 r0 r0 r0
@@ -1724,6 +1725,7 @@ automacro illusion_first_MD_guard_killed {
     do talknpc 59 132
     do talknpc 59 132
     do move 59 136
+    do talknpc 59 132
   }
 }
 automacro illusion_first_MD_passed_gate {
@@ -1816,7 +1818,7 @@ automacro illusion_first_MD_bottom_right_last {
     do talknpc 125 157 r0
     pause 5
     do talknpc 128 157 r0
-    pause 20
+    pause 23
     do talknpc 128 157 r1
   }
 }
@@ -2013,9 +2015,9 @@ automacro illusion_second_MD_prelude {
   timeout 600
   call {
     do talknpc 278 269 r0 r0
-    talk resp 0
-    talk resp 0
-    talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
   }
 }
 automacro illusion_second_prelude1 {
@@ -2119,6 +2121,7 @@ automacro illusion_teleported_out_rebel_in {
   call {
     do talk 1
     do talk resp 0
+    do talk resp 0
   }
 }
 automacro illusion_third_MD_go {
@@ -2127,6 +2130,7 @@ automacro illusion_third_MD_go {
   timeout 600
   delay 2
   call {
+    call regroup
     do talk 2
     do talk resp 1
   }
@@ -2138,6 +2142,7 @@ automacro illusion_third_MD_ready {
   call {
     do talk 2
     do talk resp 1
+    do conf attackAuto 1
   }
 }
 automacro illusion_third_MD_entered {
@@ -2193,7 +2198,7 @@ automacro illusion_third_MD_second_follow {
     pause 1
     do talknpc 165 153
     pause 10
-    do move 164 153
+    do move 156 153
   }
 }
 automacro illusion_third_MD_boss {
@@ -2215,13 +2220,14 @@ automacro illusion_third_MD_boss_died {
 	call {
     do talknpc 165 176 r0
     do talknpc 165 176 r0 r0
+    do talknpc 165 176 r0 r0
   }
 }
 automacro illusion_end {
 	InMap sp_cor
   QuestActive 17015
   timeout 600
-  IsInCoordinate 52..58 360..366
+  IsInCoordinate 158..165 58..64
 	call {
     do talk 3
     do talk resp 0
@@ -2264,8 +2270,6 @@ automacro illusion_end3 {
   timeout 600
   delay 2
 	call {
-    # 7    #ep171_143                   (122, 141)    5027
-    # 8    フィローテス#ep171_144             (122, 141)    5028
     do talknpc 135 147 r0 r0
   }
 }
@@ -2323,14 +2327,18 @@ automacro illusion_end_MD_entered {
     do talknpc 180 169 r0
     pause 15
 
+    do move 147 174
+
     do move 160 197
     do move 219 233
     do talknpc 222 236
-    pause 2
+    pause 3
+    do talknpc 224 238
 
     do move 215 173
     do talknpc 220 170
-    pause 2
+    pause 3
+    do talknpc 218 172
 
     do move 161 122
     do talknpc 160 119
@@ -2362,16 +2370,18 @@ automacro illusion_end_MD_real_fucking_end {
   QuestActive 16354
   PubMsg /そんなに褒めないでください/
 	call {
+    do move 133 220
     pause 10
     do talknpc 140 221
-    pause 5
-    do talknpc 140 221 r0
+    pause 15
+    do talknpc 138 221 r0
 	}
 }
 automacro illusion_end_MD_done {
 	InMap sp_cor
   timeout 600
   QuestActive 16357
+  delay 2
 	call {
     do talk 2
     do talk resp 0
@@ -2379,6 +2389,11 @@ automacro illusion_end_MD_done {
 
     do talk 2
     do talk resp 0
+    pause 2
+
+    do talk 2
+    do talk resp 0
+
     pause 2
     do talknpc 255 285 r0
 
@@ -2471,6 +2486,53 @@ automacro legacy_maison {
 macro shadowcross {
   # log Make sure you are in yuno
   # call yuno_rachel
-  do move veins 256 255
-
+  do move job3_guil01 69 91
+  do talknpc 74 92 r2 r0 r0
+}
+automacro shadowcross_1 {
+  QuestActive 18059
+  timeout 600
+  delay 1
+  call {
+    do move ve_in 209 382
+    do talknpc 212 384 r0 r0 r0 r0
+  }
+}
+automacro shadowcross_field_talk {
+  QuestActive 18060
+  timeout 600
+  delay 1
+  call {
+    do move ve_fild07 105 138
+    do talknpc 99 141
+    do talkresp 0
+    do talkresp 0
+  }
+}
+automacro shadowcross_kid {
+  QuestActive 18061
+  timeout 600
+  delay 1
+  call {
+    do move veins 90 156
+    do talknpc 87 158 r0 r0 r0 r0 r0
+  }
+}
+automacro shadowcross_field_again {
+  QuestActive 18062
+  timeout 600
+  delay 1
+  call {
+    do move ve_fild07 105 138
+    do talknpc 99 141 r0 r0
+  }
+}
+automacro shadowcross_in_again {
+  QuestActive 18063
+  timeout 600
+  delay 1
+  call {
+    do move ve_in 209 382
+    do talknpc 212 384 r0 r0 r0 r0
+  }
 }
