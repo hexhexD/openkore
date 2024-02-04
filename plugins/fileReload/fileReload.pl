@@ -48,11 +48,11 @@ sub onConfigModify
 }
 
 sub executeCommands {
-	my $commands = shift;
+	my $commands = $_[0];
 
-	foreach (@{$commands}) {
-		myLog("Executing command: $_\n");
-		Commands::run($_);
+	foreach my $element (@{$commands}) {
+		my $copy = $element;
+		Commands::run($copy);
 	}
 }
 
@@ -102,7 +102,6 @@ sub parseReloadList {
 	my $converted = LoadFile($filePath);
 	# Returns a ref to the first document and dereference it
 	myLog("Number of reload entires: " . keys(%{$converted}) . "\n");
-	# myLog(np($converted) . "\n");
 
 	foreach my $file (keys(%$converted)) {
 		# Skip nonexistent files but not removing them from the hash
