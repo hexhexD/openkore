@@ -25,7 +25,7 @@ automacro militarybase_entered {
 		do conf itemsTakeAuto 0
 
 		do move 53 146
-		do move 30 151
+		do move 26 151
 
 		do move 48 172
 		do move 51 199
@@ -54,6 +54,8 @@ automacro militarybase_area1_done {
 
 macro militarybase_area1_sentinel {
 	do move 22 291
+	do move 22 300
+
 	do move 25 318
 	do move 39 318
 

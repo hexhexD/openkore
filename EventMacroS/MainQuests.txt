@@ -1,5 +1,5 @@
 ## Biolabs Entrance Quest: macro entrance_fishbone or use macro fishbone_start
-## 異世界: macro new_world_access
+## 異世界: macro new_world_access.
 ## フレイムヴァレーへの道: search for detail, biosisland included
 ## 七王家とユミルの心臓: macro royal_quest
 ## Terra Gloria: macro terra_gloria_quest

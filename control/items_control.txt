@@ -40,6 +40,18 @@
 # All items not mentioned in this file will be automatically stored in storage.
 all 0 0 0
 
+# Equipments
+[衣装] 輝くマジェスティックゴート 0 1 0
+くわえたチョコスティック 0 1 0
+カルニウムリング 0 1 0
++9 メロンカタール [Special Str:アルカナ:覇王] [1] 0 1 0
+カルニウムイヤリング [Extra Str:MaxHP + 15%:スキルディレイ - 15%:詠唱時間 - 15%] 0 1 0
++9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%] 0 1 0
++9 銀の毛皮のシューズ [Extra Str:MaxHP + 15%:スキルディレイ - 15%*2] 0 1 0
+ピオニーマミーのフード 0 1 0
+オーディンの祝福 [1] 0 1 0
+
+# Abyss 3
 ドラゴンの牙 5 0 1
 ドラゴンの鱗 5 0 1
 ドラゴンの尻尾 5 0 1
@@ -50,7 +62,6 @@ all 0 0 0
 四葉のクローバー 0 0 0 1
 
 # Heavy food to store or sell
-
 イグドラシルの種 3 1 1
 イグドラシルの実 3 1 1
 金塊 0 1 1
