@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 0
+char 1
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword pouwreel
+adminPassword todeprak
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 1
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -588,7 +588,7 @@ attackSkillSlot {
 }
 
 attackSkillSlot ハルシネーションウォーク {
-	monsters フェンリル, 呪いの根源
+	monsters フェンリル, 呪いの根源, サラの幻影#1
 	lvl 5
 	minCastTime 3
 	isSelfSkill 1
@@ -601,7 +601,7 @@ attackSkillSlot ASC_EDP {
 	whenStatusInactive EFST_EDP
 }
 attackSkillSlot AS_ENCHANTPOISON {
-	monsters フェンリル, 呪いの根源
+	monsters フェンリル, 呪いの根源, サラの幻影#1
 	lvl 5
 	isSelfSkill 1
 	timeout 30
@@ -613,7 +613,7 @@ attackSkillSlot AS_ENCHANTPOISON {
 	timeout 30
 }
 attackSkillSlot GC_DARKCROW {
-	monsters フェンリル, 呪いの根源, 大長老アイリン
+	monsters フェンリル, 呪いの根源, 大長老アイリン, サラの幻影#1
 	lvl 5
 	minCastTime 0
 	timeout 30
@@ -838,6 +838,19 @@ equipAuto {
 	inInventory
 	manualAI 0
 }
+equipAuto {
+	topHead +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%]
+	lowHead くわえたチョコスティック
+	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
+	rightHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
+	robe ピオニーマミーのフード
+	armor オーディンの祝福 [1]
+	shoes +9 銀の毛皮のシューズ [Extra Str:MaxHP + 15%:スキルディレイ - 15%*2]
+	leftAccessory カルニウムイヤリング [Extra Str:MaxHP + 15%:スキルディレイ - 15%:詠唱時間 - 15%]
+	rightAccessory カルニウムリング
+	costumeTopHead [衣装] 輝くマジェスティックゴート
+	notInTown 1
+}
 
 useSelf_item {
 	hp
@@ -973,9 +986,10 @@ sellAuto_npc_steps s
 
 storageAuto 0
 ### dimentional gap
-storageAuto_npc dali02 106 93
-### mimi storage
-# storageAuto_npc yuno 205 316
+storageAuto_npc dali02 115 96
+# dimentional No.3 storage
+# storageAuto_npc dali02 115 96
+
 storageAuto_standpoint
 storageAuto_distance 3
 storageAuto_maxDistance 15
@@ -1010,10 +1024,10 @@ debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 0
+debugPacket_sent 1
 debugPacket_exclude
-debugPacket_include  09FF
-debugPacket_include_dumpMethod 0
+debugPacket_include  09CB, 011A
+debugPacket_include_dumpMethod 2
 debugDomains
 logToFile_Debug
 logToFile_Errors

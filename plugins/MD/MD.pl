@@ -186,8 +186,12 @@ sub MD {
 
 	if ($caller eq "start") {
 		message("MD START\n");
+		runEventMacro("battle_ship");
+		print(FH $prefix."Started with btatle_ship\n");
+	}
+	elsif ($caller eq "battle_ship") {
+		print(FH $prefix."Battle ship done\n");
 		runEventMacro("sara");
-		print(FH $prefix."Started with sara\n");
 	}
 	elsif ($caller eq "sara") {
 		print(FH $prefix."Sara's memory done\n");
