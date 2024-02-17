@@ -1,4 +1,5 @@
 ## Biolabs Entrance Quest: macro entrance_fishbone or use macro fishbone_start
+## 通行証クエスト: macro friendship_pass
 ## 異世界: macro new_world_access.
 ## フレイムヴァレーへの道: search for detail, biosisland included
 ## 七王家とユミルの心臓: macro royal_quest
@@ -176,11 +177,137 @@ automacro got_long_stick {
 
 ### End biolab entrance
 
+### 通行証クエスト ###
+
+macro friendship_pass {
+	call tele_lighthalzen
+  do move 335 230
+  do talk resp 0
+  do talknpc 337 232 r0
+}
+automacro friendship_pass_daigatsu {
+	QuestActive 59900
+  timeout 600
+  call {
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210 r0 r0 r0
+  }
+}
+automacro friendship_pass_maku_again {
+	QuestActive 59902
+  timeout 600
+  call {
+    do move lighthalzen 335 230
+    do talknpc 337 232 r0
+  }
+}
+automacro friendship_pass_daigatsu_again {
+	QuestActive 59904
+  timeout 600
+  call {
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210 r0 r0 r0
+  }
+}
+automacro friendship_pass_maku_sad {
+	QuestActive 59906
+  timeout 600
+  call {
+    do move lighthalzen 335 230
+    do talknpc 337 232 r0 t="この意地っ張りの貧乏野郎！" t="せいぜい頑張れよ！" t="お前なんかいなくても全然平気だ。" t="お前が小さい頃にした悪行" t="俺はまだ憶えているんだぞ！" t="この情けないやつめ！"
+    pause 2
+    do talknpc 337 232 r0
+  }
+}
+automacro friendship_pass_daigatsu_ask {
+	QuestActive 59910
+  timeout 600
+  call {
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210 r0 r0
+  }
+}
+automacro friendship_pass_yuno {
+	QuestActive 59912
+  timeout 600
+  call {
+		do is ペコペコの手綱
+    do move yuno 342 203
+    do move 105 17
+    do talknpc 107 14
+  }
+}
+automacro friendship_pass_yuno_student {
+	QuestActive 59914
+  timeout 600
+  call {
+    do move 97 103
+    do talknpc 96 106 r0 r0 r0
+    do talknpc 96 106 r0 
+  }
+}
+automacro friendship_pass_yuno_student2 {
+	QuestActive 59918
+  timeout 600
+  call {
+    do move 181 123
+    do talknpc 168 117
+  }
+}
+automacro friendship_pass_yuno_student3 {
+	QuestActive 59920
+  timeout 600
+  call {
+    do move 97 103
+    do talknpc 96 106
+  }
+}
+automacro friendship_pass_daigatsu_once_more {
+	QuestActive 59922
+  timeout 600
+  call {
+    call tele_lighthalzen
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210 r0
+  }
+}
+automacro friendship_pass_end {
+	QuestActive 59924
+  timeout 600
+  call {
+    do move lighthalzen 335 230
+    do talknpc 337 232
+  }
+}
+automacro friendship_pass_end1 {
+	QuestActive 59926
+  timeout 600
+  call {
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210
+  }
+}
+automacro friendship_pass_end2 {
+	QuestActive 59928
+  timeout 600
+  call {
+    do is ペコペコの手綱
+    do move yuno 342 203
+    do move 97 103
+    do talknpc 96 106
+  }
+}
+
 ### 異世界 ###
 
 # 150 meat for 300 jellopy
-macro exchange_jellopy {
 # also need 1 emerald and 1 ruby from gem vender in morocc
+macro buy_jwelery_exchange_jellopy {
 	do move morocc 165 54
 	do move morocc 166 90
 	do move umbala 65 242
@@ -765,7 +892,8 @@ automacro royal_killed_3 {
     pause 5
 		do move 101 87
 		do talknpc 101 93 r0
-		do move 2@mir 101 8
+    pause 2
+		do move 101 8
 		do talk resp 1
 		do talk cont
 	}
@@ -782,8 +910,9 @@ automacro royal_out_md {
 		do talknpc 91 85 r0
     pause 2
 		do talknpc 85 82 r0 r0 c r0
-    pause 1
+    pause 3
 		do talknpc 91 85 r0
+		do talknpc 76 80 r0
 		do talknpc 91 85 r0
 
 		pause 6

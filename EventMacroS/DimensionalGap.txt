@@ -442,9 +442,10 @@ automacro sara2 {
 	IsInCoordinate 363..368 301..307
 	timeout 30
 	call {
-	do talknpc 359 294 r0
-	do move 352 279
-	do talk resp 0
+    do conf attackAuto 2
+    pause 1
+    do talknpc 359 294 r0
+    do move 358 294
 	}
 }
 automacro sara2_entrance {
@@ -486,6 +487,7 @@ automacro sara2_garden {
 	InMap 1@glast
 	IsInCoordinate 189..205 200..210
 	timeout 30
+  exclusive 1
 	call {
 	do conf itemsGatherAuto 2
 	do conf attackAuto 0
@@ -645,7 +647,7 @@ automacro battle_ship_next {
 automacro battle_ship_bottom {
   InMap 1@air1
   IsInCoordinate 98..101 198..202
-  timeout 30
+  timeout 600
   call {
     do move 105 188
   }
@@ -707,6 +709,10 @@ automacro battle_ship_endend {
     do talk resp 1
     do conf itemsGatherAuto 0
     do conf itemsTakeAuto 0
+
+    do conf storageAuto_npc dali02 115 96
+    do autostorage
+    do conf storageAuto_npc dali02 106 93
 
     MD(battle_ship)
   }

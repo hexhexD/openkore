@@ -1519,6 +1519,7 @@ moc_prydb1 142 115 moc_prydb1 111 115
 moc_ruins 54 161 moc_pryd01 195 9
 moc_ruins 71 16 moc_fild19 71 170
 moc_ruins 159 37 morocc 25 294
+moc_ruins 137 89 moc_fild22b 0 240 197  r0
 monk_test 329 61 job_monk 226 175 0 c c r0 c
 morocc 24 164 moc_fild19 169 107
 morocc 25 294 moc_ruins 159 37
@@ -3656,3 +3657,10 @@ veins 257 256 job3_guil01 9 93
 job3_guil01 6 93 veins 254 255
 job3_guil01 18 48 job3_guil01 68 91
 job3_guil01 67 95 job3_guil01 18 53
+lhz_in02 210 284 lhz_in02 241 219
+lhz_in02 231 200 lhz_in02 212 200
+lhz_in02 216 200 lhz_in02 235 200
+lhz_in02 236 219 lhz_in02 206 284
+1@air1 248 54 1@air1 91 68
+1@air1 104 72 1@air1 101 200
+moc_fild20 35 173 morocc 293 207

@@ -3,12 +3,16 @@ plugins/fileReload/fileReload.pl : ["plugin reload fileReload"]
 control/reloadList.yaml: ["reload reloadList.yaml"]
 
 control/config-shadowCross.txt: ["reload config"]
+control/config-warlock.txt: ["reload config"]
+control/eventMacros.txt : ["reload event"]
 plugins/MD/MD.pl : ["plugin reload MD"]
 EventMacroS/MainQuests.txt : ["reload event"]
 EventMacroS/DimensionalGap.txt : ["reload event"]
 
 src/AI.pm: ["rc AI"]
 src/Actor.pm: ["rc Actor"]
+src/Network/Receive.pm: ["rc Receive"]
+src/Utils.pm: ["rc Utils", "rc Receive"]
 
 src/Task/Timeout.pm: ["rc Timeout"]
 src/TaskManager.pm: ["rc TaskManager"]

@@ -27,7 +27,7 @@ my $waiting_hooks;
 my $adding_hook;
 my $next_skill;
 my $status;
-my $timeout = { time => 0, timeout => 0.5 };
+my $timeout = { time => 0, timeout => 1 };
 
 use constant {
 	INACTIVE => 0,

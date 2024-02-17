@@ -69,3 +69,11 @@ automacro archer {
 		do talknpc 64 71 r0 r0 r0
 	}
 }
+automacro mage {
+    InMap geffen_in
+    IsInCoordinate 160..170 118..126
+	timeout 30
+	call {
+		do talknpc 164 124 r0 r0 r0
+	}
+}

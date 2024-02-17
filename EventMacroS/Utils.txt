@@ -1,3 +1,26 @@
+
+macro regroup {
+	do party leave
+[
+	$ptnum = &rand(666, 999)
+	$ptname = &nick(#)cardお願いします|$.name|
+
+	do party create $ptname
+	do conf itemsTakeAuto 0
+	do conf itemsGatherAuto 0
+	do conf attackAuto 0
+	do conf route_randomWalk 0
+]
+}
+
+macro mdStart {
+	do eval MD::MD(start)
+}
+
+sub MD {
+  MD::MD(@_);
+}
+
 ### airship ###
 macro yuno_rachel {
 	do conf attackAuto 0
