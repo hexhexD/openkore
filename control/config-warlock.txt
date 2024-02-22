@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword thitutwu
+adminPassword metheabe
 callSign
 commandPrefix ;
 callSignGM 0
@@ -89,10 +89,10 @@ attackLooters 0
 attackChangeTarget 1
 aggressiveAntiKS 1
 
-attackBeyondMaxDistance_waitForAgressive 0
+attackBeyondMaxDistance_waitForAgressive 1
 attackBeyondMaxDistance_sendAttackWhileWaiting 0
 attackSendAttackWithMove 0
-attackWaitApproachFinish 0
+attackWaitApproachFinish 1
 
 attackUpdateMonsterPos 0
 
@@ -193,9 +193,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 1
+itemsTakeAuto 2
 itemsTakeAuto_party 0
-itemsGatherAuto 0
+itemsGatherAuto 2
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore 60
@@ -262,13 +262,13 @@ sitAuto_look
 sitAuto_look_from_wall
 sitTensionRelax 0
 
-statsAddAuto 0
-statsAddAuto_list
-statsAddAuto_dontUseBonus 0
+statsAddAuto 1
+statsAddAuto_list dex 30, int 99, dex 99, vit 90
+statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
 skillsAddAuto 1
-skillsAddAuto_list NV_BASIC 9
+skillsAddAuto_list NV_BASIC 9, MG_FIREBOLT 4, MG_FIREBALL 5, MG_STONECURSE 1, MG_SRECOVERY 5, MG_COLDBOLT 5, MG_FROSTDIVER 1, MG_LIGHTNINGBOLT 4, MG_THUNDERSTORM 1, MG_NAPALMBEAT 7, MG_SOULSTRIKE 7, MG_SIGHT 1, MG_FIREWALL 10, MG_SAFETYWALL 10, WZ_JUPITEL 5, WZ_VERMILION 10, WZ_STORMGUST 10, WZ_ESTIMATION 1, WZ_EARTHSPIKE 3, WZ_HEAVENDRIVE 1, WZ_QUAGMIRE 5, WZ_SIGHTRASHER 2, WZ_METEOR 10, HW_SOULDRAIN 10, WZ_ICEWALL 1, HW_GANBANTEIN 1, WL_SUMMONFB 1, WL_CRIMSONROCK 5, WL_RADIUS 3, WL_DRAINLIFE 5, WL_HELLINFERNO 5, WL_SUMMONWB 1, WL_CHAINLIGHTNING 5, WL_RELEASE 2, WL_SOULEXPANSION 3, WL_STASIS 1, WL_WHITEIMPRISON 1, WL_RECOGNIZEDSPELL 5
 
 tankMode 0
 tankModeTarget
@@ -365,7 +365,7 @@ itemHistory 0
 autoTalkCont 1
 noAutoSkill 0
 portalCompile 1
-portalRecord 2
+portalRecord 0
 portalRecord_recompileAfter 1
 missDamage 0
 
@@ -524,22 +524,20 @@ pet_return 20
 # You can copy & paste any block multiple times. So if you want to
 # configure two attack skills, just duplicate the attackSkillSlot block.
 
-attackSkillSlot WL_TELEKINESIS_INTENSE {
-	monsters フェンリル
-	lvl 5
-	isSelfSkill 1
-	timeout 120
-}
 attackSkillSlot WL_DRAINLIFE {
 	lvl 5
-	hp < 80%
+	hp < 60%
 	maxAttempts 3
-	monstersCounter < 2
+}
+attackSkillSlot WL_HELLINFERNO {
+	label Hell
+	lvl 5
+	disabled 0
 }
 attackSkillSlot WL_CRIMSONROCK {
 	label CrC
 	lvl 5
-	whenEquipped リングオブパズズ [1]
+	# whenEquipped リングオブパズズ [1]
 	distance 11
 	notMonsters 嫉妬の炎
 	notInMap moro_vol, 0un1@dth2
@@ -553,24 +551,31 @@ attackSkillSlot WZ_VERMILION {
 	notInMap moro_vol
 	disabled 0
 }
-attackSkillSlot WL_SOULEXPANSION {
-	lvl 5
-	monstersCount >= 2
-	disabled 1
-}
-attackSkillSlot WL_HELLINFERNO {
-	lvl 5
-}
 attackSkillSlot MG_FIREBALL {
-	disabled 1
+	disabled 0
 	lvl 10
-	timeout 1
-	maxDist 9
+	timeout 0
+	dist 8
+	aggressives > 1
 }
 attackSkillSlot MG_FIREBOLT {
-	disabled 1
+	disabled 0
 	lvl 6
-	timeout 1
+	dist 8
+	timeout 0
+	minCastTime 5
+}
+attackSkillSlot WL_TELEKINESIS_INTENSE {
+	monsters フェンリル
+	lvl 5
+	isSelfSkill 1
+	timeout 120
+	disabled 1
+}
+attackSkillSlot WL_SOULEXPANSION {
+	lvl 5
+	monsters
+	disabled 1
 }
 
 attackSkillSlot {
@@ -744,6 +749,14 @@ useSelf_skill {
 	whenPartyMembersNearDist
 	inInventory
 	manualAI 0
+}
+
+useSelf_skill MG_ENERGYCOAT {
+	lvl 1
+	whenStatusInactive EFST_ENERGYCOAT
+	manualAI 2
+	timeout 5
+	disabled 0
 }
 
 useSelf_skill_smartHeal 1
@@ -939,29 +952,40 @@ useSelf_item ハイスピードポーション {
 	whenStatusInactive EFST_ATTHASTE_POTION2
 	notInTown 1
 	timeout 100
-	manualAI 1
+	manualAI 2
 }
 useSelf_item イグドラシルの種 {
-	hp < 55%
+	hp > 40%
+	hp > 40%
 	notInTown 1
-	timeout 1
-	manualAI 1
+	timeout 2
+	manualAI 2
 }
 useSelf_item イグドラシルの実 {
 	hp < 15%
 	notInTown 1
 	timeout 1
-	manualAI 1
+	manualAI 2
+}
+useSelf_item おいしいイワシ {
+	hp < 90%
+	notInTown 1
+	manualAI 2
 }
 useSelf_item 王級メロン {
 	hp < 90%
 	notInTown 1
-	manualAI 1
+	manualAI 2
 }
 useSelf_item 王級メロン {
 	sp < 20%
 	notInTown 1
-	manualAI 1
+	manualAI 2
+}
+useSelf_item モーラオレンジ {
+	sp < 20%
+	notInTown 1
+	manualAI 2
 }
 
 ######## Autostorage/autosell ########
@@ -991,11 +1015,11 @@ buyAuto 601 {
 }
 
 sellAuto 0
-sellAuto_npc hu_in01 252 368
+sellAuto_npc yuno 192 291
 sellAuto_standpoint
-sellAuto_distance 20
-sellAuto_maxDistance
-sellAuto_npc_steps s
+sellAuto_distance
+sellAuto_maxDistance 10
+sellAuto_npc_steps r~/売る/
 
 storageAuto 0
 storageAuto_npc dali02 106 93
@@ -1033,9 +1057,9 @@ debugPacket_received 0
 debugPacket_unparsed 1
 debugPacket_ro_sent 1
 debugPacket_exclude
-debugPacket_include 0B3D
-debugPacket_include_dumpMethod 2
-debugDomains parseMsg_damage, ai_attack
+debugPacket_include 0B3D, 0087
+debugPacket_include_dumpMethod 0
+debugDomains parseMsg_damage, ai_attack, #parseMsg_move
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

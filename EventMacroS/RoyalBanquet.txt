@@ -120,9 +120,9 @@ automacro new_world_access_next6 {
 	}
 }
 
+### フレイムヴァレーへの道 ###
 # 魔神殿 Prereqeusit 1 化け物のエサ needed
 # alberta_in 171 90 for esa
-### フレイムヴァレーへの道 ###
 
 macro flame_road_quest {
 	do move morocc 135 252
@@ -304,7 +304,8 @@ automacro flame_bios_island0 {
 		do conf itemsTakeAuto 0
 		do conf attackAuto -1
 		log try cross bridge without talking
-		do talknpc 67 97 r0 r0
+		do talknpc 67 97 r0
+    do talk resp 0
 	}
 }
 automacro flame_bios_island1 {
@@ -372,6 +373,7 @@ automacro morusu_begin {
 
 
 ### 七王家とユミルの心臓 ###
+
 macro royal_quest {
 	do move prontera 120 72
 	do talknpc 121 72 r0
@@ -765,7 +767,7 @@ automacro terra_gloria_2 {
 	exclusive 1
 	delay 1
 	call {
-		do move lighthalzen 186 291
+		do move lighthalzen 188 290
 	}
 }
 automacro terra_gloria_3 {
@@ -810,6 +812,7 @@ automacro terra_gloria_5 {
 	delay 1
 	call {
 		do talknpc 168 41 r0 r0 r0
+		do talknpc 168 41 r0 r0 r0 r0
 	}
 }
 automacro terra_gloria_6 {
@@ -851,7 +854,7 @@ automacro terra_gloria_8 {
 	delay 1
 	call {
 		do move 264 261
-		do talk 3
+		do talk 1
 		do talk resp 0
 	}
 }
@@ -936,7 +939,7 @@ automacro terra_gloria_14_1 {
 	delay 2
 	call {
 [
-		do conf attackAuto 1
+		do conf attackAuto 0
 		do conf itemsTakeAuto 0
 		do conf route_randomWalk 0
 ]
@@ -1054,6 +1057,16 @@ automacro terra_gloria_25 {
 	call {
 		do move rebel_in 82 57
 		do talknpc 86 61 r0 r0
+	}
+}
+automacro terra_gloria_25_1 {
+	QuestActive 14615
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 64 45
+		do talknpc 65 46 r0 r0
 	}
 }
 automacro terra_gloria_26 {
@@ -1187,6 +1200,7 @@ automacro terra_gloria_lab {
 		do move 155 61
 		do move slabw01_qjp 234 86
 		do talknpc 236 91
+		call regroup
 		do talknpc 236 91 r0
 	}
 }
@@ -1301,6 +1315,7 @@ automacro lab_entered_end {
 		do move 55 168
 		do talknpc 53 171 r0
 		do talknpc 53 171 r0
+		do talknpc 53 171 r0
 		pause 2
 		do talknpc 56 171
 	}
@@ -1315,7 +1330,7 @@ automacro terra_gloria_end{
 }
 automacro terra_gloria_end1 {
 	InMap einbroch
-	QuestActive 7740
+	QuestActive 73162
 	timeout 120
 	delay 2
 	call {

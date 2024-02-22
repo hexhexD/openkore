@@ -6058,6 +6058,33 @@ sub cmdUnequip {
 		return;
 	}
 
+	if ($arg1 eq "all") {
+		my @equipment;
+		# Find all equipped items
+		for my $item (@{$char->inventory}) {
+			 if ($item->equippable && $item->{type_equip} != 0) {
+				my %eqp;
+				$eqp{index} = $item->{ID};
+				$eqp{binID} = $item->{binID};
+				$eqp{name} = $item->{name};
+				$eqp{amount} = $item->{amount};
+				$eqp{equipped} = ($item->{type} == 10 || $item->{type} == 16 || $item->{type} == 17 || $item->{type} == 19) ? $item->{amount} . " left" : $equipTypes_lut{$item->{equipped}};
+				$eqp{type} = $itemTypes_lut{$item->{type}};
+				$eqp{equipped} .= " ($item->{equipped})";
+				# Translation Comment: Mark to tell item not identified
+				$eqp{identified} = " -- " . T("Not Identified") if !$item->{identified};
+				if ($item->{equipped}) {
+					push @equipment, \%eqp;
+				} 
+			} 
+		}
+		for my $e (@equipment) {
+			my $item = Actor::Item::get($e->{name}, undef, 0);
+			$item->unequip();
+		}
+		return;
+	}
+
 	if ($equipSlot_rlut{$arg1}) {
 		$slot = $arg1;
 	} else {
@@ -7006,6 +7033,7 @@ sub cmdQuest {
 				my $msg = center (' ' . ($quests_lut{$args[1]}{title} || T('Quest Info')) . ' ', 79, '-') . "\n";
 				$msg .= "$quests_lut{$args[1]}{summary}\n" if $quests_lut{$args[1]}{summary};
 				$msg .= TF("Objective: %s\n", $quests_lut{$args[1]}{objective}) if $quests_lut{$args[1]}{objective};
+				$msg .= $quests_lut{$args[1]}{active} ? T("active") : T("inactive");
 				message $msg;
 			} else {
 				message T("Unknown quest\n"), "info";

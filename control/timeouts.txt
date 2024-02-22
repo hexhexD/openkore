@@ -90,8 +90,8 @@ ai_items_take_end 0.3
 ai_take 0.3
 
 # Give up if unable to pickup item after x seconds
-ai_take_giveup 3
-ai_items_gather_giveup 3
+ai_take_giveup 6
+ai_items_gather_giveup 6
 
 # Every x seconds, check items for gathering
 ai_items_gather_auto 0.3

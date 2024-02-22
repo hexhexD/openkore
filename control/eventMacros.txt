@@ -1,15 +1,16 @@
 !include ../EventMacroS/Utils.txt
-#!include ../EventMacroS/GX.txt
+!include ../EventMacroS/GX.txt
+!include ../EventMacroS/BeginnerIsland.txt
 
-#!include ../EventMacroS/BeginnerIsland.txt
-!include ../EventMacroS/BioLab.txt
-!include ../EventMacroS/RoyalBanquet.txt
-
-#!include ../EventMacroS/EndlessTower.txt
+# MDs
 !include ../EventMacroS/DimensionalGap.txt
 !include ../EventMacroS/HeartHunterMilitaryBase.txt
+!include ../EventMacroS/GlastHeim.txt
+#!include ../EventMacroS/EndlessTower.txt
 
 #!include ../EventMacroS/Mukimuki.txt
+
+!include ../EventMacroS/MainQuests.txt
 
 automacro frostAfterMapChange {
     # InMap abyss_03
@@ -111,58 +112,39 @@ automacro exchange_melon_wand {
   }
 }
 
- macro regroup {
-	do party leave
-[
-	$ptnum = &rand(666, 999)
-	$ptname = &nick(#)card お願いします |$.name|
-
-	do party create $ptname
-	do conf itemsTakeAuto 0
-	do conf itemsGatherAuto 0
-	do conf attackAuto 0
-	do conf route_randomWalk 0
-]
+macro gxstore {
+  call gx_rearm store
 }
-
-macro md {
-	MD(start)
+macro gxget {
+  call gx_rearm get
 }
+# 0 means store, 1 means get
+macro gx_rearm { 
+  do is ペコペコの手綱
+  do uneq all
+  do move yuno 195 306
+  # Main storage
+  do talknpc 199 299
 
-sub MD {
-	my ($caller) = @_;
-	use Utils qw(getFormattedDate);
-	use v5.10;
-
-	my $logFile = $Settings::logs_folder . "/mdlog.txt";
-	open(FH, ">>:utf8", $logFile) or die("Failed to open MD log file\n");
-
-	message("MD caller is: ".$caller . "\n");
-	my $prefix = "[".getFormattedDate(int(time))."]"." char ".$config{char}." [MD] ";
-
-	given ($caller) {
-		when ($_ eq "start") {
-			message("start\n");
-			Commands::run("em stop");
-			Commands::run("em sara -orphan reregister_safe");
-			print(FH $prefix."Started with sara\n");
-		}
-		when ($_ eq "sara") {
-			print(FH $prefix."sara done\n");
-			Commands::run("em stop");
-			Commands::run("autostorage");
-			Commands::run("em ghost -orphan reregister_safe");
-		}
-		when ($_ eq "ghost") {
-			print(FH $prefix."ghost done\n");
-			# Commands::run("em ghost");
-		}
-		default {
-			Commands::run("move 309 280");
-			error "Unknown caller of MD function\n";
-			die "MD function died"
-		}
-	}
-	close(FH);
+  @equipmentList = ([衣装] 輝くマジェスティックゴート, くわえたチョコスティック, カルニウムリング, +9 メロンカタール [Special Str:アルカナ:覇王] [1], カルニウムイヤリング [Extra Str:MaxHP + 15%:スキルディレイ - 15%:詠唱時間 - 15%], +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%], ピオニーマミーのフード, オーディンの祝福 [1], +9 銀の毛皮のシューズ [Extra Str:MaxHP + 15%:スキルディレイ - 15%*2], 怨嗟の腕輪, ペコペコの手綱, 通行証)
+  if ($.param[0] == "store") {
+    log Storing equipments
+    $i = 0
+    [
+    while ($i < @equipmentList) {
+      do storage add $equipmentList[$i] 1
+      $i++
+    }
+    ]
+  } elsif ($.param[0] == "get") {
+    log Getting equipments
+    $i = 0
+    [
+    while ($i < @equipmentList) {
+      do storage get $equipmentList[$i] 1
+      $i++
+    }
+    ]
+  }
+  do storage close
 }
-

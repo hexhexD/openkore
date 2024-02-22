@@ -167,5 +167,8 @@ ac_cl_area.rsw#Classroom Building B#
 ac_library.rsw#Library#
 world_st02.rsw#通常ワールド間倉庫(スタンダードプラン)#
 melon_f1.rsw#Melon fest#
-dali.rsw#Dimensiona lGap#
-dali02.rsw#Dimensiona lGap#
+dali.rsw#Dimensional Gap#
+dali02.rsw#Dimensional Gap#
+valkyrie.rsw#ヴァルキリー神殿#
+d_port01.rsw#悠久の商港#
+moc_prydb1.rsw#シーフギルド#

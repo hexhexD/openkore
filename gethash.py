@@ -45,7 +45,7 @@ parser.add_argument("-f", help="forward to openkore")
 args = parser.parse_args()
 
 ############### Get user account ####
-if 1:
+if 0:
     login_data = {
         "api_dev_key": "M1PsYL-pRCZnJRZ-nSi4P_5vhDYIs6wS",
         "api_user_name": "handwiththesword",

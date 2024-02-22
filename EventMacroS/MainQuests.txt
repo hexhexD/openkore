@@ -1,0 +1,2661 @@
+## Biolabs Entrance Quest: macro entrance_fishbone
+## 通行証クエスト: macro friendship_pass
+## 異世界: macro new_world_access.
+## フレイムヴァレーへの道: search for detail, biosisland included
+## 七王家とユミルの心臓: macro royal_quest
+## Terra Gloria: macro terra_gloria_quest
+## Illusion: macro illusion
+## 賢者の遺産: macro legacy
+
+## SX job quest: macro shadowcross
+
+### Biolabs Entrance Quest ###
+
+macro entrance_fishbone {
+		do talknpc 341 224 r0 r0 r0 r0 r0 r0 r0 r0
+		do talknpc 341 224 r1
+		do talknpc 341 224 r1
+}
+
+automacro random_67_193 {
+	InMap lhz_cube
+	IsInCoordinate 67 193
+	timeout 15
+	call {
+		do move 67 201
+	}
+}
+automacro random_66_136 {
+	InMap lhz_cube
+	IsInCoordinate 66 136
+	timeout 15
+	call {
+		do move 75 135
+	}
+}
+automacro random_66_74 {
+	InMap lhz_cube
+	IsInCoordinate 66 74
+	timeout 15
+	call {
+		do move 66 66
+	}
+}
+automacro random_10_193 {
+	InMap lhz_cube
+	IsInCoordinate 10 193
+	timeout 15
+	call {
+		do move 10 185
+	}
+}
+automacro random_10_136 {
+	InMap lhz_cube
+	IsInCoordinate 10 136
+	timeout 15
+	call {
+		do move 19 136
+	}
+}
+automacro random_10_74 {
+	InMap lhz_cube
+	IsInCoordinate 10 74
+	timeout 15
+	call {
+		do move 10 66
+	}
+}
+automacro random_10_18 {
+	InMap lhz_cube
+	IsInCoordinate 10 18
+	timeout 15
+	call {
+		do move 10 10
+	}
+}
+automacro random_final {
+	InMap lhz_cube
+	IsInCoordinate 123 18
+	timeout 15
+	call {
+		do move 115 18
+	}
+}
+
+automacro cube {
+	InMap lhz_cube
+	IsInCoordinate 240..250 180..190
+	timeout 60
+	disabled 0
+	call {
+		# get axe
+		do talknpc 248 179 r0
+		do talknpc 237 183 r0 t=斧
+		pause 1
+		# book to get red key
+		do move 239 192
+		do talknpc 237 198 r0
+		# open drawer to get knife
+		do talknpc 242 201 r0 t=赤いカギ
+		pause 1
+		# pick painting to get number beneath
+		do talknpc 234 202 r0 t=小さなナイフ
+	}
+}
+
+sub sorting_numbers {
+	my @nums = ( $_[0] =~ /(\d+)/g );
+	message("eventmacro sorting numbers\n");
+	my @sorted = sort { substr($a, -1) <=> substr($b, -1) } @nums ;
+	message("\@sorted: @sorted\n");
+	my @result = map { substr($_, 0, 1) } @sorted;
+	message("\@result: @result\n");
+	return @result;
+}
+automacro number_accquired {
+	InMap lhz_cube
+	NpcMsg /絵の裏には数字が書/
+	call {
+		log $.NpcMsgLastMsg
+		@nums = sorting_numbers("$.NpcMsgLastMsg")
+		log size of array is: @nums
+		# do talknpc 237 183 r0 t=斧
+		do talknpc 237 183 d$nums[0] d$nums[1] d$nums[2] d$nums[3] d$nums[4] d$nums[5] d$nums[6] d$nums[7] d$nums[8]
+	}
+}
+
+automacro got_yellow_key {
+	InMap lhz_cube
+	NpcMsg /黄色いカギを手/
+	call {
+		log Got yellow key
+		do move 235 196
+		do talknpc 224 192 r0 t=黄色いカギ
+		# pause 1
+		do talknpc 244 201 r1
+		# 黒いカギを獲得した
+		do talknpc 224 197 r0 t=黒いカギ
+		# 楕円形の模型を手に入れた
+		do talknpc 234 200 r1
+		# 短い棒を手に入れ
+		do talknpc 247 198 r1
+		# 長い棒を手に入れた
+	}
+}
+
+automacro got_long_stick {
+	InMap lhz_cube
+	NpcMsg /長い棒を手に入/
+	call {
+		log Got long stick
+		do talknpc 247 198 r1 t=長い棒
+		# 正六面体の模型
+		do move 235 192
+		do talknpc 229 184 r1
+		# さびたカギ
+		do talknpc 231 202 r0 t=さびたカギ
+		# 緑のカギを手に入れた
+		do talknpc 249 191 r0 t=緑のカギ
+		# 多角形の模型を手に入れた
+		do talknpc 248 193 r0 t=楕円形の模型
+		do talknpc 248 193 r1 t=正六面体の模型
+		do talknpc 248 193 r2 t=多角形の模型
+		do talknpc 248 193 r1
+		# 研究所の通行パス 囚人の腕輪を手に
+		do move 233 196
+		do talknpc 224 197 r0 t=研究所の通行パス r0
+	}
+}
+
+### End biolab entrance
+
+### 通行証クエスト ###
+
+macro friendship_pass {
+	call tele_lighthalzen
+  do move 335 230
+  do talk resp 0
+  do talknpc 337 232 r0
+}
+automacro friendship_pass_daigatsu {
+	QuestActive 59900
+  timeout 600
+  call {
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210 r0 r0 r0
+  }
+}
+automacro friendship_pass_maku_again {
+	QuestActive 59902
+  timeout 600
+  call {
+    do move lighthalzen 335 230
+    do talk resp 0
+    do talknpc 337 232 r0
+  }
+}
+automacro friendship_pass_daigatsu_again {
+	QuestActive 59904
+  timeout 600
+  call {
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210 r0 r0 r0
+  }
+}
+automacro friendship_pass_maku_sad {
+	QuestActive 59906
+  timeout 600
+  call {
+    do move lighthalzen 335 230
+    do talknpc 337 232 r0 t="この意地っ張りの貧乏野郎！" t="せいぜい頑張れよ！" t="お前なんかいなくても全然平気だ。" t="お前が小さい頃にした悪行" t="俺はまだ憶えているんだぞ！" t="この情けないやつめ！"
+    pause 2
+    do talknpc 337 232 r0
+  }
+}
+automacro friendship_pass_daigatsu_ask {
+	QuestActive 59910
+  timeout 600
+  call {
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210 r0 r0
+  }
+}
+automacro friendship_pass_yuno {
+	QuestActive 59912
+  timeout 600
+  call {
+		do is ペコペコの手綱
+    do move yuno 342 203
+    do move 105 17
+    do talknpc 107 14
+  }
+}
+automacro friendship_pass_yuno_student {
+	QuestActive 59914
+  timeout 600
+  call {
+    do move 97 103
+    do talknpc 96 106 r0 r0 r0
+    do talknpc 96 106 r0 
+  }
+}
+automacro friendship_pass_yuno_student2 {
+	QuestActive 59918
+  timeout 600
+  call {
+    do move 181 123
+    do talknpc 168 117
+  }
+}
+automacro friendship_pass_yuno_student3 {
+	QuestActive 59920
+  timeout 600
+  call {
+    do move 97 103
+    do talknpc 96 106
+  }
+}
+automacro friendship_pass_daigatsu_once_more {
+	QuestActive 59922
+  timeout 600
+  call {
+    call tele_lighthalzen
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210 r0
+  }
+}
+automacro friendship_pass_end {
+	QuestActive 59924
+  timeout 600
+  call {
+    do move lighthalzen 335 230
+    do talknpc 337 232
+  }
+}
+automacro friendship_pass_end1 {
+	QuestActive 59926
+  timeout 600
+  call {
+    do move lighthalzen 159 133
+    do move lhz_in02 203 210
+    do talknpc 201 210
+  }
+}
+automacro friendship_pass_end2 {
+	QuestActive 59928
+  timeout 600
+  call {
+    do is ペコペコの手綱
+    do move yuno 342 203
+    do move 97 103
+    do talknpc 96 106
+  }
+}
+
+### 異世界 ###
+
+# 150 meat for 300 jellopy
+# also need 1 emerald and 1 ruby from gem vender in morocc
+macro buy_jwelery_exchange_jellopy {
+	do move morocc 165 54
+	do move morocc 166 90
+	do move umbala 65 242
+
+  do talknpc 59 243 r0 r1
+}
+macro new_world_access {
+	do move prt_castle 90 61
+	do talknpc 83 67 r0
+
+	do move aldebaran 137 131
+	do talknpc 127 138 r0
+	# learnt 300 jellopy is required
+	do talknpc 127 138 r0
+	# hand off jellopy
+	do talknpc 127 138 r0
+
+	do move geffen 90 65
+	do talknpc 90 67 r0
+	# emerald
+	do talknpc 90 67
+	# ruby
+	do talknpc 90 67
+
+	do move izlude 99 133
+	do talknpc 99 136 r0
+
+	do move prt_castle 90 61
+	do talknpc 83 67 r0
+
+	pause 2
+	warning Trying to teleport to lighthalzen
+# TODO: figure out how to go to lighthalzen without mimimi
+	call tele_lighthalzen
+}
+# TODO: how to go from lighthalzen to prontera
+automacro new_world_access_next {
+	QuestActive 10065
+	InMap lighthalzen
+	run-once 1
+	call {
+		do move lhz_in01 125 256
+		do talknpc 132 259
+		do talknpc 132 259 r0
+		do talknpc 132 259 r0
+		do is ペコペコの手綱
+    do move prontera
+		warning Need to be in protera to trigger next step
+	}
+}
+automacro new_world_access_next2 {
+	QuestActive 10068
+	InMap prontera
+	run-once 1
+	call {
+		do move prt_castle 119 51
+		do talknpc 121 51
+
+		call tele_lighthalzen
+	}
+}
+# TODO: figure out how to go to lighthalzen without mimimi
+automacro new_world_access_next3 {
+	QuestActive 10069
+	InMap lighthalzen
+	run-once 1
+	call {
+		do move lhz_in01 125 256
+		do talknpc 132 259
+		do talknpc 132 259
+
+		do is ペコペコの手綱
+		call yuno_rachel
+	}
+}
+# Airship only goes from yuno to rachel
+automacro new_world_access_next4 {
+	QuestActive 10071
+	InMap rachel
+	run-once 1
+	call {
+		do move ra_temple 117 113
+		do talknpc 119 113
+
+		call tele_lighthalzen
+	}
+}
+automacro new_world_access_next5 {
+	QuestActive 10072
+	InMap lighthalzen
+	run-once 1
+	call {
+		do move lhz_in01 125 256
+		do talknpc 132 259
+		do talknpc 132 259
+		do move 148 179
+		do move 23 22
+		do talknpc 32 22
+		do talknpc 32 22
+	}
+}
+automacro new_world_access_next6 {
+	QuestActive 10076
+	run-once 1
+	call {
+  do conf attackAuto 2
+		do move 11 24
+		do move lhz_in01 126 225
+		do talknpc 130 232 r0
+		pause 1
+		do talknpc 349 179 r0
+		pause 1
+		do talknpc 230 197
+		do talknpc 230 197 r0
+		do move 336 178
+		do move 229 200
+		do talknpc 230 197
+		# back to prontera
+		do talknpc 230 197 r0
+	}
+}
+### End of new world access
+
+### フレイムヴァレーへの道 ###
+# 魔神殿 Prereqeusit 1 化け物のエサ needed
+# alberta_in 171 90 for esa
+
+macro flame_road_quest {
+	do move morocc 135 252
+	do talknpc 138 238 r0 r0
+	do talknpc 138 238 r0 r0 r0 r0
+}
+automacro flame_road1 {
+	QuestActive 11351
+	timeout 120
+	delay 2
+	call {
+		do move moc_ruins 106 135
+		do talknpc 106 140 r0 r0 r0
+	}
+}
+automacro flame_road2 {
+	QuestActive 11352
+	timeout 240
+	call {
+		do move dali 116 75
+		do talknpc 112 69
+	}
+}
+automacro flame_road3 {
+	QuestActive 11353
+	timeout 240
+	call {
+		do move dali 68 106
+		do talknpc 64 98 r0
+		pause 2
+		do talknpc 132 140
+	}
+}
+automacro flame_road4 {
+	QuestActive 11354
+	timeout 240
+	call {
+		do talknpc 142 131
+	}
+}
+automacro flame_road5 {
+	QuestActive 11355
+	timeout 60
+	call {
+[
+		do conf attackAuto 2
+		do conf itemsTakeAuto 2
+		do conf route_randomWalk 1
+]
+	}
+}
+automacro flame_road5_hunt {
+	QuestHuntCompleted 11355 3026
+	InInventory "フレイムバグの皮" > 0
+	timeout 5
+	call {
+[
+		do conf attackAuto 0
+		do conf route_randomWalk 0
+		do conf itemsTakeAuto 0
+]
+		do move 141 138
+		do talknpc 142 131
+	}
+}
+automacro flame_road6 {
+	QuestActive 11356
+	timeout 70
+	call {
+		do talknpc 132 140
+	}
+}
+automacro flame_road7 {
+	QuestActive 11357
+	timeout 60
+	disabled 0
+	call {
+[
+		do conf attackAuto 2
+		do conf itemsTakeAuto 2
+		do conf route_randomWalk 1
+]
+		$a = &invamount(ソニアの茎)
+		log ソニアの茎: $a
+	}
+}
+automacro flame_road7_done {
+	QuestActive 11357
+	InInventory "ソニアの茎" > $a
+	timeout 5
+	call {
+		lock flame_road7
+[
+		do conf attackAuto 0
+		do conf route_randomWalk 0
+		do conf itemsTakeAuto 0
+]
+		do move 200 172
+		do talknpc 198 179
+	}
+}
+automacro flame_road8 {
+	QuestActive 11358
+	timeout 120
+	call {
+		do move 141 138
+		do talknpc 142 131 r0 r0 r0
+	}
+}
+automacro flame_road9 {
+	QuestActive 11359
+	timeout 120
+	call {
+		do move moro_vol 112 73
+		do talknpc 105 71 r0 r0
+	}
+}
+automacro flame_road10 {
+	QuestActive 11360
+	timeout 120
+	call {
+		do move moro_vol 112 73
+		do talknpc 104 70
+	}
+}
+automacro flame_road11 {
+	QuestActive 11361
+	timeout 120
+	call {
+		do move moro_vol 112 73
+		do talknpc 105 71
+	}
+}
+automacro flame_road12 {
+	QuestActive 11362
+	timeout 120
+	call {
+		do move moro_vol 141 138
+		do talknpc 142 131 r0
+	}
+}
+automacro flame_cave_enter {
+	QuestActive 201705
+	InMap moro_vol
+	run-once 1
+	call {
+		do move moro_cav 47 65
+		do talknpc 45 60 r0
+		do talknpc 50 63 r0
+	}
+}
+automacro flame_bios_island_start {
+	QuestActive 201705
+	# Quest after clearing so it means we cleared it
+	QuestInactive 201720
+	InMap moro_cav
+	run-once 1
+	call {
+		do move moro_cav 47 65
+		do talknpc 45 60 r0
+		do talknpc 50 63 r0
+	}
+}
+automacro flame_bios_island_ready {
+	SimpleHookEvent instance_ready
+    timeout 600
+	InMap moro_cav
+	IsInCoordinate 45..49 60..67
+	call {
+		do talknpc 50 63 r1
+		do conf attackAuto 0
+	}
+}
+automacro flame_bios_island0 {
+	InMap 1@dth1
+	run-once 1
+	call {
+		do move 66 94
+		do conf itemsTakeAuto 0
+		do conf attackAuto -1
+		log try cross bridge without talking
+		do talknpc 67 97 r0
+    do talk resp 0
+	}
+}
+automacro flame_bios_island1 {
+	InMap 1@dth1
+	PubMsg /先行する/
+	delay 1
+	exclusive 1
+	call {
+		do move 325 104
+	}
+}
+automacro flame_bios_island2 {
+	InMap 1@dth2
+	timeout 180
+	call {
+		do conf itemsTakeAuto 0
+		do conf attackAuto 2
+    do conf CrC.disabled 1
+		do move 221 145
+		pause 1
+		do move 212 116
+		pause 1
+		do move 325 104
+	}
+}
+automacro flame_bios_island3 {
+	InMap 1@dth3
+	timeout 180
+	call {
+		do move 70 86
+		do talknpc 64 74
+	}
+}
+automacro flame_morusu_start {
+	# We just finished island
+	QuestActive 201720
+	InMap moro_cav
+	run-once 1
+	call {
+		call regroup
+		do move moro_cav 60 67
+		do talknpc 61 69 r0
+	}
+}
+automacro flame_morusu_ready {
+	SimpleHookEvent instance_ready
+    timeout 600
+	InMap moro_cav
+	IsInCoordinate 57..63 64..70
+	call {
+		do talknpc 57 69 r0
+		do conf attackAuto 2
+	}
+}
+automacro morusu_begin {
+	InMap 1@rev
+	IsInCoordinate 24..28 179..183
+	LocalMsg /？？？ : 待ってくれ！/
+	call {
+		pause 4
+		do talk resp 0
+		do move 68 181
+	}
+}
+### End of フレイムヴァレーへの道
+
+### 七王家とユミルの心臓 ###
+
+macro royal_quest {
+	do move prontera 120 72
+	do talknpc 121 72 r0
+	do talknpc 121 72 r2 r1
+}
+automacro royal_start {
+	InMap prt_castle
+	IsInCoordinate 102 24
+	call {
+		do talknpc 106 27 r0
+		pause 2
+		do move prt_cas_q 27 30
+		# servant in 貴賓室
+		do talknpc 26 30 r0 r0 r0
+	}
+}
+
+# 七王家とユミルの心臓〜ハイネン家〜 (7683) has been added.
+# 七王家とユミルの心臓〜ネリウス家〜 (73051) has been added.
+# 七王家とユミルの心臓〜バルター家〜 (73052) has been added.
+# 七王家とユミルの心臓〜リハルト家〜 (73053) has been added.
+# 七王家とユミルの心臓〜ウィグナー家〜 (73054) has been added.
+# 七王家とユミルの心臓〜レベンブルグ家〜 (73055) has been added.
+# 七王家とユミルの心臓〜ゲオルグ家〜 (73056) has been added
+
+automacro royal_ハイネン家 {
+	QuestActive 7683
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas_q 24 78
+		do talk resp 0
+		do move prt_cas_q 21 85
+		do move prt_cas_q 20 85
+		# two クロネカー・ハイネンoverlap
+		do talk 2
+		do talk resp 0
+	}
+}
+automacro royal_ネリウス家 {
+	QuestActive 73051
+	timeout 60
+	exclusive 1
+	priority 1
+	call {
+		do move prt_cas_q 20 133
+		do move prt_cas_q 20 134
+		do talknpc 20 139 r0 r0
+	}
+}
+automacro royal_バルター家 {
+	QuestActive 73052
+	timeout 60
+	exclusive 1
+	priority 2
+	call {
+		log 2
+		do move prt_cas_q 20 178
+		do move prt_cas_q 20 180
+		do talknpc 20 184 r0 r0 r0 r0
+	}
+}
+automacro royal_リハルト家 {
+	QuestActive 73053
+	timeout 60
+	exclusive 1
+	priority 3
+	call {
+		log 3
+		do move prt_cas_q 78 77
+		do talknpc 80 80
+		do move prt_cas_q 86 74
+		do talknpc 93 74 r0 r0
+		do talknpc 93 74 r0 r0 r0
+		do talknpc 80 80 r0
+	}
+}
+automacro royal_ウィグナー家 {
+	QuestActive 73054
+	timeout 60
+	exclusive 1
+	priority 4
+	call {
+		log 4
+		do move prt_cas_q 79 21
+		do talknpc 82 21 r0 r0
+		do move prt_cas_q 88 15
+		do talknpc 95 9
+	}
+}
+automacro royal_レベンブルグ家 {
+	QuestActive 73055
+	timeout 60
+	exclusive 1
+	priority 5
+	call {
+		log 5
+		do move prt_cas_q 87 186
+		do talknpc 90 186 r0
+		do talknpc 96 186 r0 r0 r0 r0 r0
+		do talknpc 90 186 r0 r0 r0 r0 r0
+		do talknpc 96 186 r0 r0 r0 r0 r0
+	}
+}
+automacro royal_ゲオルグ家 {
+	QuestActive 73056
+	timeout 60
+	exclusive 1
+	priority 6
+	call {
+		log 6
+		do move prt_cas_q 78 131
+		do move prt_cas_q 84 129
+		do talknpc 93 129 r0 r0 r0
+
+		# all done go back to 貴賓室
+		do move prt_cas_q 27 30
+		# servant in 貴賓室
+		do talknpc 26 30
+	}
+}
+
+automacro royal_next {
+	QuestActive 7687
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas 106 235
+		do talknpc 106 240 r0 r0 r0 c r0
+	}
+}
+automacro royal_next2 {
+	QuestActive 7689
+	timeout 60
+	exclusive 1
+	delay 2
+	call {
+		do move prt_cas 195 162
+		do talk cont
+		do talk resp 0
+	}
+}
+automacro royal_next3 {
+	QuestActive 7690
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas 31 117
+		pause 2
+		do talknpc 29 117 r0
+	}
+}
+automacro royal_next4 {
+	QuestActive 7691
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas_q 27 30
+		do talknpc 26 30
+	}
+}
+automacro royal_bell_teleported_me {
+	QuestActive 7692
+	InMap prt_lib
+	run-once 1
+	exclusive 1
+	call {
+		do move prt_lib 91 77
+		call regroup
+		do talknpc 91 85 r0
+	}
+}
+automacro royal_first_md_ready {
+	QuestActive 7692
+	SimpleHookEvent instance_ready
+	call {
+		do talknpc 88 90 r0
+	}
+}
+automacro royal_second_md_ready {
+	QuestActive 7699
+	SimpleHookEvent instance_ready
+	call {
+		do talknpc 88 90 r0
+	}
+}
+automacro royal_in_md {
+	QuestActive 7692
+	InMap 2@mir
+	run-once 1
+	call {
+    pause 6
+		do talk no
+		do move 106 77
+		do conf attackAuto 2
+	}
+}
+automacro royal_killed_3 {
+	InMap 2@mir
+	timeout 10
+	LocalMsg /作戦班、撤収するぞ/
+	delay 3
+	exclusive 1
+	call {
+    pause 5
+		do move 101 87
+		do talknpc 101 93 r0
+    pause 2
+		do move 101 8
+		do talk resp 1
+		do talk cont
+	}
+}
+automacro royal_out_md {
+	QuestActive 7693
+	InMap prt_lib
+	timeout 120
+	exclusive 1
+	call {
+		do talknpc 85 82 r0 r0 r0
+		do talknpc 91 85 r0
+		do talknpc 76 80 r0
+		do talknpc 91 85 r0
+    pause 2
+		do talknpc 85 82 r0 r0 c r0
+    pause 3
+		do talknpc 91 85 r0
+		do talknpc 76 80 r0
+		do talknpc 91 85 r0
+
+		pause 6
+		do move prt_lib 63 61
+		do talknpc 56 61 r0
+	}
+}
+automacro royal_jail {
+	QuestActive 7695
+	InMap prt_pri00
+	exclusive 1
+	call {
+		do talknpc 58 128
+		pause 2
+		do move prt_cas_q 27 30
+		# servant in 貴賓室
+		do talknpc 26 30 r0 r0
+		do talknpc 26 30
+	}
+}
+automacro royal_ネリウス家_again {
+	QuestActive 7697
+	timeout 60
+	exclusive 1
+	call {
+		do move prt_cas_q 18 135
+		do talk 4
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+	}
+}
+automacro royal_ハイネン家_again {
+	QuestActive 7698
+	timeout 100
+	exclusive 1
+	call {
+		do move prt_cas_q 24 78
+		do talk 2
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+	}
+}
+automacro royal_final貴賓室 {
+	QuestActive 7699
+	InMap prt_cas_q
+	timeout 240
+	exclusive 1
+	call {
+		do move prt_cas_q 27 30
+		# servant in 貴賓室
+		do talknpc 26 30
+		do talknpc 28 28 r0 r0 r0
+	}
+}
+automacro royal_md_again {
+	QuestActive 7699
+	InMap prt_lib
+	timeout 120
+	exclusive 1
+	delay 5
+	call {
+		do move prt_lib 91 77
+		do talknpc 91 85
+	}
+}
+automacro royal_md_again1 {
+	QuestActive 7699
+	InMap prt_lib_q
+	timeout 120
+	exclusive 1
+	delay 5
+	call {
+		do move prt_lib_q 91 77
+		do talknpc 91 85
+	}
+}
+automacro royal_md_again2 {
+	QuestActive 7700
+	InMap prt_lib
+	timeout 120
+	exclusive 1
+	delay 5
+	call {
+		do talknpc 94 82 r0
+	}
+}
+automacro royal_md_again3 {
+	QuestActive 7700
+	InMap prt_lib_q
+	timeout 120
+	exclusive 1
+  delay 2
+	call {
+		do move prt_lib_q 91 77
+		do talknpc 91 85
+		do talknpc 88 90 r0
+	}
+}
+automacro royal_md_again4 {
+	QuestActive 7700
+	InMap mir_q
+	timeout 180
+	exclusive 1
+  delay 1
+	call {
+		do move 101 88
+		do talknpc 101 90 r0 r0 r0 r0
+		pause 10
+		do talknpc 105 80
+		pause 5
+		do talknpc 91 85 r0 r0 r0
+		do move 9 24
+	}
+}
+automacro royal_end {
+	QuestActive 7702
+	InMap prt_q
+	timeout 120
+	exclusive 1
+	call {
+		do talknpc 157 334 r0 r0 r0 r0 r0 r0
+	}
+}
+automacro royal_end1 {
+	QuestActive 7703
+	InMap prt_lib
+	timeout 20
+	exclusive 1
+	call {
+		do talknpc 80 79 r0 r0 r0
+	}
+}
+automacro royal_end2 {
+	QuestActive 7704
+	timeout 120
+	exclusive 1
+	call {
+		do move prt_cas_q 24 78
+		do talknpc 21 83 r0
+		log royal quest line done!
+	}
+}
+
+### End of 七王家とユミルの心臓
+
+### Terra Gloria ###
+# Need 3 古いつるはし
+macro terra_gloria_quest {
+	do move prt_cas_q 23 35
+	do talknpc 21 39 r0 r0
+	do talknpc 23 36
+	do talknpc 21 39 r0
+}
+automacro terra_gloria_1 {
+	QuestActive 7731
+	InMap lhz_airport
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talknpc 189 39
+	}
+}
+automacro terra_gloria_2 {
+	QuestActive 7732
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move lighthalzen 188 290
+	}
+}
+automacro terra_gloria_3 {
+	QuestActive 7733
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move lighthalzen 192 155
+		# teleport to ghetto
+		do talknpc 202 167
+		pause 2
+		# do talknpc 309 263
+		do talk 1
+	}
+}
+automacro terra_gloria_4 {
+	QuestActive 7734
+	InMap lighthalzen
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talk resp 0
+	}
+}
+automacro terra_gloria_4_1 {
+	QuestActive 7734
+	InMap prt_cas_q
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move prt_cas_q 23 35
+		do talknpc 21 39 r0 r0 r1 r0
+		do talknpc 21 39 r0 r0 r1 r0
+	}
+}
+automacro terra_gloria_5 {
+	QuestActive 7735
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talknpc 168 41 r0 r0 r0
+		do talknpc 168 41 r0 r0 r0 r0
+	}
+}
+automacro terra_gloria_6 {
+	QuestActive 7736
+	InMap lhz_airport
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talknpc 168 41 r0 r0 r0
+	}
+}
+automacro terra_gloria_6_1 {
+	QuestActive 7736
+	InMap lhz_in02
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move 238 169
+		do talknpc 239 148 r1 r0 r0
+	}
+}
+automacro terra_gloria_7 {
+	QuestActive 7737
+	InMap einbroch
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do talknpc 239 269 r0 r0 r0 r0 r0 r0 r0 r0 r0 r0 r0
+	}
+}
+automacro terra_gloria_8 {
+	QuestActive 14595
+	InMap einbroch
+	timeout 120
+	exclusive 1
+	delay 1
+	call {
+		do move 264 261
+		do talk 1
+		do talk resp 0
+	}
+}
+automacro terra_gloria_9 {
+	QuestActive 73151
+	InMap einbech
+	timeout 120
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 46 208
+	}
+}
+automacro terra_gloria_10 {
+	QuestActive 14596
+	InMap einbech
+	timeout 120
+	exclusive 1
+	delay 2
+	call {
+		do talk 1
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+	}
+}
+automacro terra_gloria_11 {
+	QuestActive 14597
+	InMap einbech
+	timeout 120
+	exclusive 1
+	delay 2
+	call {
+		do talk 1
+		do talk resp 0
+	}
+}
+automacro terra_gloria_12 {
+	QuestActive 14598
+	InMap einbech
+	timeout 120
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in
+		do talknpc 21 45 r0
+	}
+}
+automacro terra_gloria_13 {
+	QuestActive 14599
+	InMap rebel_in
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 82 55
+		do talknpc 86 61 r0 r0
+	}
+}
+# Quest: テラグローリア‐リベリオン交渉①‐ (14600) has been added.
+# Quest: テラグローリア‐リベリオン交渉②‐ (14602) has been added.
+# Quest: テラグローリア (14614) has been added.
+automacro terra_gloria_14 {
+	QuestActive 14602
+	InInventory "古いつるはし" < 3
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move ein_dun01
+[
+		do conf attackAuto 1
+		do conf itemsTakeAuto 2
+		do conf route_randomWalk 1
+]
+	}
+}
+automacro terra_gloria_14_1 {
+	QuestActive 14602
+	InInventory "古いつるはし" >= 3
+	timeout 360
+	delay 2
+	call {
+[
+		do conf attackAuto 0
+		do conf itemsTakeAuto 0
+		do conf route_randomWalk 0
+]
+		do move rebel_in 70 72
+		do talknpc 70 78 r0
+		do talknpc 70 78 r0 r0
+		do talknpc 70 78 r0 r0
+	}
+}
+automacro terra_gloria_15 {
+	QuestActive 73160
+	QuestActive 14600
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 114 74
+		do talknpc 122 71 r0 r0
+	}
+}
+automacro terra_gloria_16 {
+	QuestActive 11454
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 126 41
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+		do talk resp 0
+	}
+}
+automacro terra_gloria_17 {
+	QuestActive 11455
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 159 83
+		do talknpc 164 88 r0 r0 r0
+	}
+}
+automacro terra_gloria_18 {
+	QuestActive 11456
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 164 88
+	}
+}
+automacro terra_gloria_19 {
+	QuestActive 11457
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 209 82
+		do talknpc 210 89 r0 r0
+	}
+}
+automacro terra_gloria_20 {
+	QuestActive 11458
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 112 72
+		do talknpc 122 71 r0
+	}
+}
+automacro terra_gloria_21 {
+	QuestActive 11459
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 119 68
+	}
+}
+automacro terra_gloria_22 {
+	QuestActive 11460
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 122 71
+	}
+}
+automacro terra_gloria_23 {
+	QuestActive 11461
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 121 69
+	}
+}
+automacro terra_gloria_24 {
+	QuestActive 11462
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do talknpc 122 71
+	}
+}
+automacro terra_gloria_25 {
+	QuestActive 73155
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 82 57
+		do talknpc 86 61 r0 r0
+	}
+}
+automacro terra_gloria_25_1 {
+	QuestActive 14615
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move rebel_in 64 45
+		do talknpc 65 46 r0 r0
+	}
+}
+automacro terra_gloria_26 {
+	QuestActive 7738
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		do move ein_in01 274 245
+		pause 22
+		do talknpc 269 285 r0 r0 r0
+	}
+}
+automacro terra_gloria_military_base01 {
+	QuestActive 7739
+	InMap ein_fild04
+	timeout 360
+	exclusive 1
+	delay 2
+	call {
+		call regroup
+		do talknpc 281 337 r1 r0
+		do talknpc 281 337 r0
+	}
+}
+automacro terra_gloria_heart_military_base01_ready {
+	QuestActive 7739
+	InMap ein_fild04
+	SimpleHookEvent instance_ready
+	call {
+		do talknpc 275 342 r0
+	}
+}
+automacro terra_gloria_heart_military_base01_enter {
+	QuestActive 7739
+	InMap 1@swat
+	IsInCoordinate 30..40 60..70
+	timeout 360
+	delay 1
+	call {
+		do talknpc 40 65
+	}
+}
+automacro terra_gloria_heart_military_base01_start {
+	QuestActive 7739
+	InMap 1@swat
+	PubMsg /散開/
+	delay 1
+	call {
+		do conf attackAuto 1
+		do move 101 53
+		do talknpc 105 50 r0
+		do move 60 88
+		do talknpc 58 90
+	}
+}
+automacro terra_gloria_heart_military_base01_start1 {
+	QuestActive 7739
+	InMap 1@swat
+	LocalMsg /接近制限区域に侵入者感知/
+	delay 1
+	timeout 360
+	call {
+		do move 103 50
+		do talknpc 105 50 r0
+		pause 10
+		do move 136 50
+		do talknpc 140 50
+		do move 147 118
+
+		warning Need to kill al 15 to proceed
+		do conf attackAuto 2
+		do talknpc 150 119 r1
+
+		do move 132 128
+		do move 133 105
+		do move 113 93
+		do move 117 121
+	}
+}
+automacro terra_gloria_heart_military_base01_start2 {
+	QuestActive 7739
+	InMap 1@swat
+	LocalMsg /すべてのハートハンターを倒しました/
+	call {
+		do conf attackAuto 1
+		do move 136 50
+		do talknpc 140 50
+		pause 5
+		do move 237 41
+	}
+}
+automacro terra_gloria_heart_military_base01_start3 {
+	QuestActive 7739
+	InMap 1@swat
+	PubMsg /近くで火薬を探してくれ/
+	exclusive 1
+	orphan reregister
+	call {
+		do move 165 54
+		log before talk
+		do talknpc 163 58
+
+		do move 178 50
+		do move 196 48
+
+		do move 236 40
+		pause 2
+		do talknpc 238 39 r0
+		pause 11
+
+		do move 311 47
+		do talknpc 310 47
+	}
+}
+automacro terra_gloria_heart_military_base01_end {
+	QuestActive 7739
+	InMap 1@swat
+	PubMsg /お前たちも早く引き上げるんだな/
+	exclusive 1
+	delay 20
+	call {
+		do talknpc 320 47
+	}
+}
+automacro terra_gloria_lab {
+	QuestActive 73161
+	InMap que_swat
+	exclusive 1
+	call {
+		do move 155 61
+		do move slabw01_qjp 234 86
+		do talknpc 236 91
+		call regroup
+		do talknpc 236 91 r0
+	}
+}
+automacro terra_gloria_lab_ready {
+	SimpleHookEvent instance_ready
+    timeout 600
+	InMap slabw01_qjp
+	call {
+		do talknpc 246 88 r0
+	}
+}
+automacro terra_gloria_lab1{
+	InMap 1@slw
+	IsInCoordinate 182..192 19..29
+	timeout 15
+	call {
+		do move 188 38
+		do talknpc 188 42
+		do move 187 162
+		do talknpc 189 164
+
+		log TIME TO DO THE COLOR TRICK
+		do move 155 185
+		do talknpc 155 191
+	}
+}
+### 青文字:夢、黎明、永遠、純粋
+### So far the first reponse is always blue, try react on NPC?
+# This assumes the second response is always blue
+automacro lab_code {
+	InMap 1@slw
+	NpcMsgName /\[.+\]/ /保安装置/
+	timeout 2
+	call {
+		$lab_resp_code = 0
+		log $.NpcMsgNameLastMsg
+		if ($.NpcMsgNameLastMsg =~ /夢/ ) {
+			log 夢, talk resp 1
+			$lab_resp_code = 1
+		}
+		if ($.NpcMsgNameLastMsg =~ /黎明/ ) {
+			log 黎明, talk resp 1
+			$lab_resp_code = 1
+		}
+		if ($.NpcMsgNameLastMsg =~ /永遠/ ) {
+			log 永遠/, talk resp 1
+			$lab_resp_code = 1
+		}
+		if ($.NpcMsgNameLastMsg =~ /純粋/ ) {
+			log 純粋, talk resp 1
+			$lab_resp_code = 1
+		}
+		do talk resp $lab_resp_code
+	}
+}
+automacro lab_code_first_left_correct {
+	InMap 1@slw
+	NpcMsg /保安装置を稼働させた/
+	timeout 600
+	call {
+		# right device
+		do move 220 188
+		do talknpc 220 191
+	}
+}
+automacro lab_code_first_right_correct {
+	InMap 1@slw
+	NpcMsg /ゲートが稼働した/
+	timeout 600
+	call {
+		do move 188 169
+	}
+}
+automacro lab_code_second_left_correct {
+	InMap 1@slw
+	NpcMsgName /保安装置を稼働させた/ /保安装置#switch03_0ev/
+	timeout 60
+	call {
+		# right device
+		do move 122 57
+		do talknpc 122 61
+	}
+}
+automacro lab_code_second_right_correct {
+	InMap 1@slw
+	NpcMsgName /ゲートが稼働した/ /保安装置#switch04_0ev/
+	timeout 60
+	call {
+		do move 71 77
+	}
+}
+automacro lab_entered_gate {
+	InMap 1@slw
+	IsInCoordinate 66..76 27..37
+	timeout 10
+	call {
+		do move 70 66
+		do talknpc 72 70 r0 r0
+		do move 23 55
+		pause 1
+		do talknpc 22 61
+	}
+}
+automacro lab_entered_end {
+	InMap 1@slw
+	IsInCoordinate 49..59 129..139
+	timeout 60
+	call {
+		do talknpc 57 141
+		do move 54 146
+		pause 1
+		do move 55 168
+		do talknpc 53 171 r0
+		do talknpc 53 171 r0
+		do talknpc 53 171 r0
+		pause 4
+		do talknpc 56 171
+	}
+}
+automacro terra_gloria_end{
+	InMap que_swat
+	QuestActive 7740
+	timeout 60
+	call {
+		do talknpc 150 58 r0
+	}
+}
+automacro terra_gloria_end1 {
+	InMap einbroch
+	QuestActive 73162
+	timeout 120
+	delay 2
+	call {
+		do move ein_in01 273 277
+		do talknpc 269 285 r0 r0 r0 r0 r0
+	}
+}
+automacro terra_gloria_end2 {
+	QuestActive 7741
+	timeout 120
+	delay 2
+	call {
+		do move prt_cas_q 20 30
+		do talknpc 18 37 r0 r0 r0 r0 r0
+	}
+}
+automacro terra_gloria_end3 {
+	QuestActive 73164
+	InMap que_swat
+	timeout 120
+	delay 2
+	call {
+		do talknpc 145 57 r0
+	}
+}
+automacro terra_gloria_end4 {
+	QuestActive 73166
+	timeout 120
+	delay 2
+	call {
+		do move prt_cas_q 22 31
+		do talknpc 21 39 r0
+		log WE DID IT
+	}
+}
+# [2023.07.16 09:36:32.65] Quest: テラグローリア (73166) has been deleted.
+# [2023.07.16 09:36:32.67] Quest: テラグローリア (201925) has been added.
+### End of Terra Gloria
+
+### Illusion ###
+macro illusion {
+	do move einbech 208 78
+	do talk resp 0
+}
+automacro illusion_teleported {
+  InMap einbroch
+  QuestActive 7850
+  timeout 120
+  call {
+    do move 302 331
+    do talk resp 0
+    do talknpc 93 105 r0
+  }
+}
+automacro illusion_teleported_again {
+  InMap sp_rudus
+  QuestActive 7851
+  timeout 120
+  call {
+    do talknpc 184 360 r0 r0
+  }
+}
+automacro illusion_teleported_once_more {
+  InMap sp_rudus
+  QuestActive 7852
+  timeout 120
+  call {
+    do talknpc 193 284
+  }
+}
+# [2023.11.25 19:22:03.82] NPC ルッキー#ep171_007 (0) shown minimap indicator at location 304, 266 with the color [R:255, G:255, B:0, A:0]
+# [2023.11.25 19:22:03.83] NPC ルッキー#ep171_007 (0) shown minimap indicator at location 121, 286 with the color [R:255, G:255, B:0, A:0]
+# [2023.11.25 19:22:03.84] NPC ルッキー#ep171_007 (0) shown minimap indicator at location 27, 300 with the color [R:255, G:255, B:0, A:0]
+
+automacro illusion_three_point0 {
+  InMap sp_rudus
+  QuestActive 7853
+  QuestInactive 7854
+  timeout 600
+  call {
+    do move 303 270
+    do talknpc 304 266 r0
+  }
+}
+automacro illusion_three_point1 {
+  InMap sp_rudus
+  QuestActive 7853
+  QuestActive 7854
+  QuestInactive 7855
+  timeout 600
+  call {
+    do move 125 288
+    do talknpc 121 286 r0
+  }
+}
+automacro illusion_three_point2 {
+  InMap sp_rudus
+  QuestActive 7853
+  QuestActive 7854
+  QuestActive 7855
+  timeout 600
+  call {
+    do move 32 305
+    do talknpc 27 300 r0
+  }
+}
+automacro illusion_rookie {
+  InMap sp_rudus
+  QuestActive 7857
+  delay 3
+  timeout 600
+  call {
+    do talknpc 193 284 r0 r0
+    do talknpc 197 282 r0
+    do conf attackAuto 2
+    do conf route_randomWalk 1
+  }
+}
+automacro illusion_rookie_done {
+  InMap sp_rudus
+  QuestHuntCompleted 7858 20363
+  QuestHuntCompleted 7858 20361
+  QuestHuntCompleted 7858 20365
+  timeout 600
+  call {
+    do conf attackAuto 0
+    do conf randomWalk 0
+    do move 197 269
+    do talknpc 197 272 r0
+    do talknpc 193 284 r0 r0
+
+    do talknpc 184 360 r0
+  }
+}
+automacro illusion_back_in_tarven {
+  InMap pub_cat
+  QuestActive 7859
+  timeout 600
+  call {
+    do talknpc 93 105
+    do move 95 105
+    do talknpc 104 106 r0
+  }
+}
+automacro illusion_armory {
+  InMap pub_cat
+  QuestActive 7860
+  timeout 600
+  delay 2
+  call {
+    do move 156 104
+    do talknpc 160 102 r0 r0 r0 r0 r0 r0
+  }
+}
+automacro illusion_republic_guard {
+  InMap lighthalzen
+  QuestActive 7861
+  timeout 600
+  call {
+    do talknpc 56 270
+  }
+}
+automacro illusion_first_MD_go {
+  InMap lighthalzen
+  QuestActive 7862
+  timeout 600
+  call {
+    do talknpc 55 278 r1
+  }
+}
+automacro illusion_first_MD_ready {
+  InMap lighthalzen
+  QuestActive 7862
+  timeout 600
+  SimpleHookEvent instance_ready
+  call {
+    do talknpc 55 278 r1
+  }
+}
+automacro illusion_first_MD_entered {
+  InMap 1@rgsr
+  IsInCoordinate 122..132 33..43
+  timeout 600
+  call {
+    do talknpc 123 42
+    do move 127 59
+    do talknpc 131 58 r0
+    do conf attackAuto 2
+    do move 35 131
+  }
+}
+automacro illusion_first_MD_guard_killed {
+  InMap 1@rgsr
+  LocalMsg /食堂のハートハンター警備兵を倒した/
+  timeout 600
+  call {
+    # ‐食堂のハートハンター警備兵を倒した‐
+    do move 57 135
+    do talknpc 60 138
+    pause 20
+    do talknpc 59 132
+    do talknpc 59 132
+    do move 59 136
+    do talknpc 59 132
+  }
+}
+automacro illusion_first_MD_passed_gate {
+  InMap 1@rgsr
+  IsInCoordinate 63..69 133..169
+  timeout 600
+  call {
+    do move 52 183
+    do move 60 216
+  }
+}
+automacro illusion_first_MD_topleft {
+  InMap 1@rgsr
+  LocalMsg /味方か？/
+  timeout 600
+  call {
+    do move 52 216
+    do move 34 211
+    do talknpc 36 211
+    do talknpc 27 219 r~/0315/
+  }
+}
+automacro illusion_first_MD_go_bottom_right0 {
+  InMap 1@rgsr
+  timeout 600
+	PubMsg /通信ガ、終了サレマシタ/
+  call {
+    do move 49 216
+
+    do move 205 136
+  }
+}
+automacro illusion_first_MD_go_bottom_right1 {
+  InMap 1@rgsr
+  timeout 600
+	LocalMsg /研究室Aノ入室制限ガ解除/
+  call {
+    do move 213 136
+
+    do move 226 139
+    do talknpc 235 143
+    do move 216 136
+
+    do move 205 107
+  }
+}
+automacro illusion_first_MD_go_bottom_right2 {
+  InMap 1@rgsr
+  timeout 600
+	LocalMsg /研究室Bノ入室制限ガ解除/
+  call {
+    do move 213 107
+
+    do move 226 110
+    do talknpc 237 108
+    do move 216 107
+
+    do move 205 76
+  }
+}
+automacro illusion_first_MD_go_bottom_right3 {
+  InMap 1@rgsr
+  timeout 600
+	LocalMsg /研究室Cノ入室制限ガ解除/
+  call {
+    do move 213 76
+
+    do move 226 75
+    do talknpc 237 71 r0
+    do move 216 76
+
+    do move 205 44
+  }
+}
+automacro illusion_first_MD_bottom_right_last {
+  InMap 1@rgsr
+  timeout 600
+	LocalMsg /警護待機室ノ入室制限ガ解除/
+  call {
+    do move 214 44
+    do move 228 45
+    do talknpc 235 44
+
+    do talknpc 241 51
+    pause 3
+
+    # go to center
+    do move 217 44
+    do move 126 157
+    do talknpc 125 157 r0
+    pause 5
+    do talknpc 128 157 r0
+    pause 23
+    do talknpc 128 157 r1
+  }
+}
+automacro illusion_first_MD_bottom_end {
+  InMap 1@rgsr
+  IsInCoordinate 124..130 161..167
+  timeout 600
+  call {
+    do move 125 184 
+    do talk resp 1
+  }
+}
+automacro illusion_first_MD_done {
+  InMap 1@rgsr
+  timeout 600
+	LocalMsg /ご無事ですか/
+  call {
+    do move 126 166
+    do talknpc 127 164 r0 r0
+  }
+}
+automacro illusion_tarven_again {
+  InMap pub_cat
+  timeout 600
+  QuestActive 7866
+  delay 2
+  call {
+    do talknpc 93 105 r0 r0
+  }
+}
+automacro illusion_tarven_again_teleported {
+  InMap pub_cat
+  timeout 600
+  QuestActive 7864
+  delay 2
+  call {
+    do talknpc 106 69 r0 r0 r0
+    pause 2
+    do talknpc 105 58 r0 r0 r0 r0 r0 r0
+    do talknpc 109 71 r0 r0 r0 r0
+    do talknpc 105 58 r0 r0 r0
+  }
+}
+automacro illusion_lazy {
+  InMap einbroch
+  timeout 600
+  QuestActive 17003
+  delay 2
+  call {
+    do talk 2
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_again {
+  InMap lighthalzen
+  timeout 600
+  QuestActive 17004
+  delay 2
+  call {
+    # レイジー#ep171_039  (259, 215)   5837
+    do talk 4
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_once_more {
+  InMap lighthalzen
+  timeout 600
+  QuestActive 17005
+  delay 2
+  call {
+    # 4    レイジー#ep171_043               (336, 266)    5841
+    do talk 4
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_again_holy_fuck {
+  InMap lighthalzen
+  timeout 600
+  QuestActive 17006
+  delay 2
+  call {
+    do talk 2
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_again_holy_fuck1 {
+  InMap lhz_in01
+  timeout 600
+  QuestActive 17007
+  delay 2
+  call {
+    do conf npcTimeResponse 10
+    do talk 1
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do conf npcTimeResponse none
+  }
+}
+automacro illusion_lazy_again_holy_fuck2 {
+  InMap lhz_in01
+  timeout 600
+  QuestActive 17008
+  delay 2
+  call {
+    do talk 4
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_again_holy_fuck3 {
+  InMap rgsr_in
+  timeout 600
+  QuestActive 17009
+  delay 2
+  call {
+    do talk 1
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_again_holy_fuck4 {
+  InMap rgsr_in
+  timeout 600
+  QuestActive 17010
+  delay 2
+  call {
+    do talk 1
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_again_holy_fuck5 {
+  InMap lhz_in01
+  timeout 600
+  QuestActive 17011
+  delay 2
+  call {
+    do talk 4
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_again_holy_fuck6 {
+  InMap lhz_in01
+  timeout 600
+  QuestActive 17012
+  delay 2
+  call {
+    do talk 3
+    do talk resp 0
+  }
+}
+automacro illusion_lazy_end {
+  InMap ein_fild01
+  timeout 600
+  QuestActive 17013
+  delay 2
+  call {
+    do conf npcTimeResponse 10
+    do talk 1
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do conf npcTimeResponse none
+  }
+}
+automacro illusion_tarven_once_again {
+  InMap pub_cat
+  timeout 600
+  QuestActive 17014
+  delay 2
+  call {
+    do talknpc 93 105 r0 r0
+  }
+}
+automacro illusion_second_MD_prelude {
+  InMap ein_fild03
+  QuestActive 7865
+  timeout 600
+  call {
+    do talknpc 278 269 r0 r0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro illusion_second_prelude1 {
+  InMap ein_fild03
+  QuestActive 11599
+  timeout 600
+  call {
+    do talknpc 278 269 r0
+  }
+}
+automacro illusion_second_MD_go {
+  InMap ein_fild03
+  QuestActive 11600
+  timeout 600
+  call {
+    do talknpc 278 269 r1
+  }
+}
+automacro illusion_second_MD_ready {
+  InMap ein_fild03
+  QuestActive 11600
+  timeout 600
+  SimpleHookEvent instance_ready
+  call {
+    do talknpc 278 269 r1
+  }
+}
+automacro illusion_second_MD_entered {
+  InMap 1@os_b
+  timeout 600
+  IsInCoordinate 185..191 34..40
+  call {
+		do conf attackAuto 1
+    do talknpc 186 35 r0
+  }
+}
+automacro illusion_second_MD0 {
+  InMap 1@os_b
+  timeout 600
+  IsInCoordinate 184..190 43..49
+  call {
+    do talknpc 187 48
+    do move 203 46
+    do talknpc 212 41 r0
+  }
+}
+automacro illusion_second_MD1 {
+  InMap 1@os_b
+  LocalMsg /道が開いたようね。鉄路を通って北へ移動しましょう/
+  timeout 600
+  call {
+    do move 114 107
+    do talknpc 112 108
+
+    do move 140 114
+    do talknpc 137 107
+    do talknpc 137 123
+
+    do move 140 132
+    do talknpc 137 139
+  }
+}
+automacro illusion_second_MD2 {
+  InMap 1@os_b
+  LocalMsg /これで先に進めるわね。鉄路を通って北へ向かいましょう/
+  timeout 600
+  call {
+    do move 120 214
+    do talknpc 118 216
+    do move 142 218
+    do talknpc 146 221
+
+    do move 261 356
+    do talknpc 259 360
+    pause 3
+    do talknpc 278 269 r0
+  }
+}
+automacro illusion_rebel_in {
+  InMap rebel_in
+  QuestActive 11601
+  timeout 600
+  call {
+    do talknpc 68 41 r0 r0 r0
+  }
+}
+automacro illusion_rebel_in1 {
+  InMap rebel_in
+  QuestActive 11602
+  timeout 600
+  delay 2
+  call {
+    do talknpc 161 91 r0 r0 r0
+  }
+}
+automacro illusion_teleported_out_rebel_in {
+  InMap sp_os
+  QuestActive 11603
+  timeout 600
+  delay 2
+  call {
+    do talk 1
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro illusion_third_MD_go {
+  InMap sp_cor
+  QuestActive 12452
+  timeout 600
+  delay 2
+  call {
+    call regroup
+    do talk 2
+    do talk resp 1
+  }
+}
+automacro illusion_third_MD_ready {
+  InMap sp_cor
+  timeout 600
+  SimpleHookEvent instance_ready
+  call {
+    do talk 2
+    do talk resp 1
+    do conf attackAuto 1
+  }
+}
+automacro illusion_third_MD_entered {
+  InMap 1@os_a
+  QuestActive 12452
+  timeout 600
+  IsInCoordinate 52..58 360..366
+  call {
+    do move 49 363
+    do talknpc 48 365 r0
+  }
+}
+automacro illusion_third_MD_wave {
+  InMap 1@os_a
+  QuestActive 12452
+  timeout 600
+  IsInCoordinate 36..42 357..363
+  call {
+    do talknpc 30 360 r0
+    do move 31 351
+  }
+}
+automacro illusion_third_MD_wave_done {
+  InMap 1@os_a
+  QuestActive 12452
+  timeout 600
+  LocalMsg /無線でアルファとの最後の交信場所と推測される座標を送信する/
+  call {
+    do talknpc 28 359 r0
+    do move 171 287
+    do move 162 266
+    do move 133 266
+    do move 100 260
+    do move 61 177
+    pause 1
+    do talknpc 52 177
+    pause 6
+    do move 51 171
+  }
+}
+automacro illusion_third_MD_second_follow {
+  InMap 1@os_a
+  QuestActive 12452
+  timeout 600
+  IsInCoordinate 46..52 157..163
+  call {
+    do move 31 110
+    do move 71 60
+    do move 100 59
+    do move 161 83
+    do move 141 138
+    do move 166 153
+    pause 1
+    do talknpc 165 153
+    pause 10
+    do move 156 153
+  }
+}
+automacro illusion_third_MD_boss {
+  InMap 1@os_a
+  QuestActive 12452
+  timeout 600
+  IsInCoordinate 159..165 156..162
+  call {
+    do move 160 171
+    do talknpc 165 153
+  }
+}
+automacro illusion_third_MD_boss_died {
+	InMap 1@os_a
+  QuestActive 12452
+  timeout 600
+	SimpleHookEvent target_died
+  IsInCoordinate 153..159 166..172
+	call {
+    do talknpc 165 176 r0
+    do talknpc 165 176 r0 r0
+    do talknpc 165 176 r0 r0
+  }
+}
+automacro illusion_end {
+	InMap sp_cor
+  QuestActive 17015
+  timeout 600
+  IsInCoordinate 158..165 58..64
+	call {
+    do talk 3
+    do talk resp 0
+  }
+}
+automacro illusion_end1 {
+	InMap sp_cor
+  QuestActive 17015
+  IsInCoordinate 163..169 73..79
+  timeout 600
+	call {
+    # 13   #ep171_113                   (168, 81)     4997
+    # 14   先発隊#ep171_114                (168, 81)     4998
+    do talk 14
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro illusion_end2 {
+	InMap sp_cor
+  QuestActive 17017
+  timeout 600
+	call {
+    # 7    #ep171_143                   (122, 141)    5027
+    # 8    フィローテス#ep171_144             (122, 141)    5028
+    do talk 8
+    do talk resp 0
+  }
+}
+automacro illusion_end3 {
+	InMap sp_cor
+  QuestActive 17018
+  timeout 600
+  delay 2
+	call {
+    do talknpc 135 147 r0 r0
+  }
+}
+automacro illusion_end4 {
+	InMap sp_cor
+  QuestActive 17019
+  timeout 600
+  delay 2
+	call {
+    # 3    リベリオン隊員#ep171_40             (108, 130)    4964
+    # 4    リベリオン隊員#ep171_15             (108, 130)    5040
+    do talk 4
+    do talk resp 0
+  }
+}
+automacro illusion_end5 {
+	InMap sp_cor
+  QuestActive 16353
+  timeout 600
+  delay 2
+	call {
+    do talk 2
+    do talk resp 0
+  }
+}
+automacro illusion_end_MD_go {
+	InMap sp_cor
+  QuestActive 16354
+  timeout 600
+  delay 2
+	call {
+    do talk 2
+    do talk resp 1
+  }
+}
+automacro illusion_end_MD_ready {
+	SimpleHookEvent instance_ready
+	InMap sp_cor
+  timeout 600
+  QuestActive 16354
+	call {
+		do talk 2
+    do talk resp 1
+	}
+}
+automacro illusion_end_MD_entered {
+	InMap 1@cor_a
+  timeout 600
+  QuestActive 16354
+  IsInCoordinate 173..179 166..172
+	call {
+    do conf Hell.disabled 0
+    do conf attackAuto 1
+
+    do talknpc 180 169 r0
+    pause 15
+
+    do move 147 174
+
+    do move 160 197
+    do move 219 233
+    do talknpc 222 236
+    pause 3
+    do talknpc 224 238
+
+    do move 215 173
+    do talknpc 220 170
+    pause 3
+    do talknpc 218 172
+
+    do move 161 122
+    do talknpc 160 119
+    pause 2
+
+    do move 142 80
+    do talknpc 140 79
+	}
+}
+automacro illusion_end_MD_almost_there {
+	InMap 1@cor_a
+  timeout 600
+  QuestActive 16354
+  LocalMsg /大物が出てきた/
+	call {
+    do move 177 223
+    do talknpc 172 223 r0
+
+    pause 2
+    do move 136 221
+    do talknpc 142 226 r1
+    pause 2
+	}
+}
+
+automacro illusion_end_MD_real_fucking_end {
+	InMap 1@cor_a
+  timeout 600
+  QuestActive 16354
+  PubMsg /そんなに褒めないでください/
+	call {
+    do move 133 220
+    pause 10
+    do talknpc 140 221
+    pause 15
+    do talknpc 138 221 r0
+	}
+}
+automacro illusion_end_MD_done {
+	InMap sp_cor
+  timeout 600
+  QuestActive 16357
+  delay 2
+	call {
+    do talk 2
+    do talk resp 0
+    pause 2
+
+    do talk 2
+    do talk resp 0
+    pause 2
+
+    do talk 2
+    do talk resp 0
+
+    pause 2
+    do talknpc 255 285 r0
+
+    log LET'S FUCKING GO ILLUSION WAS LONG AF
+	}
+}
+### End of Illusion
+
+### 賢者の遺産 ###
+
+macro legacy {
+	do move sp_cor 258 284
+  pause 2
+	do talk 6
+}
+automacro legacy_start {
+  QuestActive 18000
+  InMap sp_cor
+  timeout 600
+  call {
+    do talk 6
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+  }
+}
+automacro legacy_power_plant {
+  QuestActive 18001
+  InMap ba_pw02
+  timeout 600
+  delay 1
+  call {
+    do talk 3
+    do talk resp 0
+  }
+}
+automacro legacy_power_plant1 {
+  QuestActive 11615
+  InMap ba_pw02
+  timeout 600
+  delay 1
+  call {
+    do talknpc 93 93 r0 r0
+  }
+}
+automacro legacy_power_plant2 {
+  QuestActive 11616
+  InMap ba_pw01
+  timeout 600
+  delay 1
+  call {
+    do talk "マギスティン#発電所"
+    do talk resp 0
+  }
+}
+automacro legacy_power_plant3 {
+  QuestActive 11617
+  InMap ba_pw01
+  timeout 600
+  delay 1
+  call {
+    do talk "アルプオカート#発電所"
+  }
+}
+automacro legacy_power_plant4 {
+  QuestActive 11618
+  InMap ba_in01
+  timeout 600
+  delay 1
+  call {
+    do talknpc 20 319
+    pause 1
+    do move 12 321
+  }
+}
+automacro legacy_maison {
+  QuestActive 128650
+  InMap ba_maison
+  timeout 600
+  delay 1
+  call {
+    do talknpc 20 319
+  }
+}
+### WIP
+### End of Legacy of The Wise One
+
+### Shadow Cross job quest
+macro shadowcross {
+  # log Make sure you are in yuno
+  # call yuno_rachel
+  do move job3_guil01 69 91
+  do talknpc 74 92 r2 r0 r0
+}
+automacro shadowcross_1 {
+  QuestActive 18059
+  timeout 600
+  delay 1
+  call {
+    do move ve_in 209 382
+    do talknpc 212 384 r0 r0 r0 r0
+  }
+}
+automacro shadowcross_field_talk {
+  QuestActive 18060
+  timeout 600
+  delay 1
+  call {
+    do move ve_fild07 105 138
+    do talknpc 99 141
+    do talkresp 0
+    do talkresp 0
+  }
+}
+automacro shadowcross_kid {
+  QuestActive 18061
+  timeout 600
+  delay 1
+  call {
+    do move veins 90 156
+    do talknpc 87 158 r0 r0 r0 r0 r0
+  }
+}
+automacro shadowcross_field_again {
+  QuestActive 18062
+  timeout 600
+  delay 1
+  call {
+    do move ve_fild07 105 138
+    do talknpc 99 141 r0 r0
+  }
+}
+automacro shadowcross_in_again {
+  QuestActive 18063
+  timeout 600
+  delay 1
+  disabled 0
+  call {
+    do move ve_in 209 382
+    do talknpc 212 384 r0 r0 r0 r0
+  }
+}

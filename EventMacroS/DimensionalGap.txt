@@ -1,8 +1,9 @@
-macro test {
-	if ($.job =~ /Glt. Cross/) {
-		log abcd
-	}
-}
+# ghost
+# sara
+# sara2
+# magic
+# devils_tower 
+# battle_ship
 
 ####################################### Ghost Palace
 macro ghost {
@@ -163,7 +164,7 @@ automacro ghost_boss_death {
 
 			[
 			do conf itemsGatherAuto 2
-      do conf itemsTakeAuto 1
+      do conf itemsTakeAuto 2
 			do conf route_randomWalk 0
 			]
 			# walk to make sure we pick up stuff
@@ -198,7 +199,7 @@ automacro ghost_exit {
 
 ########################################### Sara's Memory
 macro sara {
-    call regroup
+  call regroup
 	do move dali 135 111
 	do talknpc 130 107 c r0
 	do talknpc 130 107 c r0
@@ -221,8 +222,9 @@ automacro sara_entered {
 	IsInCoordinate 245..255 150..160
 	timeout 5
 	call {
+		do conf itemsTakeAuto 2
+		do conf itemsGatherAuto 2
 		lock sara_boss_death
-		do conf itemsTakeAuto 1
 		do conf attackAuto 2
 		pause 1
 		do talknpc 261 156 c r0
@@ -273,12 +275,12 @@ automacro sara_boss {
 	IsInCoordinate 150..160 191..201
 	timeout 15
 	call {
-		do conf itemsGatherAuto 2
 		release sara_boss_death
+
 		do move 155 232
-    	do talknpc 152 233 r0
+    do talknpc 152 233 r0
 		pause 1
-    	do talknpc 156 236 r2
+    do talknpc 156 236 r2
 		do move 156 218
 		do move 155 226
 	}
@@ -299,7 +301,6 @@ automacro sara_boss_death {
 			pause 1
 			do talknpc 130 107 c r0
 			do conf itemsGatherAuto 0
-			lock sara_boss_death
 
 			MD(sara)
 		}
@@ -342,7 +343,7 @@ automacro magic_register_auto {
     timeout 660
 	call {
 [
-		do conf itemsTakeAuto 1
+		do conf itemsTakeAuto 2
  		do conf attackAuto 2
 ]
 		do move 130 135
@@ -388,7 +389,7 @@ automacro magic_won_1 {
 	call {
 		if ($.job =~ /Glt. Cross/) {
 			log Re-enabling rolling cutter for GX
-			conf roller.disabled 0
+			do conf roller.disabled 0
 		}
 
 		do move 108 48
@@ -412,6 +413,8 @@ automacro magic_leave {
 	do talk resp 1
 	pause 4
 	do talknpc 98 141
+
+  MD(magic)
 	}
 }
 
@@ -431,6 +434,7 @@ automacro sarah2_ready {
 	call {
 		log instance ready let's go
 		do talknpc 99 148 c r0
+    lock sara2_boss_death
 	}
 }
 automacro sara2 {
@@ -438,7 +442,17 @@ automacro sara2 {
 	IsInCoordinate 363..368 301..307
 	timeout 30
 	call {
-	do talknpc 359 294 r0
+    do conf attackAuto 2
+    pause 1
+    do talknpc 359 294 r0
+    do move 358 294
+	}
+}
+automacro sara2_entrance {
+	InMap 1@glast
+  LocalMsg /フェンリルは南へ向かったようです/
+	timeout 30
+	call {
 	do move 352 279
 	do talk resp 0
 	}
@@ -463,7 +477,7 @@ automacro sara2_crossedbridge {
 }
 automacro sara2_sarah {
 	InMap 1@glast
-	timeout 240
+	timeout 660
 	IsInCoordinate 199 333
 	call {
 	do talknpc 200 340 r0
@@ -473,9 +487,10 @@ automacro sara2_garden {
 	InMap 1@glast
 	IsInCoordinate 189..205 200..210
 	timeout 30
+  exclusive 1
 	call {
 	do conf itemsGatherAuto 2
-	do conf attackAuto 2
+	do conf attackAuto 0
 	do move 177 183
 	do talknpc 176 178
 	do move 131 130
@@ -488,28 +503,218 @@ automacro sara2_garden {
 	do talk resp 1
 	pause 3
 	do move 358 291
-	do talknpc 359 294 r0
-	do move 349 279
+  pause 1
+  do move 352 288
+  pause 2
+	do talknpc 359 294
+
+  # Enter portal to fight sara2
+  pause 2
+	do move 352 279
 	do talk resp 1
 
-  pause 5
+  # Clear mobs before talking to sara
+  pause 2
+  do conf attackAuto 2
+  do move 207 336
+  do move 192 336
+
   do move 202 349
-  do talknpc 200 346 r0
+  pause 2
+  do talk 9
+  do talk 10
+  do talk 11
+  do talk 12
+  do talk 13
+  do talk resp 0
+  release sara2_boss_death
 	}
 }
 
 automacro sara2_boss_death {
-	InMap 0f41@glast
+	InMap 1@glast
 	SimpleHookEvent target_died
+	IsInCoordinate 180..220 327..360
 	delay 1
 	call {
-		if ($.SimpleHookEventLastMonster =~ /サラの幻影/) {
-			log サラの幻影 slayed
-			do move 352 279
-      pause 1
-      do talk resp 1
+	if ($.SimpleHookEventLastMonster =~ /サラの幻影/) {
+		log サラの幻影 slayed
+		do move 352 279
+		do talk resp 1
+
+    do conf itemsGatherAuto 0
+    do conf attackAuto 0
+    MD(sara2)
 		}
 	}
 }
 
+### WIP devils_tower
+macro devils_tower {
+	call regroup
+	do move dali02 136 114
+	do talknpc 130 121 r0
+}
+automacro devils_tower_ready {
+	SimpleHookEvent instance_ready
+	InMap dali02
+    timeout 600
+	IsInCoordinate 130..140 110..120
+	call {
+		log instance ready let's go
+		do talknpc 141 120 r0
+	}
+}
+automacro devils_tower_first_map {
+	InMap 1@tnm1
+    timeout 600
+	call {
+		do talknpc 57 112
+		pause 1
+		do talknpc 56 110
+		# Skip heal injured
+		# do talknpc 47 109 r0
+	}
+}
 
+### 飛行船襲撃
+macro battle_ship {
+	call regroup
+	do move dali02 135 84
+	do talknpc 142 81 r0
+	do talknpc 142 81 r0
+}
+automacro battle_ship_ready {
+	SimpleHookEvent instance_ready
+	InMap dali02
+  timeout 600
+	IsInCoordinate 130..140 80..90
+	call {
+		log instance ready let's go
+    do talknpc 142 81 r1
+		# lock ghost_boss_death
+	}
+}
+automacro battle_ship_entered {
+  InMap 1@air1
+	IsInCoordinate 240..248 70..76
+	timeout 600
+  call {
+    do move 225 63
+    do talknpc 217 67 r0
+  }
+}
+automacro battle_ship_go_down {
+  InMap 1@air1
+  LocalMsg /モンスターが飛行船を破壊/
+	timeout 600
+  call {
+    do move 248 54
+  }
+}
+automacro battle_ship_lower_deck {
+  InMap 1@air1
+  IsInCoordinate 89..92 66..70
+	timeout 300
+  call {
+    do conf attackAuto 2
+    do move 78 60
+  }
+}
+automacro battle_ship_lower_deck_1 {
+  InMap 1@air1
+  LocalMsg /12時方向に敵の気配を感じた/
+  IsInCoordinate 10..130 20..100
+  call {
+    do move 66 81
+  }
+}
+automacro battle_ship_lower_deck_2 {
+  InMap 1@air1, 1@air2
+  LocalMsg /9時方向に敵の気配を感じた/
+  IsInCoordinate 10..130 20..100
+  call {
+    do move 24 63
+  }
+}
+automacro battle_ship_next {
+  InMap 1@air1
+  LocalMsg /このフロアにはもうモンスターの気配がないようだ。下の階へ進もう/
+  call {
+    do move 104 72
+  }
+}
+automacro battle_ship_bottom {
+  InMap 1@air1
+  IsInCoordinate 98..101 198..202
+  timeout 600
+  call {
+    do move 105 188
+  }
+}
+automacro battle_ship_bottom1 {
+  InMap 1@air1
+  LocalMsg /9時方向に敵の気配を感じた/
+  IsInCoordinate 10..130 150..230
+  call {
+    do move 66 187
+    do move 24 187
+  }
+}
+automacro battle_ship_go_up {
+  InMap 1@air1
+  LocalMsg /機関室入口へ向かおう/
+  call {
+    do move 88 193
+    do talknpc 88 189 r0
+    pause 3
+    do move 103 200
+  }
+}
+automacro battle_ship_go_up2 {
+  InMap 1@air2
+  LocalMsg /6時方向に敵の気配を感じた/
+  call {
+    do move 65 41
+  }
+}
+automacro battle_ship_end {
+  InMap 1@air2
+  LocalMsg /デッキまで上がろう/
+  call {
+    do move 89 67
+    pause 2
+
+    do move 231 57
+    do talknpc 229 54 r0
+    do conf itemsGatherAuto 2
+    do conf itemsTakeAuto 2
+  }
+}
+automacro battle_ship_endend {
+	InMap 1@air2
+  IsInCoordinate 220..255 30..70
+	SimpleHookEvent target_died
+	delay 2
+	call {
+	if ($.SimpleHookEventLastMonster =~ /ワイバーン/) {
+    do talknpc 232 51 r0 r3
+    do move 251 51
+  }
+	if ($.SimpleHookEventLastMonster =~ /暴走した船長ペルロック/) {
+    do move 248 51
+    do move 243 55
+    do talknpc 239 58 r0 r1 r1
+    do move 244 73
+    do talk resp 1
+    do conf itemsGatherAuto 0
+    do conf itemsTakeAuto 0
+
+    do conf storageAuto_npc dali02 109 94
+    do autostorage
+    do conf storageAuto_npc dali02 106 93
+
+    MD(battle_ship)
+  }
+	}
+}
