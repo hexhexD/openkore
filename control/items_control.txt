@@ -40,6 +40,8 @@
 # All items not mentioned in this file will be automatically stored in storage.
 all 0 0 0
 
+毒薬の瓶 5 1 0
+
 # 飛行船
 ペルロックのスーツ [1] 0 1 0
 ペルロックのマント [1] 0 1 0

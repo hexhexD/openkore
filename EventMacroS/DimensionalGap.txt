@@ -389,7 +389,7 @@ automacro magic_won_1 {
 	call {
 		if ($.job =~ /Glt. Cross/) {
 			log Re-enabling rolling cutter for GX
-			conf roller.disabled 0
+			do conf roller.disabled 0
 		}
 
 		do move 108 48
@@ -710,7 +710,7 @@ automacro battle_ship_endend {
     do conf itemsGatherAuto 0
     do conf itemsTakeAuto 0
 
-    do conf storageAuto_npc dali02 115 96
+    do conf storageAuto_npc dali02 109 94
     do autostorage
     do conf storageAuto_npc dali02 106 93
 

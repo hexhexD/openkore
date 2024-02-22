@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 0
+char 1
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword woukietu
+adminPassword cayiebri
 callSign
 commandPrefix ;
 callSignGM 0
@@ -604,12 +604,14 @@ attackSkillSlot AS_ENCHANTPOISON {
 	monsters フェンリル, 呪いの根源, サラの幻影#1
 	lvl 5
 	isSelfSkill 1
+	maxAttempts 2
 	timeout 30
 }
 attackSkillSlot AS_ENCHANTPOISON {
 	inMap 1@ge_st
 	lvl 5
 	isSelfSkill 1
+	maxAttempts 2
 	timeout 30
 }
 attackSkillSlot GC_DARKCROW {
@@ -1018,6 +1020,7 @@ getAuto {
 	disabled 0
 }
 
+autoMD 1
 ######## Debugging options; only useful for developers ########
 
 debug 0

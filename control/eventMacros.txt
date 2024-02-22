@@ -112,45 +112,14 @@ automacro exchange_melon_wand {
   }
 }
 
-#sub MD {
-#	my ($caller) = @_;
-#	use Utils qw(getFormattedDate);
-#	use v5.10;
-#
-#	my $logFile = $Settings::logs_folder . "/mdlog.txt";
-#	open(FH, ">>:utf8", $logFile) or die("Failed to open MD log file\n");
-#
-#	message("MD caller is: ".$caller . "\n");
-#	my $prefix = "[".getFormattedDate(int(time))."]"." char ".$config{char}." [MD] ";
-#
-#	given ($caller) {
-#		when ($_ eq "start") {
-#			message("start\n");
-#			Commands::run("em stop");
-#			Commands::run("em sara -orphan reregister_safe");
-#			print(FH $prefix."Started with sara\n");
-#		}
-#		when ($_ eq "sara") {
-#			print(FH $prefix."sara done\n");
-#			Commands::run("em stop");
-#			Commands::run("autostorage");
-#			Commands::run("em ghost -orphan reregister_safe");
-#		}
-#		when ($_ eq "ghost") {
-#			print(FH $prefix."ghost done\n");
-#			# Commands::run("em ghost");
-#		}
-#		default {
-#			Commands::run("move 309 280");
-#			error "Unknown caller of MD function\n";
-#			die "MD function died"
-#		}
-#	}
-#	close(FH);
-#}
-
+macro gxstore {
+  call gx_rearm store
+}
+macro gxget {
+  call gx_rearm get
+}
 # 0 means store, 1 means get
-macro rearm_gx { 
+macro gx_rearm { 
   do is ペコペコの手綱
   do uneq all
   do move yuno 195 306
@@ -177,6 +146,5 @@ macro rearm_gx {
     }
     ]
   }
-
   do storage close
 }

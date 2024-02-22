@@ -1,4 +1,4 @@
-## Biolabs Entrance Quest: macro entrance_fishbone or use macro fishbone_start
+## Biolabs Entrance Quest: macro entrance_fishbone
 ## 通行証クエスト: macro friendship_pass
 ## 異世界: macro new_world_access.
 ## フレイムヴァレーへの道: search for detail, biosisland included
@@ -12,17 +12,9 @@
 ### Biolabs Entrance Quest ###
 
 macro entrance_fishbone {
-		do talknpc 341 224 r0
-		do talknpc 341 224 r1
-		# will say 準備が出来てからまた来い after above
 		do talknpc 341 224 r0 r0 r0 r0 r0 r0 r0 r0
 		do talknpc 341 224 r1
 		do talknpc 341 224 r1
-}
-
-# talk to fishbone with 20 jellopy, this might be better than above
-macro fishbone_start {
-  do talknpc 341 224 r0 r0 r0 r0 r0 r0 r0 r0 r0
 }
 
 automacro random_67_193 {
@@ -199,6 +191,7 @@ automacro friendship_pass_maku_again {
   timeout 600
   call {
     do move lighthalzen 335 230
+    do talk resp 0
     do talknpc 337 232 r0
   }
 }
@@ -2660,7 +2653,7 @@ automacro shadowcross_in_again {
   QuestActive 18063
   timeout 600
   delay 1
-  disabled 1
+  disabled 0
   call {
     do move ve_in 209 382
     do talknpc 212 384 r0 r0 r0 r0
