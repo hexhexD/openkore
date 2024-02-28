@@ -42,8 +42,8 @@ sub new {
 	);
 
 	$self->{packet_lut}{$_} = $handlers{$_} for keys %handlers;
-
 	$self->{npc_store_info_pack} = "V V C V";
+	$self->{vender_items_list_item_pack} = 'V v2 C V C3 a16 a32';
 
 	return $self;
 }
