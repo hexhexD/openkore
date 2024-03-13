@@ -82,8 +82,8 @@ sub receivedPM {
 	stripLanguageCode(\$privMsg);
 	my $msg .= "```css\n";	
 	$msg .= "================ [Openkore ChatLog] ===============\n";
-	$msg .= "Time :".$time."\n",
-	$msg .= "FROM :[".$args->{privMsgUser}."] : ".$privMsg."\n",
+	$msg .= "Time: ".$time."\n",
+	$msg .= "FROM: ".$args->{privMsgUser}.": ".$privMsg."\n",
 	$msg .= "====================================================```\n";
 	$msg .= "```\n";	
 	messageDiscord($msg);
@@ -186,11 +186,11 @@ sub MD {
 
 	if ($caller eq "start") {
 		message("MD START\n");
-		runEventMacro("battle_ship");
-		print(FH $prefix."Started with battle_ship\n");
+		runEventMacro("airship");
+		print(FH $prefix."START\n");
 	}
-	elsif ($caller eq "battle_ship") {
-		print(FH $prefix."Battle ship done\n");
+	elsif ($caller eq "airship") {
+		print(FH $prefix."Airship done\n");
 		runEventMacro("sara");
 	}
 	elsif ($caller eq "sara") {
@@ -201,7 +201,8 @@ sub MD {
 	elsif ($caller eq "ghost") {
 		print(FH $prefix."Ghost palace done\n");
 		# TODO: weak char stops here
-		runEventMacro("magic");
+		# runEventMacro("magic");
+		runEventMacro("cycle");
 	}
 	elsif ($caller eq "magic") {
 		print(FH $prefix."Magic tournament done\n");

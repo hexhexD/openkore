@@ -1,4 +1,4 @@
-## Biolabs Entrance Quest: macro entrance_fishbone
+## Biolabs Entrance Quest: macro biolab_entrance
 ## 通行証クエスト: macro friendship_pass
 ## 異世界: macro new_world_access.
 ## フレイムヴァレーへの道: search for detail, biosisland included
@@ -11,7 +11,7 @@
 
 ### Biolabs Entrance Quest ###
 
-macro entrance_fishbone {
+macro biolab_entrance {
 		do talknpc 341 224 r0 r0 r0 r0 r0 r0 r0 r0
 		do talknpc 341 224 r1
 		do talknpc 341 224 r1
@@ -897,18 +897,16 @@ automacro royal_out_md {
 	timeout 120
 	exclusive 1
 	call {
-		do talknpc 85 82 r0 r0 r0
-		do talknpc 91 85 r0
-		do talknpc 76 80 r0
-		do talknpc 91 85 r0
-    pause 2
-		do talknpc 85 82 r0 r0 c r0
-    pause 3
-		do talknpc 91 85 r0
-		do talknpc 76 80 r0
-		do talknpc 91 85 r0
+		do talknpc 85 82 r0 r0 r0 r0 r0
+		do talknpc 85 82 r0 
+    do party leave
+    pause 5
 
-		pause 6
+		do talknpc 91 85 r0 r0
+		do talknpc 76 80 r0 r0
+		do talknpc 91 85 r0 r0
+    pause 2
+
 		do move prt_lib 63 61
 		do talknpc 56 61 r0
 	}

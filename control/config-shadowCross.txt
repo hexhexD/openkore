@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 1
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword cayiebri
+adminPassword frigelau
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 1
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -262,7 +262,7 @@ sitAuto_look_from_wall
 sitTensionRelax 0
 
 statsAddAuto 1
-statsAddAuto_list dex 30, str 30, agi 50, str 50, agi 90, str 90, vit 90, dex 90, luk 70, str 120, vit 110, luk 90, int 90, dex 110
+statsAddAuto_list dex 40, str 30, agi 50, str 50, agi 90, str 90, vit 90, dex 90, luk 70, str 120, vit 110, luk 90, int 90, dex 110
 statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
@@ -595,9 +595,10 @@ attackSkillSlot ハルシネーションウォーク {
 	timeout 120
 }
 attackSkillSlot ASC_EDP {
-	monsters フェンリル
+	monsters フェンリル, サラの幻影#1
 	lvl 5
 	isSelfSkill 1
+	maxAttempts 2
 	whenStatusInactive EFST_EDP
 }
 attackSkillSlot AS_ENCHANTPOISON {
@@ -615,7 +616,7 @@ attackSkillSlot AS_ENCHANTPOISON {
 	timeout 30
 }
 attackSkillSlot GC_DARKCROW {
-	monsters フェンリル, 呪いの根源, 大長老アイリン, サラの幻影#1
+	monsters フェンリル, 呪いの根源, 大長老アイリン, サラの幻影#1, 暴走した船長ペルロック
 	lvl 5
 	minCastTime 0
 	timeout 30
@@ -634,7 +635,7 @@ attackSkillSlot GC_DARKILLUSION {
 }
 attackSkillSlot GC_ROLLINGCUTTER {
 	label roller
-	disabled 0
+	disabled 1
 	lvl 5
 	maxDist 2
 	# aggressives > 0
@@ -841,6 +842,7 @@ equipAuto {
 	manualAI 0
 }
 equipAuto {
+	timeout 120
 	topHead +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%]
 	lowHead くわえたチョコスティック
 	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
@@ -1019,17 +1021,24 @@ getAuto {
 	passive
 	disabled 0
 }
+getAuto 毒薬の瓶 {
+	minAmount
+	maxAmount 5
+	batchSize
+	passive 1
+	disabled 0
+}
 
-autoMD 1
+autoMD 0
 ######## Debugging options; only useful for developers ########
 
 debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 0
+debugPacket_sent 1
 debugPacket_exclude
-debugPacket_include  09CB, 011A
+debugPacket_include 0B3D
 debugPacket_include_dumpMethod 2
 debugDomains
 logToFile_Debug
