@@ -9,8 +9,7 @@ plugins/MD/MD.pl : ["plugin reload MD"]
 EventMacroS/MainQuests.txt : ["reload event"]
 EventMacroS/DimensionalGap.txt : ["reload event"]
 
-src/AI.pm: ["rc AI"]
-src/Actor.pm: ["rc Actor"]
+src/Misc.pm: ["rc Misc", "rc Core"]
 src/Network/Receive.pm: ["rc Receive"]
 src/Utils.pm: ["rc Utils", "rc Receive"]
 

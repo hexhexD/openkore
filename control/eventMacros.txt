@@ -6,7 +6,7 @@
 !include ../EventMacroS/DimensionalGap.txt
 !include ../EventMacroS/HeartHunterMilitaryBase.txt
 !include ../EventMacroS/GlastHeim.txt
-#!include ../EventMacroS/EndlessTower.txt
+!include ../EventMacroS/EndlessTower.txt
 
 #!include ../EventMacroS/Mukimuki.txt
 
@@ -19,6 +19,19 @@ automacro frostAfterMapChange {
     call {
         do ss WL_FROSTMISTY
     }
+}
+
+# Guarded by run-once and it will be released after store euqipments and charselect
+automacro mdStart {
+  ConfigKey autoMD 1
+  OnCharLogIn 1
+  run-once 1
+  disabled 0
+  call {
+    log Current job is $.job
+    call gxget
+    do eval MD::MD(start)
+  }
 }
 
 # refine all the same euipment, starting from zero until + 7
@@ -120,8 +133,10 @@ macro gxget {
 }
 # 0 means store, 1 means get
 macro gx_rearm { 
-  do is ペコペコの手綱
   do uneq all
+  pause 1
+  do is ペコペコの手綱
+  do autosell
   do move yuno 195 306
   # Main storage
   do talknpc 199 299

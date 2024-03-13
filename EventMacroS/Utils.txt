@@ -13,18 +13,6 @@ macro regroup {
 ]
 }
 
-# Guarded by run-once and it will be released after store euqipments and charselect
-automacro mdStart {
-  ConfigKey autoMD 1
-  OnCharLogIn 1
-  run-once 1
-  disabled 1
-  call {
-    log Current job is $.job
-    call gxget
-    do eval MD::MD(start)
-  }
-}
 macro test {
   MD(sara)
 }
@@ -34,9 +22,9 @@ sub MD {
 }
 
 # Store euqipments and cycle to next character
-macro charCycle {
+macro cycle {
   $char = &config(char)
-  $TOTAL = 2
+  $TOTAL = 3
 
   call gxstore
 

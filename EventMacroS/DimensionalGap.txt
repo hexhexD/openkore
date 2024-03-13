@@ -9,7 +9,7 @@
 macro ghost {
 	call regroup
 	do move dali02 47 130
-	do talknpc 43 129 c r0 c r0
+	do talknpc 43 129 c r0 c r0 r0
 	pause 2
 	do talknpc 43 129 c r0 c r0
 }
@@ -157,16 +157,16 @@ automacro ghost_boss_death {
 	SimpleHookEvent target_died
 	call {
 		if ($.SimpleHookEventLastMonster =~ /呪いの根源/) {
-			log 呪いの根源 dead xD
-			do move 202 38
-			do talknpc 196 44 r0 r0 r0
-			do move 196 44
-
 			[
 			do conf itemsGatherAuto 2
       do conf itemsTakeAuto 2
 			do conf route_randomWalk 0
 			]
+			log 呪いの根源 dead xD
+			do move 202 38
+			do talknpc 196 44 r0 r0 r0
+			do move 196 44
+
 			# walk to make sure we pick up stuff
 			do move 198 27
 			do move 196 44
@@ -499,6 +499,9 @@ automacro sara2_garden {
 
 	do move 191 68
 	do move 356 140
+	do move 364 190
+  do talknpc 366 190
+
 	do move 351 270
 	do talk resp 1
 	pause 3
@@ -578,13 +581,13 @@ automacro devils_tower_first_map {
 }
 
 ### 飛行船襲撃
-macro battle_ship {
+macro airship {
 	call regroup
 	do move dali02 135 84
 	do talknpc 142 81 r0
 	do talknpc 142 81 r0
 }
-automacro battle_ship_ready {
+automacro airship_ready {
 	SimpleHookEvent instance_ready
 	InMap dali02
   timeout 600
@@ -633,6 +636,7 @@ automacro battle_ship_lower_deck_2 {
   InMap 1@air1, 1@air2
   LocalMsg /9時方向に敵の気配を感じた/
   IsInCoordinate 10..130 20..100
+  orphan reregister_safe
   call {
     do move 24 63
   }
@@ -640,6 +644,7 @@ automacro battle_ship_lower_deck_2 {
 automacro battle_ship_next {
   InMap 1@air1
   LocalMsg /このフロアにはもうモンスターの気配がないようだ。下の階へ進もう/
+  exclusive 1
   call {
     do move 104 72
   }
@@ -706,15 +711,18 @@ automacro battle_ship_endend {
     do move 243 55
     do talknpc 239 58 r0 r1 r1
     do move 244 73
+    pause 1
+    do talk resp 1
     do talk resp 1
     do conf itemsGatherAuto 0
     do conf itemsTakeAuto 0
 
     do conf storageAuto_npc dali02 109 94
+    pause 1
     do autostorage
     do conf storageAuto_npc dali02 106 93
 
-    MD(battle_ship)
+    MD(airship)
   }
 	}
 }
