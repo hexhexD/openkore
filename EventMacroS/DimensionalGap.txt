@@ -622,6 +622,7 @@ automacro battle_ship_lower_deck {
   call {
     do conf attackAuto 2
     do move 78 60
+		do conf route_randomWalk 1
   }
 }
 automacro battle_ship_lower_deck_1 {
@@ -644,7 +645,6 @@ automacro battle_ship_lower_deck_2 {
 automacro battle_ship_next {
   InMap 1@air1
   LocalMsg /このフロアにはもうモンスターの気配がないようだ。下の階へ進もう/
-  exclusive 1
   call {
     do move 104 72
   }
@@ -669,6 +669,7 @@ automacro battle_ship_bottom1 {
 automacro battle_ship_go_up {
   InMap 1@air1
   LocalMsg /機関室入口へ向かおう/
+  exclusive 1
   call {
     do move 88 193
     do talknpc 88 189 r0
@@ -687,6 +688,7 @@ automacro battle_ship_end {
   InMap 1@air2
   LocalMsg /デッキまで上がろう/
   call {
+		do conf route_randomWalk 0
     do move 89 67
     pause 2
 
@@ -711,8 +713,7 @@ automacro battle_ship_endend {
     do move 243 55
     do talknpc 239 58 r0 r1 r1
     do move 244 73
-    pause 1
-    do talk resp 1
+    pause 5
     do talk resp 1
     do conf itemsGatherAuto 0
     do conf itemsTakeAuto 0

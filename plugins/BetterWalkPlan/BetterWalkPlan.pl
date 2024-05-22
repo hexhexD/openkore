@@ -62,7 +62,7 @@ sub on_configModify {
 	if ($args->{key} eq 'BetterWalkPlan') {
 		$planStep = 0;
 		$reverseOnEnd = 0;
-		
+
 	} elsif ($args->{key} eq 'lockMap') {
 		$planStep = 0;
 		$reverseOnEnd = 0;
@@ -140,26 +140,25 @@ sub on_ai_processRandomWalk {
 				isRandomWalk => 1
 			);
 		}
-		if (
-			   ($planStep == $#{$walkMaps{$field_name}{instructions}} && !$walkMaps{$field_name}{reverseOnEnd})
-			|| ($planStep == 0 && $reverseOnEnd == 1)
-		) {
-			$walkMaps{$field_name}{time} = time;
-			$planStep = 0;
-			$reverseOnEnd = 0;
-			
-		} elsif ($planStep == $#{$walkMaps{$field_name}{instructions}} && $walkMaps{$field_name}{reverseOnEnd}) {
-			$planStep--;
-			$reverseOnEnd = 1;
-			
+
+		# Adjust planStep and reverseOnEnd for continuous looping with reversal
+		if ($planStep == $#{$walkMaps{$field_name}{instructions}} && !$reverseOnEnd) {
+				if ($walkMaps{$field_name}{reverseOnEnd}) {
+						$reverseOnEnd = 1;
+						$planStep--;
+				} else {
+						$planStep = 0; # Reset to start without reversal
+				}
+		} elsif ($planStep == 0 && $reverseOnEnd) {
+				$reverseOnEnd = 0; # Switch to forward traversal
+				$planStep++;
+		} elsif ($reverseOnEnd) {
+				$planStep--; # Continue reversing
 		} else {
-			if ($reverseOnEnd == 0) { $planStep++; } else { $planStep--; };
+				$planStep++; # Continue forward
 		}
-		if ($again == 0) {
-			$args->{return} = 1;
-		} else {
-			on_ai_processRandomWalk(undef, $args);
-		}
+
+		$args->{return} = 1;
 	}
 }
 
