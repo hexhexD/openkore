@@ -26,16 +26,20 @@ macro cycle {
   $char = &config(char)
   $TOTAL = 3
 
-  call gxstore
-
   log current char is $char
+
   $char = &eval(($char + 1) % $TOTAL)
+  if (&defined($.param[0])) {
+    $char = $.param[0]
+  }
+
   log new char is $char
   do conf char $char
 
   $char = unset
   $TOTAL = unset
 
+  call gxstore
   do em enable mdStart
   do charselect
 }
