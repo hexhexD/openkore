@@ -1,0 +1,291 @@
+macro assassin_job {
+  # do move morocc
+  # do move moc_fild16 205 296
+  do move in_moc_16 19 29
+  do talknpc 19 33 r0
+
+  do move 21 92
+  pause 1
+  do move 24 90
+  do talknpc 25 90
+  do talk resp 0
+}
+
+automacro nameless_one {
+	InMap in_moc_16
+	IsInCoordinate 14..24 140..148
+  timeout 5
+  call {
+    do move 19 156
+    do talk resp 1
+    do talk resp 2
+  }
+}
+
+#TODO
+
+automacro assassin_job_question_0 {
+  InMap in_moc_16
+  NpcMsg /次の中で、ハイディング/
+  call {
+    do talknpc 19 154 r~/アンドレ/
+  }
+}
+
+automacro assassin_job_question_1 {
+  InMap in_moc_16
+  NpcMsg /アサシンの二刀流で/
+  call {
+    do talknpc 19 154 r~/カタール/
+  }
+}
+
+automacro assassin_job_question_2 {
+  InMap in_moc_16
+  NpcMsg /シーフ転職所に一番近い/
+  call {
+    do talknpc 19 154 r~/モロク/
+  }
+}
+
+automacro assassin_job_question_3 {
+  InMap in_moc_16
+  NpcMsg /AGIと関係ないカード/
+  call {
+    do talknpc 19 154 r~/ウィスパー/
+  }
+}
+
+automacro assassin_job_question_4 {
+  InMap in_moc_16
+  NpcMsg /アサシンが他の職業より/
+  call {
+    do talknpc 19 154 r~/すぐれた回避力/
+  }
+}
+
+automacro assassin_job_question_5 {
+  InMap in_moc_16
+  NpcMsg /JobLv50の時、ア/
+  call {
+    do talknpc 19 154 r~/10/
+  }
+}
+
+automacro assassin_job_question_6 {
+  InMap in_moc_16
+  NpcMsg /アサシンが装備できない/
+  call {
+    do talknpc 19 154 r~/ヘルム/
+  }
+}
+
+automacro assassin_job_question_7 {
+  InMap in_moc_16
+  NpcMsg /ノービスがシーフに転職/
+  call {
+    do talknpc 19 154 r~/紅の毛ベトベトキノコ/
+  }
+}
+
+automacro assassin_job_question_8 {
+  InMap in_moc_16
+  NpcMsg /比較的アサシンに関係の/
+  call {
+    do talknpc 19 154 r~/エルダーウィローC/
+  }
+}
+
+automacro assassin_job_question_9 {
+  InMap in_moc_16
+  NpcMsg /グリムトゥースを習得す/
+  call {
+    do talknpc 19 154 r~/右手修練/
+  }
+}
+
+automacro assassin_job_question_10 {
+  InMap in_moc_16
+  NpcMsg /エンチャントポイズンは/
+  call {
+    do talknpc 19 154 r~/毒属性/
+  }
+}
+
+automacro assassin_job_question_11 {
+  InMap in_moc_16
+  NpcMsg /右手修練Lv4の効果は/
+  call {
+    do talknpc 19 154 r~/下降した攻撃力を\ 90%\ 回復/
+  }
+}
+
+automacro assassin_job_question_12 {
+  InMap in_moc_16
+  NpcMsg /ベナムダストに必要なア/
+  call {
+    do talknpc 19 154 r~/レッドジェムストーン/
+  }
+}
+
+automacro assassin_job_question_13 {
+  InMap in_moc_16
+  NpcMsg /エンチャントポイズンL/
+  call {
+    do talknpc 19 154 r~/ベノムダスト/
+  }
+}
+
+automacro assassin_job_question_14 {
+  InMap in_moc_16
+  NpcMsg /スロットの多いジュルは/
+  call {
+    do talknpc 19 154 r~/マーティン/
+  }
+}
+
+automacro assassin_job_question_15 {
+  InMap in_moc_16
+  NpcMsg /スロットの多いカタール/
+  call {
+    do talknpc 19 154 r~/デザートウルフ/
+  }
+}
+
+automacro assassin_job_question_16 {
+  InMap in_moc_16
+  NpcMsg /次の中でキューペットに/
+  call {
+    do talknpc 19 154 r~/ロッダフロッグ/
+  }
+}
+
+automacro assassin_job_question_17 {
+  InMap in_moc_16
+  NpcMsg /シーフの回避率増加スキル/
+  call {
+    do talknpc 19 154 r~/30/
+  }
+}
+
+automacro assassin_job_question_18 {
+  InMap in_moc_16
+  NpcMsg /属性武器を製造/
+  call {
+    do talknpc 19 154 r~/ブラックスミス/
+  }
+}
+
+automacro assassin_job_question_19 {
+  InMap in_moc_16
+  NpcMsg /次の中でカタール系では/
+  call {
+    do talknpc 19 154 r~/グラディウス/
+  }
+}
+
+automacro assassin_job_question_20 {
+  InMap in_moc_16
+  NpcMsg /イズルードダンジョンの/
+  call {
+    do talknpc 19 154 r~/水属性/
+  }
+}
+
+automacro assassin_job_question_21 {
+  InMap in_moc_16
+  NpcMsg /火属性短剣が最も効果的/
+  call {
+    do talknpc 19 154 r~/ゴブリン四男/
+  }
+}
+
+automacro assassin_job_question_22 {
+  InMap in_moc_16
+  NpcMsg /次の中で無属性の/
+  call {
+    do talknpc 19 154 r~/裏切り者/
+  }
+}
+
+automacro assassin_job_question_23 {
+  InMap in_moc_16
+  NpcMsg /種族の違うモンスターを/
+  call {
+    do talknpc 19 154 r~/ゴーストリング/
+  }
+}
+
+automacro assassin_job_question_24 {
+  InMap in_moc_16
+  NpcMsg /次の中でアンデッドでは/
+  call {
+    do talknpc 19 154 r~/スポア/
+  }
+}
+
+automacro assassin_job_question_25 {
+  InMap in_moc_16
+  NpcMsg /人の目を盗んで移動する/
+  call {
+    do talknpc 19 154 r~/クローキング/
+  }
+}
+
+automacro assassin_job_question_26 {
+  InMap in_moc_16
+  NpcMsg /ベノムスプラッシャーを/
+  call {
+    do talknpc 19 154 r~/レッドジェムストーン/
+  }
+}
+
+automacro assassin_job_question_27 {
+  InMap in_moc_16
+  NpcMsg /火属性に+20%効果C/
+  call {
+    do talknpc 19 154 r~/エルダーウィロー/
+  }
+}
+
+automacro assassin_job_question_28 {
+  InMap in_moc_16
+  NpcMsg /ダブルアタックの消費S/
+  call {
+    do talknpc 19 154 r~/０/
+  }
+}
+
+automacro assassin_job_question_29 {
+  InMap in_moc_16
+  NpcMsg /イズルードダンジョンで/
+  call {
+    do talknpc 19 154 r~/ウィンドマインゴーシュ/
+  }
+}
+
+automacro assassin_kill_test {
+  InMap in_moc_16
+  NpcMsg /テストはまだあるからね/
+  delay 2
+  call {
+    do move 20 165
+    do chat join 0
+  }
+}
+
+automacro assassin_hide_test_start {
+  InMap in_moc_16
+  SystemMsg /試験場への扉が開きました/
+  call {
+    do move 87 137
+  }
+}
+
+automacro assassin_maze {
+  InMap in_moc_16
+  IsInCoordinate 1111 1111
+  call {
+    do move 148 80
+  }
+}

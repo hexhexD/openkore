@@ -8,7 +8,7 @@
 !include ../EventMacroS/GlastHeim.txt
 !include ../EventMacroS/EndlessTower.txt
 
-#!include ../EventMacroS/Mukimuki.txt
+!include ../EventMacroS/JobQuest.txt
 
 !include ../EventMacroS/MainQuests.txt
 
