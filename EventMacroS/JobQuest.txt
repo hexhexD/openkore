@@ -1,3 +1,109 @@
+# Beginer island automation
+# Assain job change
+
+automacro __1 {
+    InMap new_1-1
+	timeout 15
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
+automacro __2 {
+    InMap new_2-1
+	timeout 15
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
+automacro __3 {
+    InMap new_3-1
+	timeout 15
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
+automacro __4 {
+    InMap new_4-1
+	timeout 15
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
+automacro __5 {
+    InMap new_5-1
+	timeout 15
+	call {
+		do talk 2
+		do talk resp 3
+	}
+}
+
+automacro room {
+    InMap ac_cl_room
+    IsInCoordinate 44 32
+    run-once 1
+	call {
+		do talknpc 43 41
+		do move 43 51
+		do talknpc 30 46 r0 r0 r0 r0 r0
+		pause 3
+		do talknpc 57 46 r0 r0
+		do talknpc 44 65 r0 r0
+	}
+}
+automacro theif {
+    InMap moc_prydb1
+    IsInCoordinate 41..45 123..124
+	timeout 30
+	call {
+		do talknpc 39 129 r0 r0 r0 r0
+		do talknpc 52 132 r0 r0
+	}
+}
+automacro archer {
+    InMap payon_in02
+    IsInCoordinate 60..65 64..70
+	timeout 30
+	call {
+		do talknpc 64 71 r0 r0 r0
+	}
+}
+automacro mage {
+    InMap geffen_in
+    IsInCoordinate 160..170 118..126
+	timeout 30
+	call {
+		do talknpc 164 124 r0 r0 r0
+	}
+}
+
+macro rebirth {
+  do move yuno_in02 93 163
+  do talknpc 88 164 r0
+  do move 93 205
+  do talknpc 93 207 r0
+
+  do move yuno_in05 49 56
+  do talknpc 49 43 r0
+  do move 48 84
+  do talknpc 48 86 r1 r0
+}
+
+automacro theif_change {
+  InMap morocc
+  JobLevel 10
+  run-once 1
+  call {
+    do move moc_prydb1 43 123
+  }
+}
+
+#########
+
 macro assassin_job {
   # do move morocc
   # do move moc_fild16 205 296
@@ -21,8 +127,6 @@ automacro nameless_one {
     do talk resp 2
   }
 }
-
-#TODO
 
 automacro assassin_job_question_0 {
   InMap in_moc_16

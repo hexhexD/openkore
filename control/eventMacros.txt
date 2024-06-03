@@ -1,6 +1,6 @@
 !include ../EventMacroS/Utils.txt
 !include ../EventMacroS/GX.txt
-!include ../EventMacroS/BeginnerIsland.txt
+!include ../EventMacroS/JobQuest.txt
 
 # MDs
 !include ../EventMacroS/DimensionalGap.txt
@@ -8,7 +8,6 @@
 !include ../EventMacroS/GlastHeim.txt
 !include ../EventMacroS/EndlessTower.txt
 
-!include ../EventMacroS/JobQuest.txt
 
 !include ../EventMacroS/MainQuests.txt
 
