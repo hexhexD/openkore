@@ -103,8 +103,46 @@ automacro theif_change {
 }
 
 #########
+automacro asssasin_high {
+  # Theif high
+  JobID 4007
+  JobLevel = 50
+  NotInMap yuno
+  run-once 1
+  call {
+    do is ペコペコの手綱
+    log Changing to assassin high
 
-macro assassin_job {
+    do move yuno_in02 93 205
+    do talknpc 93 207 r1
+    pause 1
+
+    do move valkyrie 48 55
+    do talknpc 44 58 r1
+    do is ペコペコの手綱
+  }
+}
+
+automacro guillotine_cross_change {
+  # Theif high
+  JobID 4013
+  BaseLevel = 99
+  JobLevel = 70
+  timeout 60
+  NotInMap que_job01
+  call {
+    do is ペコペコの手綱
+    log Changing to guillotine cross
+
+    do move morocc 45 110
+    
+    do move que_job01 72 92
+    do talknpc 75 96 r0 r1 r0
+  }
+}
+
+
+macro assassin_change {
   # do move morocc
   # do move moc_fild16 205 296
   do move in_moc_16 19 29
