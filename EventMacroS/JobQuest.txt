@@ -142,17 +142,24 @@ automacro guillotine_cross_change {
 }
 
 
-macro assassin_change {
-  # do move morocc
-  # do move moc_fild16 205 296
-  do move in_moc_16 19 29
-  do talknpc 19 33 r0
+automacro assassin_change {
+  JobID 6
+  JobLevel > 40
+  run-once 1
+  NotInMap in_moc_16
+  call {
+    # do is ペコペコの手綱
+		do conf route_randomWalk 0
+		do conf attackAuto 0
+    do move in_moc_16 19 29
+    do talknpc 19 33 r0
 
-  do move 21 92
-  pause 1
-  do move 24 90
-  do talknpc 25 90
-  do talk resp 0
+    do move 21 92
+    pause 1
+    do move 24 90
+    do talknpc 25 90
+    do talk resp 0
+  }
 }
 
 automacro nameless_one {
@@ -416,7 +423,16 @@ automacro assassin_kill_test {
   }
 }
 
-automacro assassin_hide_test_start {
+automacro assassin_trap_test {
+  InMap in_moc_16
+  SystemMsg /試験の目的は、より迅速正確/
+  call {
+    do conf route_step 1
+    do conf attackAuto 1
+    do move 87 141
+  }
+}
+automacro assassin_trap_done {
   InMap in_moc_16
   SystemMsg /試験場への扉が開きました/
   call {
@@ -424,9 +440,36 @@ automacro assassin_hide_test_start {
   }
 }
 
-automacro assassin_maze {
+automacro assassin_dodge_test {
   InMap in_moc_16
-  IsInCoordinate 1111 1111
+  IsInCoordinate 87..90 100..105
+  timeout 10
+  call {
+    do conf route_step 10
+    do conf attackAuto -1
+    do move 87 47
+  }
+}
+automacro assassin_dodge_done {
+  InMap in_moc_16
+  IsInCoordinate 176..187 177..187
+  timeout 20
+  call {
+    do move 182 169
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+
+    talk resp 3
+    pause 2
+    do talknpc 19 33 r0
+  }
+}
+
+automacro assassin_maze_test {
+  InMap in_moc_16
+  IsInCoordinate 165..170 110..116
+  timeout 10
   call {
     do move 148 80
   }

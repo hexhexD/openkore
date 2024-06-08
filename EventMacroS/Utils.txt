@@ -24,7 +24,7 @@ sub MD {
 # Store euqipments and cycle to next character
 macro cycle {
   $char = &config(char)
-  $TOTAL = 3
+  $TOTAL = 4
 
   log current char is $char
 

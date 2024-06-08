@@ -15,6 +15,6 @@ src/Misc.pm: ["rc Misc", "rc Core"]
 src/Network/Receive.pm: ["rc Receive"]
 src/Utils.pm: ["rc Utils", "rc Receive"]
 
-src/Task/Timeout.pm: ["rc Timeout"]
+src/Task/TalkNPC.pm: ["rc TalkNPC"]
 src/TaskManager.pm: ["rc TaskManager"]
 src/AI/CoreLogic.pm: ["rc CoreLogic"]

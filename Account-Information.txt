@@ -4,6 +4,12 @@ applejucice13        farming bot
 tangpopo			farming bot
 970716qw
 
+Shadowcross:
+
+char 0,1,2:
+
+char 3: Finished new world access
+char 4:
 
 
 

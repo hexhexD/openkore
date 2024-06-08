@@ -69,7 +69,7 @@ sub gotItem {
 
 	my $msg .= "```css\n";	
 	$msg .= "================ [Openkore Notifier] ===============\n";
-	$msg .= "Got item: " . $args->{item} . "\n",
+	$msg .= "Char $config{char} " . "got item: " . $args->{item} . "\n",
 	$msg .= "====================================================\n";
 	$msg .= "```\n";	
 	messageDiscord($msg);

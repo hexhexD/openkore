@@ -12,6 +12,7 @@ macro ghost {
 	do talknpc 43 129 c r0 c r0 r0
 	pause 2
 	do talknpc 43 129 c r0 c r0
+	do talknpc 43 129 r0 r0
 }
 automacro ghost_test {
 	QuestInactive 114760

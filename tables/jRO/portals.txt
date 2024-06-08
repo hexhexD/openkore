@@ -351,6 +351,7 @@ mid_camp 163 231 mid_campin 376 133
 
 #Dimensional Gap
 moc_fild22b 222 200 dali 119 56 c r0 n
+moc_fild22b 230 197 mid_camp 210 291 r0
 dali 122 48 moc_fild22b 227 200
 dali 115 94 moc_para01 31 14 c r0 c n
 dali 114 88 prt_cas 18 29 c r0 c
@@ -3664,3 +3665,4 @@ lhz_in02 236 219 lhz_in02 206 284
 1@air1 248 54 1@air1 91 68
 1@air1 104 72 1@air1 101 200
 moc_fild20 35 173 morocc 293 207
+in_moc_16 182 169 in_moc_16 181 183

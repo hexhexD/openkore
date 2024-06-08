@@ -853,6 +853,7 @@ automacro royal_bell_teleported_me {
 automacro royal_first_md_ready {
 	QuestActive 7692
 	SimpleHookEvent instance_ready
+  timeout 10
 	call {
 		do talknpc 88 90 r0
 	}
@@ -900,15 +901,16 @@ automacro royal_out_md {
 		do talknpc 85 82 r0 r0 r0 r0 r0
 		do talknpc 85 82 r0 
     do party leave
-    pause 5
+    pause 10
 
-		do talknpc 91 85 r0 r0
-		do talknpc 76 80 r0 r0
-		do talknpc 91 85 r0 r0
-    pause 2
+    log NEEDS REWORK HERE SO NO DC
+		# do talknpc 91 85 r0 r0
+		# do talknpc 76 80 r0 r0
+		# do talknpc 91 85 r0 r0
+    # pause 2
 
-		do move prt_lib 63 61
-		do talknpc 56 61 r0
+		# do move prt_lib 63 61
+		# do talknpc 56 61 r0
 	}
 }
 automacro royal_jail {
