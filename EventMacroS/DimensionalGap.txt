@@ -297,6 +297,7 @@ automacro sara_boss_death {
 			do move 155 227
 			do talknpc 156 236 c r0
 			do move 87 190
+      pause 2
 			do move 47 142
 			do talknpc 39 142 r0
 			pause 1

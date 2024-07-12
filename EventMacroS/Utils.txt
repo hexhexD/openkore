@@ -23,6 +23,9 @@ sub MD {
 
 # Store euqipments and cycle to next character
 macro cycle {
+  set exclusive 1
+  do em enable mdStart
+
   $char = &config(char)
   $TOTAL = 4
 
@@ -40,8 +43,10 @@ macro cycle {
   $TOTAL = unset
 
   call gxstore
-  do em enable mdStart
+
   do charselect
+
+  call gxget
 }
 
 ### airship ###

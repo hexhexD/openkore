@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 1
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword gipisait
+adminPassword mautotre
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -192,9 +192,9 @@ followLostStep 12
 followSitAuto 0
 followBot 0
 
-itemsTakeAuto 2
+itemsTakeAuto 0
 itemsTakeAuto_party 0
-itemsGatherAuto 2
+itemsGatherAuto 0
 itemsGatherAuto_notInTown 1
 itemsMaxWeight 99
 itemsMaxWeight_sellOrStore
@@ -203,6 +203,7 @@ cartMaxWeight 7900
 itemsTakeGreed 1
 itemsCheckWeight 1
 
+# lockMap gef_fild10
 lockMap
 lockMap_x
 lockMap_y
@@ -222,7 +223,7 @@ route_teleport 1
 route_teleport_minDistance 150
 route_teleport_maxTries 15
 route_teleport_notInMaps
-route_step 15
+route_step 10
 route_removeMissingPortals_NPC 1
 route_removeMissingPortals 0
 route_tryToGuessMissingPortalByDistance 1
@@ -267,7 +268,7 @@ statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
 skillsAddAuto 1
-skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 3, エンチャントポイズン 6, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 10, メテオアサルト 9, GC_ROLLINGCUTTER 5, クローキングエクシード 5, クロスインパクト 5, ダークイリュージョン 5, ダーククロー 5, ファントムメナス 1, ハルシネーションウォーク 5, ウェポンブロッキング 3, ウェポンクラッシュ 5, カウンタースラッシュ 10, ベナムインプレス 5, 新毒研究 9, 新毒製造 1, ポイズニングウェポン 5, SHC_SHADOW_SENSE 3, SHC_SAVAGE_IMPACT 10
+skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 3, エンチャントポイズン 6, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 10, メテオアサルト 9, GC_ROLLINGCUTTER 5, クローキングエクシード 5, クロスインパクト 5, ダークイリュージョン 5, ファントムメナス 1, ハルシネーションウォーク 5, ダーククロー 5, ウェポンブロッキング 3, ウェポンクラッシュ 5, カウンタースラッシュ 10, ベナムインプレス 5, 新毒研究 9, 新毒製造 1, ポイズニングウェポン 5, SHC_SHADOW_SENSE 3, SHC_SAVAGE_IMPACT 10
 tankMode 0
 tankModeTarget
 
@@ -289,7 +290,7 @@ teleportAuto_atkCount 0
 teleportAuto_atkMiss 10
 teleportAuto_unstuck 0
 teleportAuto_lostTarget 0
-teleportAuto_dropTarget 1
+teleportAuto_dropTarget 0
 teleportAuto_dropTargetKS 0
 teleportAuto_attackedWhenSitting 0
 teleportAuto_totalDmg 0
@@ -595,7 +596,7 @@ attackSkillSlot ハルシネーションウォーク {
 	timeout 120
 }
 attackSkillSlot ASC_EDP {
-	monsters フェンリル, サラの幻影#1
+	monsters フェンリル, サラの幻影#1, 呪いの根源
 	lvl 5
 	isSelfSkill 1
 	maxAttempts 2
@@ -644,6 +645,15 @@ attackSkillSlot GC_ROLLINGCUTTER {
 attackComboSlot GC_VENOMIMPRESS {
 	afterSkill AS_ENCHANTPOISON
 	lvl 5
+}
+
+attackSkillSlot AS_SONICBLOW {
+	label sonic
+	disabled 0
+	lvl 10
+	maxDist 1
+	timeout 2.5
+	# aggressives > 0
 }
 
 doCommand {
@@ -847,7 +857,7 @@ equipAuto {
 	lowHead くわえたチョコスティック
 	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
 	rightHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
-	robe ピオニーマミーのフード
+	robe ミステリーウィング [1]
 	armor オーディンの祝福 [1]
 	shoes +9 銀の毛皮のシューズ [Extra Str:MaxHP + 15%:スキルディレイ - 15%*2]
 	leftAccessory カルニウムイヤリング [Extra Str:MaxHP + 15%:スキルディレイ - 15%:詠唱時間 - 15%]
@@ -931,6 +941,11 @@ useSelf_item 王級メロン {
 useSelf_item 王級メロン {
 	sp < 20%
 	notInTown 1
+	manualAI 2
+}
+useSelf_item 万能薬 {
+	whenStatusActive HEALTHSTATE_BLIND
+	timeout 1
 	manualAI 2
 }
 useSelf_item {
@@ -1022,7 +1037,7 @@ getAuto {
 	disabled 0
 }
 getAuto 毒薬の瓶 {
-	minAmount
+	minAmount 5
 	maxAmount 5
 	batchSize
 	passive 1
@@ -1036,11 +1051,11 @@ debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 1
+debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include 00B6
-debugPacket_include_dumpMethod 2
-debugDomains !sendPacket
+debugPacket_include_dumpMethod 0
+debugDomains portalRecord, ai_npcTalk, #sendPacket
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages

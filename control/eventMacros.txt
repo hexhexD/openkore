@@ -23,12 +23,11 @@ automacro frostAfterMapChange {
 # Guarded by run-once and it will be released after store euqipments and charselect
 automacro mdStart {
   ConfigKey autoMD 1
-  OnCharLogIn 1
   run-once 1
   disabled 0
   call {
     log Current job is $.job
-    call gxget
+    # call gxget
     do eval MD::MD(start)
   }
 }
