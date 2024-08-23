@@ -1216,7 +1216,6 @@ sub cmdPoison {
 			error T("Error in function 'poison' (Apply Poison)\n" .
 			 	"Type 'poison' to get list.\n");
 		}
-
 	} elsif ($command eq "use") {
 		if (defined binFind(\@skillsID, 'GC_POISONINGWEAPON')) {
 			main::ai_skillUse('GC_POISONINGWEAPON', 5, 0, 0, $accountID);
@@ -7033,7 +7032,7 @@ sub cmdQuest {
 				my $msg = center (' ' . ($quests_lut{$args[1]}{title} || T('Quest Info')) . ' ', 79, '-') . "\n";
 				$msg .= "$quests_lut{$args[1]}{summary}\n" if $quests_lut{$args[1]}{summary};
 				$msg .= TF("Objective: %s\n", $quests_lut{$args[1]}{objective}) if $quests_lut{$args[1]}{objective};
-				$msg .= $quests_lut{$args[1]}{active} ? T("active") : T("inactive");
+				$msg .= $quests_lut{$args[1]}{active} ? T("active") : T("inactive") . "\n";
 				message $msg;
 			} else {
 				message T("Unknown quest\n"), "info";
