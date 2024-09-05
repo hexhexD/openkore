@@ -136,3 +136,66 @@ macro tele_lighthalzen {
 		warning Need 怨嗟の腕輪
 	}
 }
+
+macro airseiren_all {
+  $sei_name = $.param[0]
+  log 精錬 $sei_name
+  @sei_base = &Inventory($sei_name)
+  if ($sei_base[0] == -1) {
+    log No +0 item found
+    $seiren_total = 0
+  } else {
+    $seiren_total = @sei_base
+  }
+  log Number of 0 refinement: $seiren_total
+}
+
+macro airseiren {
+  $i = 0
+  $seiren_total = 20
+  while ($i < $seiren_total) {
+    do move dali02 125 86
+    do eq ペルロックのマント [1]
+    do talknpc 139 87 r1 r~/ペルロック/ r~/ペルロックのブー/ r0
+  }
+}
+
+macro air {
+  $r = &Storage(ペルロックのマント [1])
+  @robe = &split(',', $r)
+  log Exist @robe robes
+
+  $b = &Storage(ペルロックのブーツ [1])
+  @boot = &split(',', $b)
+  log Exist @boot boots
+
+  $s = &Storage(ペルロックのスーツ [1])
+  @suit = &split(',', $s)
+  log Exist @suit suits
+}
+macro get_storage_eq_num {
+  $result = &Storage($.param[0])
+  @eq = &split(',', $result)
+  $j = 0
+  [
+  while ($j < $.param[1]) {
+    log $eq[$j]
+    do storage get $eq[$j]
+    $j++
+  }
+  ]
+}
+macro store_storage_eq_num {
+  $result = &Inventory($.param[0])
+  @eq = &split(',', $result)
+  $j = 0
+  [
+  while ($j < $.param[1]) {
+    log $eq[$j]
+    do storage add $eq[$j]
+    $j++
+  }
+  ]
+}
+
+
