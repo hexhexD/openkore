@@ -1,4 +1,5 @@
 # Beginer island automation
+# rebirth
 # Assain job change
 
 automacro __1 {

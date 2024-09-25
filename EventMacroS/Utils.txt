@@ -150,17 +150,22 @@ macro airseiren_all {
   log Number of 0 refinement: $seiren_total
 }
 
-macro airseiren {
+macro air {
+  $lvl = $.param[0]
+  log $lvl
+
   $i = 0
-  $seiren_total = 20
+  $seiren_total = 30
   while ($i < $seiren_total) {
-    do move dali02 125 86
-    do eq ペルロックのマント [1]
-    do talknpc 139 87 r1 r~/ペルロック/ r~/ペルロックのブー/ r0
+    # do move dali02 125 86
+    do eq +$lvl ペルロックのマント [1]
+    # do talknpc 139 87 r1 r~/ペルロック/ r~/ブーツ/ r0
+    # do talknpc 139 87 r1 r~/ペルロック/ r~/スーツ/ r0
+    do talknpc 139 87 r1 r~/ペルロック/ r~/マント/ r0
   }
 }
 
-macro air {
+macro airlog {
   $r = &Storage(ペルロックのマント [1])
   @robe = &split(',', $r)
   log Exist @robe robes
@@ -173,6 +178,7 @@ macro air {
   @suit = &split(',', $s)
   log Exist @suit suits
 }
+
 macro get_storage_eq_num {
   $result = &Storage($.param[0])
   @eq = &split(',', $result)

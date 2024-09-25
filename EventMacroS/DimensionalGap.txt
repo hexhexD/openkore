@@ -720,7 +720,7 @@ automacro battle_ship_endend {
     do conf itemsGatherAuto 0
     do conf itemsTakeAuto 0
 
-    do conf storageAuto_npc dali02 109 94
+    do conf storageAuto_npc dali02 112 95
     pause 1
     do autostorage
     do conf storageAuto_npc dali02 106 93
