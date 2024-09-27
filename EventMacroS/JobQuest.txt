@@ -99,6 +99,7 @@ automacro theif_change {
   JobLevel 10
   run-once 1
   call {
+		do conf attackAuto 0
     do move moc_prydb1 43 123
   }
 }
@@ -127,6 +128,7 @@ automacro asssasin_high {
 automacro guillotine_cross_change {
   # Theif high
   JobID 4013
+  CharCurrentWeight = 0
   BaseLevel = 99
   JobLevel = 70
   timeout 60

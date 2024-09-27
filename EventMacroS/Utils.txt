@@ -3,7 +3,8 @@ macro regroup {
 	do party leave
 [
 	$ptnum = &rand(666, 999)
-	$ptname = &nick(#)cardお願いします|$.name|
+	$ptname = &nick(#)cardお願いします$.name
+  log $ptname
 
 	do party create $ptname
 	do conf itemsTakeAuto 0
@@ -27,7 +28,7 @@ macro cycle {
   do em enable mdStart
 
   $char = &config(char)
-  $TOTAL = 4
+  $TOTAL = 5
 
   log current char is $char
 

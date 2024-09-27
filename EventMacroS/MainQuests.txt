@@ -300,14 +300,24 @@ automacro friendship_pass_end2 {
 
 # 150 meat for 300 jellopy
 # also need 1 emerald and 1 ruby from gem vender in morocc
-macro buy_jwelery_exchange_jellopy {
-	do move morocc 165 54
-	do move morocc 166 90
-	do move umbala 65 242
+macro get_jwelery_and_jellopy {
+  do move morocc 169 68
+  do talk "肉商人"
+  do store
+  do buy 0 150
 
+  do talk "宝石商人"
+  do store
+  do buy 0 1
+  do talk "宝石商人"
+  do store
+  do buy 1 1
+
+  do move umbala 65 242
   do talknpc 59 243 r0 r1
 }
 macro new_world_access {
+  # call get_jwelery_and_jellopy
 	do move prt_castle 90 61
 	do talknpc 83 67 r0
 
@@ -359,6 +369,7 @@ automacro new_world_access_next2 {
 		do move prt_castle 119 51
 		do talknpc 121 51
 
+    pause 300
 		call tele_lighthalzen
 	}
 }
@@ -898,12 +909,13 @@ automacro royal_out_md {
 	timeout 120
 	exclusive 1
 	call {
-		do talknpc 85 82 r0 r0 r0 r0 r0
-		do talknpc 85 82 r0 
-    do party leave
-    pause 10
+    log NEEDS REWORK HERE SO NO DC, prolly needs to wait for atuo conversation to finish before starting new one
 
-    log NEEDS REWORK HERE SO NO DC
+		# do talknpc 85 82 r0 r0 r0 r0 r0
+		# do talknpc 85 82 r0 
+    # do party leave
+    # pause 10
+
 		# do talknpc 91 85 r0 r0
 		# do talknpc 76 80 r0 r0
 		# do talknpc 91 85 r0 r0
