@@ -2417,7 +2417,7 @@ sub transferItems {
 
 	AI::queue(
 		transferItems => {
-			timeout => $timeout{ai_transfer_items}{timeout} || 0.15,
+			timeout => 0,
 			items => [ map { { item => $_, source => $source, target => $target, amount => $amount } } @$items ],
 		}
 	);
@@ -3636,7 +3636,7 @@ sub canUseTeleport {
 			$item = $char->inventory->getByNameID($config{teleportAuto_item1}) if (!($item) && $config{teleportAuto_item1} =~ /^\d{3,}$/);
 		}
 		$item = $char->inventory->getByNameID(23280) unless $item; # Beginner's Fly Wing
-		#  初心者用オルレアンのフルコース on jRO $item = $char->inventory->getByNameID(12323) unless $item; # Novice Fly Wing
+		$item = $char->inventory->getByNameID(12325) unless $item; # 初心者用ヴェルゼブブの羽
 		$item = $char->inventory->getByNameID(601) unless $item; # Fly Wing
 	} else {
 		 if ($config{teleportAuto_item2}) {

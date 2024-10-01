@@ -31,7 +31,7 @@ sub getInventoryItem {
 		$item = $self->{actor}->inventory->getByNameID($config{teleportAuto_item1}) if (!($item) && $config{teleportAuto_item1} =~ /^\d{3,}$/);
 	}
 	$item = $self->{actor}->inventory->getByNameID(23280) unless $item; # Beginner's Fly Wing
-	# $item = $self->{actor}->inventory->getByNameID(12323) unless $item; # Novice Fly Wing
+	$item = $self->{actor}->inventory->getByNameID(12325) unless $item; # 初心者用ヴェルゼブブの羽
 	$item = $self->{actor}->inventory->getByNameID(601) unless $item; # Fly Wing
 	return $item;
 }
