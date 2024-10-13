@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword maipraiw
+adminPassword broshuve
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -156,7 +156,7 @@ avoidList_inLockOnly 0
 avoidList_reconnect 1800
 avoidList_ignoreList
 
-avoidHiddenActors 0
+avoidHiddenActors 1
 
 cachePlayerNames 1
 cachePlayerNames_duration 900
@@ -203,8 +203,8 @@ cartMaxWeight 7900
 itemsTakeGreed 1
 itemsCheckWeight 1
 
-# lockMap gef_fild10
 lockMap
+# lockMap
 lockMap_x
 lockMap_y
 lockMap_randX
@@ -928,6 +928,11 @@ useSelf_item イグドラシルの実 {
 	timeout 1
 	manualAI 2
 }
+useSelf_item 初心者用ポーション {
+	hp < 90%
+	notInTown 1
+	manualAI 2
+}
 useSelf_item おいしいイワシ {
 	hp < 90%
 	notInTown 1
@@ -944,7 +949,7 @@ useSelf_item 王級メロン {
 	manualAI 2
 }
 useSelf_item 万能薬 {
-	whenStatusActive HEALTHSTATE_BLIND
+	whenStatusActive HEALTHSTATE_BLIND, HEALTHSTATE_SILENCE
 	timeout 1
 	manualAI 2
 }
@@ -1043,6 +1048,13 @@ getAuto 毒薬の瓶 {
 	passive 1
 	disabled 0
 }
+getAuto 万能薬 {
+	minAmount 5
+	maxAmount 5
+	batchSize
+	passive 1
+	disabled 0
+}
 
 autoMD 0
 ######## Debugging options; only useful for developers ########
@@ -1053,7 +1065,7 @@ debugPacket_received 0
 debugPacket_ro_sent 0
 debugPacket_sent 0
 debugPacket_exclude
-debugPacket_include 00B6
+debugPacket_include 09FF
 debugPacket_include_dumpMethod 0
 debugDomains portalRecord, ai_npcTalk, #sendPacket
 logToFile_Debug

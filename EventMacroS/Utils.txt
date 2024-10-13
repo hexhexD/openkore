@@ -14,10 +14,6 @@ macro regroup {
 ]
 }
 
-macro test {
-  MD(sara)
-}
-
 sub MD {
   MD::MD(@_)
 }
@@ -28,7 +24,7 @@ macro cycle {
   do em enable mdStart
 
   $char = &config(char)
-  $TOTAL = 5
+  $TOTAL = 6
 
   log current char is $char
 

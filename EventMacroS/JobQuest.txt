@@ -99,7 +99,7 @@ automacro theif_change {
   JobLevel 10
   run-once 1
   call {
-		do conf attackAuto 0
+		do conf attackAuto 1
     do move moc_prydb1 43 123
   }
 }
@@ -122,11 +122,17 @@ automacro asssasin_high {
     do move valkyrie 48 55
     do talknpc 44 58 r1
     do is ペコペコの手綱
+
+		do conf attackAuto 2
+    do conf randomWalk 2
+    do eq クレイトス大地の裂け目 [1]
+    do eq ジュル [リーサルヒューマン(物理)*3] [3]
+    do move gef_fild10
   }
 }
 
 automacro guillotine_cross_change {
-  # Theif high
+  # Asassin high
   JobID 4013
   CharCurrentWeight = 0
   BaseLevel = 99
@@ -141,19 +147,20 @@ automacro guillotine_cross_change {
     
     do move que_job01 72 92
     do talknpc 75 96 r0 r1 r0
+    do conf lockMap gef_fild10
   }
 }
 
 
 automacro assassin_change {
   JobID 6
-  JobLevel > 40
+  JobLevel > 39
   run-once 1
   NotInMap in_moc_16
   call {
     # do is ペコペコの手綱
 		do conf route_randomWalk 0
-		do conf attackAuto 0
+		do conf attackAuto 1
     do move in_moc_16 19 29
     do talknpc 19 33 r0
 
@@ -415,6 +422,13 @@ automacro assassin_job_question_29 {
     do talknpc 19 154 r~/ウィンドマインゴーシュ/
   }
 }
+automacro assassin_job_question_30 {
+  InMap in_moc_16
+  NpcMsg /ベナムダストに必要/
+  call {
+    do talknpc 19 154 r~/レッドジェムストーン/
+  }
+}
 
 automacro assassin_kill_test {
   InMap in_moc_16
@@ -429,6 +443,7 @@ automacro assassin_kill_test {
 automacro assassin_trap_test {
   InMap in_moc_16
   SystemMsg /試験の目的は、より迅速正確/
+  exclusive 1
   call {
     do conf route_step 1
     do conf attackAuto 1
@@ -440,6 +455,8 @@ automacro assassin_trap_done {
   SystemMsg /試験場への扉が開きました/
   call {
     do move 87 137
+    do conf attackAuto -1
+    do conf route_step 10
   }
 }
 
@@ -448,8 +465,6 @@ automacro assassin_dodge_test {
   IsInCoordinate 87..90 100..105
   timeout 10
   call {
-    do conf route_step 10
-    do conf attackAuto -1
     do move 87 47
   }
 }
@@ -475,5 +490,10 @@ automacro assassin_maze_test {
   timeout 10
   call {
     do move 148 80
+    do talk resp 0
+    do talk resp 0
+    do talk resp 0
+    pause 10
+    do talknpc 19 33
   }
 }

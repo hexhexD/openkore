@@ -171,21 +171,12 @@ automacro ghost_boss_death {
 			# walk to make sure we pick up stuff
 			do move 198 27
 			do move 196 44
-			# exit
-			do move 198 27
-			do talknpc 204 29 r0 r0
-			do move 211 27
-			do conf itemsGatherAuto 0
-
-			MD(ghost)
 		}
 	}
 }
-
 automacro ghost_exit {
 	LocalMsg /周辺の風景が歪み始めた/
 	InMap 1@spa
-	disabled 1
 	call {
 		do move 198 27
 		do talknpc 204 29 r0 r0
@@ -223,8 +214,8 @@ automacro sara_entered {
 	IsInCoordinate 245..255 150..160
 	timeout 5
 	call {
-		do conf itemsTakeAuto 2
-		do conf itemsGatherAuto 2
+		do conf itemsTakeAuto 1
+		do conf itemsGatherAuto 1
 		lock sara_boss_death
 		do conf attackAuto 2
 		pause 1
@@ -631,6 +622,7 @@ automacro battle_ship_lower_deck_1 {
   InMap 1@air1
   LocalMsg /12時方向に敵の気配を感じた/
   IsInCoordinate 10..130 20..100
+  priority 3
   call {
     do move 66 81
   }
@@ -639,6 +631,7 @@ automacro battle_ship_lower_deck_2 {
   InMap 1@air1, 1@air2
   LocalMsg /9時方向に敵の気配を感じた/
   IsInCoordinate 10..130 20..100
+  priority 3
   orphan reregister_safe
   call {
     do move 24 63
@@ -647,6 +640,7 @@ automacro battle_ship_lower_deck_2 {
 automacro battle_ship_next {
   InMap 1@air1
   LocalMsg /このフロアにはもうモンスターの気配がないようだ。下の階へ進もう/
+  exclusive 1
   call {
     do move 104 72
   }
@@ -714,9 +708,19 @@ automacro battle_ship_endend {
     do move 248 51
     do move 243 55
     do talknpc 239 58 r0 r1 r1
-    do move 244 73
-    pause 5
+    pause 2
+    do move 1\@air2 244 60
+    do move 1\@air2 244 73
+    pause 2
     do talk resp 1
+
+    pause 2
+
+    do move 1\@air2 244 60
+    do move 1\@air2 244 73
+    pause 2
+    do talk resp 1
+
     do conf itemsGatherAuto 0
     do conf itemsTakeAuto 0
 

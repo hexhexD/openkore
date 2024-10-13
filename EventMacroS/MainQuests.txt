@@ -317,7 +317,7 @@ macro get_jwelery_and_jellopy {
   do talknpc 59 243 r0 r1
 }
 macro new_world_access {
-  # call get_jwelery_and_jellopy
+  call get_jwelery_and_jellopy
 	do move prt_castle 90 61
 	do talknpc 83 67 r0
 
@@ -396,6 +396,7 @@ automacro new_world_access_next4 {
 		do move ra_temple 117 113
 		do talknpc 119 113
 
+    pause 300
 		call tele_lighthalzen
 	}
 }
@@ -909,20 +910,19 @@ automacro royal_out_md {
 	timeout 120
 	exclusive 1
 	call {
-    log NEEDS REWORK HERE SO NO DC, prolly needs to wait for atuo conversation to finish before starting new one
+    log might NEED REWORK HERE SO NO DC
 
-		# do talknpc 85 82 r0 r0 r0 r0 r0
-		# do talknpc 85 82 r0 
-    # do party leave
-    # pause 10
+    do talknpc 85 82 r0 r0 r0 r0 r0 r0
+    pause 5
+    do party leave
 
-		# do talknpc 91 85 r0 r0
-		# do talknpc 76 80 r0 r0
-		# do talknpc 91 85 r0 r0
-    # pause 2
+    do talknpc 91 85 r0 r0
+    do talknpc 76 80 r0 r0
+    do talknpc 91 85 r0 r0
+    pause 2
 
-		# do move prt_lib 63 61
-		# do talknpc 56 61 r0
+    do move prt_lib 63 61
+    do talknpc 56 61 r0
 	}
 }
 automacro royal_jail {
