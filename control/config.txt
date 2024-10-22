@@ -909,8 +909,7 @@ buyAuto {
 	batchSize
 	onlyIdentified
 	disabled 0
-	maxBase
-	minBase
+  baseLvl
 }
 
 sellAuto 0
