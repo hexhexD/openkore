@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 1
+char 2
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword macletre
+adminPassword tromapre
 callSign
 commandPrefix ;
 callSignGM 0
@@ -263,12 +263,12 @@ sitAuto_look_from_wall
 sitTensionRelax 0
 
 statsAddAuto 1
-statsAddAuto_list dex 40, str 30, agi 50, str 50, agi 90, str 90, vit 90, dex 90, luk 70, str 120, vit 110, luk 90, int 90, dex 110
+statsAddAuto_list dex 40, str 30, agi 50, str 50, agi 90, str 90, vit 90, dex 50, luk 60, str 120, vit 110, int 90, str 130, agi 100, vit 120
 statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
 skillsAddAuto 1
-skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 3, エンチャントポイズン 6, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 10, メテオアサルト 9, GC_ROLLINGCUTTER 5, クローキングエクシード 5, クロスインパクト 5, ダークイリュージョン 5, ファントムメナス 1, ハルシネーションウォーク 5, ダーククロー 5, ウェポンブロッキング 3, ウェポンクラッシュ 5, カウンタースラッシュ 10, ベナムインプレス 5, 新毒研究 9, 新毒製造 1, ポイズニングウェポン 5, SHC_SHADOW_SENSE 3, SHC_SAVAGE_IMPACT 10
+skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 3, エンチャントポイズン 6, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 10, メテオアサルト 9, GC_ROLLINGCUTTER 5, クローキングエクシード 5, クロスインパクト 5, ダークイリュージョン 5, ファントムメナス 1, ハルシネーションウォーク 5, ダーククロー 5, ウェポンブロッキング 3, カウンタースラッシュ 10, ウェポンクラッシュ 1, ベナムインプレス 5, 新毒研究 10, 新毒製造 1, ポイズニングウェポン 5, SHC_SHADOW_SENSE 3, SHC_SAVAGE_IMPACT 10
 tankMode 0
 tankModeTarget
 
@@ -857,6 +857,7 @@ equipAuto {
 	topHead +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%]
 }
 equipAuto {
+	timeout 120
 	topHead +9 フェイスオブイグドラシル [厄災の魔将:異境の統轄者] [1]
 	lowHead くわえたチョコスティック
 	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
@@ -1058,6 +1059,14 @@ getAuto 万能薬 {
 	passive 1
 	disabled 0
 }
+getAuto ハイスピードポーション {
+	minAmount 5
+	maxAmount 5
+	batchSize
+	passive 1
+	disabled 0
+}
+
 
 autoMD 0
 ######## Debugging options; only useful for developers ########
