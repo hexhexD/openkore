@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 2
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword tromapre
+adminPassword stutisaz
 callSign
 commandPrefix ;
 callSignGM 0
@@ -162,7 +162,7 @@ cachePlayerNames 1
 cachePlayerNames_duration 900
 cachePlayerNames_maxSize 100
 
-clientSight 30
+clientSight 17
 clientSight_removeBeyond 2
 
 dcPause 0
@@ -263,7 +263,7 @@ sitAuto_look_from_wall
 sitTensionRelax 0
 
 statsAddAuto 1
-statsAddAuto_list dex 40, str 30, agi 50, str 50, agi 90, str 90, vit 90, dex 50, luk 60, str 120, vit 110, int 90, str 130, agi 100, vit 120
+statsAddAuto_list dex 40, str 30, agi 50, str 50, agi 90, str 90, vit 90, dex 50, luk 60, agi 100, str 120, vit 110, int 90, str 130, vit 120
 statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
@@ -311,7 +311,7 @@ partyAutoShareItemDiv 0
 guildAutoDeny 1
 attendanceAuto 1
 
-verbose 0
+verbose 1
 showDomain 0
 showDomain_NPC parseMsg_presence
 showDomain_Shop list
@@ -852,19 +852,20 @@ equipAuto {
 	manualAI 0
 }
 equipAuto {
-	timeout 120
+	timeout 10
 	baseLvl < 100
 	topHead +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%]
 }
 equipAuto {
-	timeout 120
+	timeout 10
 	topHead +9 フェイスオブイグドラシル [厄災の魔将:異境の統轄者] [1]
 	lowHead くわえたチョコスティック
 	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
 	rightHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
-	robe ミステリーウィング [1]
+	robe +9 ディヴァインフィーニクス [エクストラジョーカーカード:ニヒツ:覇王] [1]
 	armor オーディンの祝福 [1]
-	shoes +9 スターリースカイ・ツインプライム [攻撃速度 + 15%:豪傑] [1]
+	arrow 銀の矢
+	shoes +9 スターリースカイ・ツインプライム [グラッジ:豪傑] [1]
 	leftAccessory カルニウムイヤリング [Extra Str:MaxHP + 15%:スキルディレイ - 15%:詠唱時間 - 15%]
 	rightAccessory リングオブシルバークロウ [Def50%無視*2:Str + 7] [1]
 	costumeTopHead [衣装] 輝くマジェスティックゴート
@@ -1075,9 +1076,9 @@ debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 0
+debugPacket_sent 1
 debugPacket_exclude
-debugPacket_include 09FF
+debugPacket_include 0983
 debugPacket_include_dumpMethod 0
 debugDomains portalRecord, ai_npcTalk, #sendPacket
 logToFile_Debug

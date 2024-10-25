@@ -129,35 +129,49 @@ macro gxstore {
 macro gxget {
   call gx_rearm get
 }
-# 0 means store, 1 means get
+# "store" means store, "get" means get
 macro gx_rearm { 
   do uneq all
-  pause 1
   do is ペコペコの手綱
   do autosell
+
+  @equipmentList = undef;
+  &push(@equipmentList, [衣装] 輝くマジェスティックゴート);
+  &push(@equipmentList, +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%]);
+  &push(@equipmentList, +9 フェイスオブイグドラシル [異境の統轄者:知識の探求者] [1]);
+  &push(@equipmentList, くわえたチョコスティック);
+  &push(@equipmentList, +9 メロンカタール [Special Str:アルカナ:覇王] [1]);
+  &push(@equipmentList, +9 ディヴァインフィーニクス [エクストラジョーカーカード:ニヒツ:覇王] [1]);
+  &push(@equipmentList, 銀の矢);
+  &push(@equipmentList, +9 スターリースカイ・ツインプライム [グラッジ:豪傑] [1]);
+  &push(@equipmentList, リングオブシルバークロウ [Def50%無視*2:Str + 7] [1]);
+  &push(@equipmentList, カルニウムイヤリング [Extra Str:MaxHP + 15%:スキルディレイ - 15%:詠唱時間 - 15%]);
+  &push(@equipmentList, ペコペコの手綱);
+  &push(@equipmentList, 怨嗟の腕輪);
+  &push(@equipmentList, 通行証);
+  log Equipment list size is @equipmentList
+
   do move yuno 195 306
   # Main storage
   do talknpc 199 299
 
-  @equipmentList = ([衣装] 輝くマジェスティックゴート, くわえたチョコスティック, カルニウムリング, +9 メロンカタール [Special Str:アルカナ:覇王] [1], リングオブシルバークロウ [Def50%無視*2:Str + 7] [1], +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%], ミステリーウィング [1], オーディンの祝福 [1], +9 スターリースカイ・ツインプライム [攻撃速度 + 15%:豪傑] [1], +9 フェイスオブイグドラシル [厄災の魔将:異境の統轄者] [1], 怨嗟の腕輪, ペコペコの手綱, 通行証)
+  set macro_delay 0.25
   if ($.param[0] == "store") {
     log Storing equipments
     $i = 0
-    [
     while ($i < @equipmentList) {
+      log Storing $equipmentList[$i]
       do storage add $equipmentList[$i] 1
       $i++
     }
-    ]
   } elsif ($.param[0] == "get") {
-    log Getting equipments
     $i = 0
-    [
     while ($i < @equipmentList) {
+      log Getting $equipmentList[$i]
       do storage get $equipmentList[$i] 1
       $i++
     }
-    ]
   }
+  # Pause so we don't immediately close storage after blasting the server with all store/get all at once
   do storage close
 }
