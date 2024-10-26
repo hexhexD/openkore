@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 0
+char 2
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword stutisaz
+adminPassword jocretro
 callSign
 commandPrefix ;
 callSignGM 0
@@ -162,7 +162,7 @@ cachePlayerNames 1
 cachePlayerNames_duration 900
 cachePlayerNames_maxSize 100
 
-clientSight 17
+clientSight 20
 clientSight_removeBeyond 2
 
 dcPause 0
@@ -856,9 +856,10 @@ equipAuto {
 	baseLvl < 100
 	topHead +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%]
 }
+
 equipAuto {
-	timeout 10
-	topHead +9 フェイスオブイグドラシル [厄災の魔将:異境の統轄者] [1]
+	timeout 1
+	topHead +9 フェイスオブイグドラシル [異境の統轄者:知識の探求者] [1]
 	lowHead くわえたチョコスティック
 	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
 	rightHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]

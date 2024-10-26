@@ -516,13 +516,7 @@ automacro sara2_garden {
   do move 192 336
 
   do move 202 349
-  pause 2
-  do talk 9
-  do talk 10
-  do talk 11
-  do talk 12
-  do talk 13
-  do talk resp 0
+  do talknpc 200 346 r0
   release sara2_boss_death
 	}
 }
