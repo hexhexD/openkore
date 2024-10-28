@@ -351,7 +351,7 @@ automacro magic_wolf_killed {
 	call {
 		do talknpc 122 58 c c r0
 		do move 120 34
-		pause 3
+		pause 5
 		do talknpc 107 57 c r0
 	}
 }
@@ -471,6 +471,7 @@ automacro sara2_crossedbridge {
 automacro sara2_sarah {
 	InMap 1@glast
 	timeout 660
+  exclusive 1
 	IsInCoordinate 199 333
 	call {
 	do talknpc 200 340 r0
@@ -497,7 +498,9 @@ automacro sara2_garden {
 
 	do move 351 270
 	do talk resp 1
-	pause 3
+	pause 7
+  # End of garden
+
 	do move 358 291
   pause 1
   do move 352 288
@@ -508,17 +511,23 @@ automacro sara2_garden {
   pause 2
 	do move 352 279
 	do talk resp 1
-
-  # Clear mobs before talking to sara
-  pause 2
-  do conf attackAuto 2
-  do move 207 336
-  do move 192 336
-
-  do move 202 349
-  do talknpc 200 346 r0
-  release sara2_boss_death
 	}
+}
+automacro sara2_fight_sarah {
+	InMap 1@glast
+	IsInCoordinate 180..220 327..360
+  priority 2
+  timeout 600
+  call {
+    # Clear mobs before talking to sara
+    do conf attackAuto 2
+    do move 207 336
+    do move 192 336
+
+    do move 202 349
+    do talknpc 200 346 r0
+    release sara2_boss_death
+  }
 }
 
 automacro sara2_boss_death {
@@ -582,7 +591,6 @@ automacro airship_ready {
 	call {
 		log instance ready let's go
     do talknpc 142 81 r1
-		# lock ghost_boss_death
 	}
 }
 automacro battle_ship_entered {

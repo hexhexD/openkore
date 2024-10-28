@@ -1127,6 +1127,7 @@ automacro terra_gloria_4_1 {
 	call {
 		do move prt_cas_q 23 35
 		do talknpc 21 39 r0 r0 r1 r0
+    pause 1
 		do talknpc 21 39 r0 r0 r1 r0
 	}
 }
@@ -1584,7 +1585,7 @@ automacro lab_code {
 automacro lab_code_first_left_correct {
 	InMap 1@slw
 	NpcMsg /保安装置を稼働させた/
-	timeout 600
+	timeout 700
 	call {
 		# right device
 		do move 220 188
@@ -1601,7 +1602,7 @@ automacro lab_code_first_right_correct {
 }
 automacro lab_code_second_left_correct {
 	InMap 1@slw
-	NpcMsgName /保安装置を稼働させた/ /保安装置#switch03_0ev/
+	NpcMsgName /保安装置を稼働させた/ /保安装置#switch03/
 	timeout 60
 	call {
 		# right device
@@ -1611,7 +1612,7 @@ automacro lab_code_second_left_correct {
 }
 automacro lab_code_second_right_correct {
 	InMap 1@slw
-	NpcMsgName /ゲートが稼働した/ /保安装置#switch04_0ev/
+	NpcMsgName /ゲートが稼働した/ /保安装置#switch04/
 	timeout 60
 	call {
 		do move 71 77
@@ -1805,6 +1806,7 @@ automacro illusion_armory {
   QuestActive 7860
   timeout 600
   delay 2
+  exclusive 1
   call {
     do move 156 104
     do talknpc 160 102 r0 r0 r0 r0 r0 r0
@@ -1952,7 +1954,7 @@ automacro illusion_first_MD_bottom_right_last {
     do talknpc 125 157 r0
     pause 5
     do talknpc 128 157 r0
-    pause 23
+    pause 26
     do talknpc 128 157 r1
   }
 }
@@ -2031,10 +2033,7 @@ automacro illusion_lazy_once_more {
   delay 2
   call {
     # 4    レイジー#ep171_043               (336, 266)    5841
-    do talk 4
-    do talk resp 0
-    do talk resp 0
-    do talk resp 0
+    do talknpc 336 266 r0 r0 r0 r0
   }
 }
 automacro illusion_lazy_again_holy_fuck {
@@ -2069,10 +2068,7 @@ automacro illusion_lazy_again_holy_fuck2 {
   QuestActive 17008
   delay 2
   call {
-    do talk 4
-    do talk resp 0
-    do talk resp 0
-    do talk resp 0
+    do talknpc 161 255 r0 r0 r0
   }
 }
 automacro illusion_lazy_again_holy_fuck3 {
@@ -2091,11 +2087,7 @@ automacro illusion_lazy_again_holy_fuck4 {
   QuestActive 17010
   delay 2
   call {
-    do talk 1
-    do talk resp 0
-    do talk resp 0
-    do talk resp 0
-    do talk resp 0
+    do talknpc 16 49 r0 r0 r0 r0
   }
 }
 automacro illusion_lazy_again_holy_fuck5 {
@@ -2112,10 +2104,9 @@ automacro illusion_lazy_again_holy_fuck6 {
   InMap lhz_in01
   timeout 600
   QuestActive 17012
-  delay 2
+  delay 5
   call {
-    do talk 3
-    do talk resp 0
+    do talknpc 33 263 r0 r0
   }
 }
 automacro illusion_lazy_end {
@@ -2159,6 +2150,8 @@ automacro illusion_second_prelude1 {
   QuestActive 11599
   timeout 600
   call {
+    do talknpc 278 269 r0
+    pause 2
     do talknpc 278 269 r0
   }
 }
@@ -2276,7 +2269,7 @@ automacro illusion_third_MD_ready {
   call {
     do talk 2
     do talk resp 1
-    do conf attackAuto 1
+    do conf attackAuto 2
   }
 }
 automacro illusion_third_MD_entered {
@@ -2305,6 +2298,7 @@ automacro illusion_third_MD_wave_done {
   timeout 600
   LocalMsg /無線でアルファとの最後の交信場所と推測される座標を送信する/
   call {
+    do conf attackAuto 1
     do talknpc 28 359 r0
     do move 171 287
     do move 162 266
@@ -2415,8 +2409,7 @@ automacro illusion_end4 {
 	call {
     # 3    リベリオン隊員#ep171_40             (108, 130)    4964
     # 4    リベリオン隊員#ep171_15             (108, 130)    5040
-    do talk 4
-    do talk resp 0
+    do talknpc 108 130 r0
   }
 }
 automacro illusion_end5 {
@@ -2425,8 +2418,7 @@ automacro illusion_end5 {
   timeout 600
   delay 2
 	call {
-    do talk 2
-    do talk resp 0
+    do talknpc 180 169 r0
   }
 }
 automacro illusion_end_MD_go {
@@ -2435,8 +2427,7 @@ automacro illusion_end_MD_go {
   timeout 600
   delay 2
 	call {
-    do talk 2
-    do talk resp 1
+    do talknpc 180 169 r1
   }
 }
 automacro illusion_end_MD_ready {
@@ -2445,8 +2436,7 @@ automacro illusion_end_MD_ready {
   timeout 600
   QuestActive 16354
 	call {
-		do talk 2
-    do talk resp 1
+    do talknpc 180 169 r1
 	}
 }
 automacro illusion_end_MD_entered {
@@ -2615,59 +2605,3 @@ automacro legacy_maison {
 }
 ### WIP
 ### End of Legacy of The Wise One
-
-### Shadow Cross job quest
-macro shadowcross {
-  # log Make sure you are in yuno
-  # call yuno_rachel
-  do move job3_guil01 69 91
-  do talknpc 74 92 r2 r0 r0
-}
-automacro shadowcross_1 {
-  QuestActive 18059
-  timeout 600
-  delay 1
-  call {
-    do move ve_in 209 382
-    do talknpc 212 384 r0 r0 r0 r0
-  }
-}
-automacro shadowcross_field_talk {
-  QuestActive 18060
-  timeout 600
-  delay 1
-  call {
-    do move ve_fild07 105 138
-    do talknpc 99 141
-    do talkresp 0
-    do talkresp 0
-  }
-}
-automacro shadowcross_kid {
-  QuestActive 18061
-  timeout 600
-  delay 1
-  call {
-    do move veins 90 156
-    do talknpc 87 158 r0 r0 r0 r0 r0
-  }
-}
-automacro shadowcross_field_again {
-  QuestActive 18062
-  timeout 600
-  delay 1
-  call {
-    do move ve_fild07 105 138
-    do talknpc 99 141 r0 r0
-  }
-}
-automacro shadowcross_in_again {
-  QuestActive 18063
-  timeout 600
-  delay 1
-  disabled 0
-  call {
-    do move ve_in 209 382
-    do talknpc 212 384 r0 r0 r0 r0
-  }
-}

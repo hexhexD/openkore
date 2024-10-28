@@ -497,3 +497,59 @@ automacro assassin_maze_test {
     do talknpc 19 33
   }
 }
+
+### Shadow Cross job quest
+macro shadowcross {
+  # log Make sure you are in yuno
+  # call yuno_rachel
+  do move job3_guil01 69 91
+  do talknpc 74 92 r2 r0 r0
+}
+automacro shadowcross_1 {
+  QuestActive 18059
+  timeout 600
+  delay 1
+  call {
+    do move ve_in 209 382
+    do talknpc 212 384 r0 r0 r0 r0
+  }
+}
+automacro shadowcross_field_talk {
+  QuestActive 18060
+  timeout 600
+  delay 1
+  call {
+    do move ve_fild07 105 138
+    do talknpc 99 141
+    do talkresp 0
+    do talkresp 0
+  }
+}
+automacro shadowcross_kid {
+  QuestActive 18061
+  timeout 600
+  delay 1
+  call {
+    do move veins 90 156
+    do talknpc 87 158 r0 r0 r0 r0 r0
+  }
+}
+automacro shadowcross_field_again {
+  QuestActive 18062
+  timeout 600
+  delay 1
+  call {
+    do move ve_fild07 105 138
+    do talknpc 99 141 r0 r0
+  }
+}
+automacro shadowcross_in_again {
+  QuestActive 18063
+  timeout 600
+  delay 1
+  disabled 0
+  call {
+    do move ve_in 209 382
+    do talknpc 212 384 r0 r0 r0 r0
+  }
+}
