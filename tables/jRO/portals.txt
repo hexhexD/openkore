@@ -365,7 +365,6 @@ moro_vol 137 136 dali 64 103 r0
 dali 64 129 dali02 66 101
 dali02 66 97 dali 64 125
 dali02 45 96 moc_fild22 36 196 c r0 c n
-prt_cas 27 21 ein_fild04 280 332 c r2
 
 #Cat Hand Agent Warper
 #moc_para01 17 33 moc_fild20 342 198 c r0 n
@@ -931,10 +930,12 @@ einbech 145 112 ein_in01 268 104
 einbech 177 136 ein_in01 190 35
 einbech 138 252 ein_dun01 22 14
 einbech 62 29 ein_fild09 74 350
+einbech 135 244 ein_dun02 24 250 r1 r0
 ein_in01 288 89 einbech 157 106
 ein_in01 190 38 einbech 172 134
 ein_dun01 261 255 ein_dun02 291 292
 ein_dun01 22 11 einbech 138 249
+ein_dun02 286 292 ein_dun01 261 258
 ein_dun02 286 292 ein_dun01 261 258
 ein_fild04 184 26 einbroch 157 327
 ein_fild06 355 95 yuno_fild07 66 79
@@ -1809,9 +1810,15 @@ prt_cas 216 184 prt_cas 93 212
 prt_cas 93 208 prt_cas 216 180
 prt_cas 152 163 prt_cas_q 150 8
 # rebel
+prt_cas 27 21 rebel_in 69 43 c r0
+prt_cas 27 21 ein_fild04 280 332 c r2
 prt_cas 27 21 slabw01_qjp 233 88 c r3
+prt_cas 27 21 pub_cat 90 105 c r8
 prt_cas 27 21 sp_cor 258 284 c r17
 prt_cas 27 21 ba_maison 74 146 c r18
+
+pub_cat 94 43 sp_rudus3 377 42 r1 r1
+sp_rudus3 380 42 sp_rudus4 370 156 r0
 
 prt_castle 28 121 prt_castle 40 138
 prt_castle 31 113 prt_castle 54 113
@@ -3666,3 +3673,25 @@ lhz_in02 236 219 lhz_in02 206 284
 1@air1 104 72 1@air1 101 200
 moc_fild20 35 173 morocc 293 207
 in_moc_16 182 169 in_moc_16 181 183
+
+1@rgsr 126 58 1@rgsr 127 67
+1@rgsr 59 136 1@rgsr 66 136
+1@rgsr 52 215 1@rgsr 46 215
+1@rgsr 49 215 1@rgsr 56 215
+1@rgsr 213 136 1@rgsr 219 136
+1@rgsr 216 136 1@rgsr 211 136
+1@rgsr 213 108 1@rgsr 219 108
+1@rgsr 216 108 1@rgsr 211 108
+1@rgsr 213 76 1@rgsr 219 76
+1@rgsr 216 76 1@rgsr 211 76
+1@rgsr 213 44 1@rgsr 220 44
+1@rgsr 217 44 1@rgsr 211 44
+1@os_b 188 40 1@os_b 187 46
+1@os_a 46 360 1@os_a 39 360
+1@os_a 51 171 1@os_a 49 160
+1@os_a 156 153 1@os_a 162 159
+1@cor_a 174 164 1@cor_a 167 166
+hugel 52 90 hu_in01 33 90
+ein_dun02 16 250 ein_dun03 268 279
+enchant01 160 67 enchant01 101 90
+enchant01 101 86 enchant01 164 67

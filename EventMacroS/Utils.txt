@@ -1,6 +1,7 @@
 
 macro regroup {
 	do party leave
+  pause 1
 [
 	$ptnum = &rand(666, 999)
 	$ptname = &nick(#)cardお願いします$.name

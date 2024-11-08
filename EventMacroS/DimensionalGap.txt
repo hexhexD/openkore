@@ -427,7 +427,6 @@ automacro sarah2_ready {
 	call {
 		log instance ready let's go
 		do talknpc 99 148 c r0
-    lock sara2_boss_death
 	}
 }
 automacro sara2 {
@@ -435,6 +434,7 @@ automacro sara2 {
 	IsInCoordinate 363..368 301..307
 	timeout 30
 	call {
+    lock sara2_boss_death
     do conf attackAuto 2
     pause 1
     do talknpc 359 294 r0
@@ -526,6 +526,8 @@ automacro sara2_fight_sarah {
 
     do move 202 349
     do talknpc 200 346 r0
+    pause 2
+    log Releasing sara2_boss_death
     release sara2_boss_death
   }
 }
@@ -710,18 +712,10 @@ automacro battle_ship_endend {
     do move 248 51
     do move 243 55
     do talknpc 239 58 r0 r1 r1
-    pause 2
-    do move 1\@air2 244 60
     do move 1\@air2 244 73
     pause 2
     do talk resp 1
-
-    pause 2
-
-    do move 1\@air2 244 60
-    do move 1\@air2 244 73
-    pause 2
-    do talk resp 1
+    do talk no
 
     do conf itemsGatherAuto 0
     do conf itemsTakeAuto 0

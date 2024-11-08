@@ -1,6 +1,7 @@
 # Beginer island automation
 # rebirth
 # Assain job change
+## SX job quest: macro shadowcross
 
 automacro __1 {
     InMap new_1-1
@@ -500,7 +501,7 @@ automacro assassin_maze_test {
 
 ### Shadow Cross job quest
 macro shadowcross {
-  # log Make sure you are in yuno
+  log Make sure you are in rachel
   # call yuno_rachel
   do move job3_guil01 69 91
   do talknpc 74 92 r2 r0 r0
@@ -551,5 +552,61 @@ automacro shadowcross_in_again {
   call {
     do move ve_in 209 382
     do talknpc 212 384 r0 r0 r0 r0
+  }
+}
+automacro shadowcross_fild05 {
+  QuestActive 18064
+  timeout 600
+  delay 1
+  call {
+    do talknpc 317 235
+  }
+}
+automacro shadowcross_md {
+  QuestActive 18065
+  run-once 1
+  delay 2
+  call {
+    do move ve_fild05 315 232
+    call regroup
+    do talknpc 317 235 r0
+  }
+}
+automacro shadowcross_md_ready {
+	SimpleHookEvent instance_ready
+  timeout 30
+  QuestActive 18065
+	InMap ve_fild05
+	call {
+		do talknpc 317 235 r1
+	}
+}
+automacro shadowcross_md1 {
+	InMap 1@4sac
+  timeout 600
+  IsInCoordinate 50..60 60..70
+	call {
+		do talknpc 58 68 r0
+		do talknpc 63 68 r0
+		do talknpc 65 66 r0
+	}
+}
+automacro shadowcross_md2 {
+  InMap 1@4sac
+  NpcMsg /闇の精霊が反応する場所があるか/
+  delay 2
+  call {
+    do move 88 68
+    do talknpc 90 70 r0
+  }
+}
+automacro shadowcross_md3 {
+  InMap 1@4sac
+  QuestActive 18066
+  timeout 30
+  delay 2
+  call {
+    do talknpc 88 70 r0
+		do conf attackAuto 2
   }
 }

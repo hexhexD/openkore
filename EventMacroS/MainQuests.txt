@@ -7,10 +7,7 @@
 ## Illusion: macro illusion
 ## 賢者の遺産: macro legacy
 
-## SX job quest: macro shadowcross
-
 ### Biolabs Entrance Quest ###
-
 macro biolab_entrance {
 		do talknpc 341 224 r0 r0 r0 r0 r0 r0 r0 r0
 		do talknpc 341 224 r1
@@ -2594,7 +2591,7 @@ automacro legacy_power_plant4 {
     do move 12 321
   }
 }
-automacro legacy_maison {
+automacro legacy_masion {
   QuestActive 128650
   InMap ba_maison
   timeout 600
