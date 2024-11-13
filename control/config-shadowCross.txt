@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 1
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword drocreac
+adminPassword hohaheey
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -632,7 +632,7 @@ attackSkillSlot GC_DARKCROW {
 attackSkillSlot SHC_SAVAGE_IMPACT {
 	lvl 10
 	maxDist 9
-	# timeout 0.5
+	timeout 0.5
 }
 attackSkillSlot GC_ROLLINGCUTTER {
 	label roller
@@ -858,7 +858,7 @@ equipAuto {
 }
 
 equipAuto {
-	timeout 10
+	timeout 1
 	topHead +9 フェイスオブイグドラシル [厄災の魔将:英雄の凱歌] [1]
 	lowHead くわえたチョコスティック
 	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
@@ -923,14 +923,13 @@ useSelf_item ハイスピードポーション {
 	manualAI 2
 }
 useSelf_item イグドラシルの種 {
-	hp > 40%
-	hp > 40%
+	hp < 45%
 	notInTown 1
 	timeout 2
 	manualAI 2
 }
 useSelf_item イグドラシルの実 {
-	hp < 15%
+	hp < 30%
 	notInTown 1
 	timeout 1
 	manualAI 2
@@ -1048,8 +1047,8 @@ getAuto {
 	disabled 0
 }
 getAuto 毒薬の瓶 {
-	minAmount 1
-	maxAmount 10
+	minAmount 5
+	maxAmount 15
 	batchSize
 	passive 1
 	disabled 0

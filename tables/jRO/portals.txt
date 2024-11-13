@@ -13,7 +13,7 @@ gon_fild01 255 79 alberta 243 67 0 c r0 n
 izlude 201 181 izlu2dun 107 50 150 c r0
 izlu2dun 108 27 izlude 176 182 0 c r0
 prt_fild05 270 212 prt_sewb1 135 248 0 c r0
-aldebaran 223 222 xmas_fild01 78 68 0 c r1 c c n
+aldebaran 168 168 xmas_fild01 100 100 0 c r1
 moc_fild12 35 303 cmd_fild08 331 319 0 c r0 n
 ayothaya 152 68 alberta 247 42 0 c r0 n
 ama_in02 115 177 ama_dun01 229 10 0 c r1 c r0 n
@@ -3695,3 +3695,8 @@ hugel 52 90 hu_in01 33 90
 ein_dun02 16 250 ein_dun03 268 279
 enchant01 160 67 enchant01 101 90
 enchant01 101 86 enchant01 164 67
+1@xm_d 76 129 1@xm_d 88 129
+1@xm_d 184 109 1@xm_d 170 129
+1@xm_d 179 129 1@xm_d 183 100
+1@xm_d 130 178 1@xm_d 130 193
+1@xm_d 107 208 1@xm_d 87 208

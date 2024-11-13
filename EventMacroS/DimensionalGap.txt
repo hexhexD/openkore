@@ -4,6 +4,7 @@
 # magic
 # devils_tower 
 # battle_ship
+# toyfactory ホラーおもちゃ工場
 
 ####################################### Ghost Palace
 macro ghost {
@@ -166,11 +167,6 @@ automacro ghost_boss_death {
 			log 呪いの根源 dead xD
 			do move 202 38
 			do talknpc 196 44 r0 r0 r0
-			do move 196 44
-
-			# walk to make sure we pick up stuff
-			do move 198 27
-			do move 196 44
 		}
 	}
 }
@@ -178,6 +174,11 @@ automacro ghost_exit {
 	LocalMsg /周辺の風景が歪み始めた/
 	InMap 1@spa
 	call {
+    # do a dance to make sure we pick up stuff
+    do move 196 44
+    do move 198 27
+    do move 196 44
+
 		do move 198 27
 		do talknpc 204 29 r0 r0
 		do move 211 27
@@ -729,3 +730,66 @@ automacro battle_ship_endend {
   }
 	}
 }
+
+### ホラーおもちゃ工場
+macro toyfactory {
+  call regroup
+  do move xmas 235 298
+  do talknpc 237 303 r0 r0 r0 r0 r0 r0 r0 r0 r0 r0
+  do talknpc 237 303 r0 r0
+}
+automacro toyfactory_ready {
+	SimpleHookEvent instance_ready
+	InMap xmas
+	call {
+    do talknpc 233 305 r0
+	}
+}
+automacro toyfactory_entered {
+  InMap 1@xm_d
+  #IsInCoordinate 47 130
+  timeout 600
+  call {
+    log implement me!
+  }
+}
+automacro toyfacotr_advance {
+	InMap 1@xm_d
+  LocalMsg /手が空いているやつは北西にあるレールのところまで来てくれ/
+	call {
+    # transform again
+    do move 112 22
+    do talknpc 116 16
+
+    do move 73 129
+    do talknpc 71 129
+    pause 3
+    do talknpc 65 127
+
+    do move 76 129
+    pause 1
+    do move 179 129
+	}
+}
+automacro toyfactory_10workers {
+  InMap 1@xm_d
+  IsInCoordinate 183 100
+  timeout 600
+  call {
+    log implement me!
+    do talknpc 185 100 r2
+    pause 10
+    do talknpc 185 94
+
+    do move 165 107
+    do talknpc 155 98 r0
+  }
+}
+automacro toyfacotr_next {
+	InMap 1@xm_d
+  LocalMsg /通れなかった休憩室の扉が開いたようだ。包装済みのボックスを移動するために使ったレールを北に上がった場所に休憩室があったはず/
+	call {
+    do move 184 109
+    do move 130 178
+}
+
