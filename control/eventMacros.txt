@@ -8,7 +8,6 @@
 !include ../EventMacroS/GlastHeim.txt
 !include ../EventMacroS/EndlessTower.txt
 
-
 !include ../EventMacroS/MainQuests.txt
 
 automacro frostAfterMapChange {
@@ -143,7 +142,7 @@ macro gx_rearm {
   &push(@equipmentList, +9 ヴァルキリーカースブライト [ニヒツ:覇王] [1]);
   &push(@equipmentList, +9 デスブリンガー [スキルディレイ - 15%:フラッド] [1]);
   &push(@equipmentList, 銀の矢);
-  &push(@equipmentList, +9 銀の毛皮のシューズ [Extra Str:MaxHP + 15%:スキルディレイ - 15%*2]);
+  &push(@equipmentList, +9 スターリースカイ・ツインプライム [必中攻撃 + 25%:豪傑] [1]);
   &push(@equipmentList, リングオブシルバークロウ [Special Luk:Special Str:Vit + 7] [1]);
   &push(@equipmentList, カルニウムイヤリング [Extra Str:MaxHP + 15%:スキルディレイ - 15%:詠唱時間 - 15%]);
   &push(@equipmentList, ペコペコの手綱);
@@ -176,7 +175,37 @@ macro gx_rearm {
   do storage close
 }
 
-macro test {
-  $test = &config(equipAuto)
-  log $test
+sub MD {
+  MD::MD(@_)
 }
+
+# Store euqipments and cycle to next character
+macro cycle {
+  set exclusive 1
+  [
+  do em enable mdStart
+
+  $char = &config(char)
+  $TOTAL = 6
+
+  log current char is $char
+
+  $char = &eval(($char + 1) % $TOTAL)
+  if (&defined($.param[0])) {
+    $char = $.param[0]
+  }
+
+  log new char is $char
+  do conf char $char
+
+  $char = unset
+  $TOTAL = unset
+]
+
+  call gxstore
+
+  do charselect
+
+  call gxget
+}
+

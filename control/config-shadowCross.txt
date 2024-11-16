@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword hohaheey
+adminPassword deprewie
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 2
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -268,7 +268,7 @@ statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
 skillsAddAuto 1
-skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 3, エンチャントポイズン 6, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 9, メテオアサルト 10, GC_ROLLINGCUTTER 5, クローキングエクシード 5, クロスインパクト 5, ダークイリュージョン 5, ファントムメナス 1, ハルシネーションウォーク 5, ダーククロー 5, ウェポンブロッキング 3, カウンタースラッシュ 10, ベナムインプレス 5, 新毒研究 9, ポイズニングウェポン 5, ウェポンクラッシュ 5, SHC_SHADOW_SENSE 3, SHC_SAVAGE_IMPACT 10, SHC_IMPACT_CRATER 5, SHC_SHADOW_SENSE 10
+skillsAddAuto_list NV_BASIC 9, ダブルアタック 10, 回避率増加 10, TF_POISON 10, TF_STEAL 10, TF_HIDING 8, TF_DETOXIFY 1, カタール修練 10, 右手修練 5, 左手修練 5, ソニックブロー 10, クローキング 3, エンチャントポイズン 6, クリエイトデッドリーポイズン 1, エンチャントデッドリーポイズン 5, カタール研究 5, ソウルブレイカー 10, メテオアサルト 9, GC_ROLLINGCUTTER 5, クローキングエクシード 5, クロスインパクト 5, ダークイリュージョン 5, ファントムメナス 1, ハルシネーションウォーク 5, ダーククロー 5, ウェポンブロッキング 3, カウンタースラッシュ 10, ベナムインプレス 5, 新毒研究 8, ポイズニングウェポン 5, ウェポンクラッシュ 5, SHC_SHADOW_SENSE 3, SHC_SAVAGE_IMPACT 10, SHC_IMPACT_CRATER 5, SHC_SHADOW_SENSE 10
 tankMode 0
 tankModeTarget
 
@@ -617,22 +617,14 @@ attackSkillSlot AS_ENCHANTPOISON {
 	timeout 30
 }
 attackSkillSlot GC_DARKCROW {
-	monsters フェンリル, 呪いの根源, 大長老アイリン, サラの幻影#1, 暴走した船長ペルロック
 	lvl 5
 	minCastTime 0
 	timeout 5
 }
-attackSkillSlot GC_DARKCROW {
-	inMap 1@ge_st
-	lvl 5
-	timeout 5
-	minCastTime 2
-}
-
 attackSkillSlot SHC_SAVAGE_IMPACT {
 	lvl 10
 	maxDist 9
-	timeout 0.5
+	#timeout 0.5
 }
 attackSkillSlot GC_ROLLINGCUTTER {
 	label roller
@@ -852,13 +844,14 @@ equipAuto {
 	manualAI 0
 }
 equipAuto {
-	timeout 30
+	timeout 20
 	baseLvl < 100
 	topHead +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%]
+	notInTown 1
 }
 
 equipAuto {
-	timeout 1
+	timeout 20
 	topHead +9 フェイスオブイグドラシル [厄災の魔将:英雄の凱歌] [1]
 	lowHead くわえたチョコスティック
 	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
@@ -1047,21 +1040,21 @@ getAuto {
 	disabled 0
 }
 getAuto 毒薬の瓶 {
-	minAmount 5
+	minAmount 15
 	maxAmount 15
 	batchSize
 	passive 1
 	disabled 0
 }
 getAuto 万能薬 {
-	minAmount 1
+	minAmount 5
 	maxAmount 5
 	batchSize
 	passive 1
 	disabled 0
 }
 getAuto ハイスピードポーション {
-	minAmount 1
+	minAmount 10
 	maxAmount 10
 	batchSize
 	passive 1
@@ -1076,7 +1069,7 @@ debug 0
 debugPacket_unparsed 1
 debugPacket_received 0
 debugPacket_ro_sent 0
-debugPacket_sent 1
+debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include 0983
 debugPacket_include_dumpMethod 0

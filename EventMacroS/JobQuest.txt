@@ -159,7 +159,7 @@ automacro assassin_change {
   run-once 1
   NotInMap in_moc_16
   call {
-    # do is ペコペコの手綱
+    do is ペコペコの手綱
 		do conf route_randomWalk 0
 		do conf attackAuto 1
     do move in_moc_16 19 29

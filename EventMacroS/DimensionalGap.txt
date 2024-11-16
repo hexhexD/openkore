@@ -753,7 +753,7 @@ automacro toyfactory_entered {
     log implement me!
   }
 }
-automacro toyfacotr_advance {
+automacro toyfactory_advance {
 	InMap 1@xm_d
   LocalMsg /手が空いているやつは北西にあるレールのところまで来てくれ/
 	call {
@@ -785,11 +785,12 @@ automacro toyfactory_10workers {
     do talknpc 155 98 r0
   }
 }
-automacro toyfacotr_next {
+automacro toyfactory_next {
 	InMap 1@xm_d
   LocalMsg /通れなかった休憩室の扉が開いたようだ。包装済みのボックスを移動するために使ったレールを北に上がった場所に休憩室があったはず/
 	call {
     do move 184 109
     do move 130 178
+  }
 }
 

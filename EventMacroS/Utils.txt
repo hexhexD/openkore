@@ -14,39 +14,6 @@ macro regroup {
 	do conf route_randomWalk 0
 ]
 }
-
-sub MD {
-  MD::MD(@_)
-}
-
-# Store euqipments and cycle to next character
-macro cycle {
-  set exclusive 1
-  do em enable mdStart
-
-  $char = &config(char)
-  $TOTAL = 6
-
-  log current char is $char
-
-  $char = &eval(($char + 1) % $TOTAL)
-  if (&defined($.param[0])) {
-    $char = $.param[0]
-  }
-
-  log new char is $char
-  do conf char $char
-
-  $char = unset
-  $TOTAL = unset
-
-  call gxstore
-
-  do charselect
-
-  call gxget
-}
-
 ### airship ###
 macro yuno_rachel {
 	do conf attackAuto 0
