@@ -2,7 +2,7 @@
 alberta 195 151 alb2trea 62 69 0 c c r0
 alb2trea 39 50 alberta 192 169 0 r0
 alberta 247 122 tur_dun01 157 39 10000 c r1 c r0 c c c
-alberta 245 45 lou_fild01 190 101 10000 c r1 c c r0
+alberta 246 40 lou_fild01 190 101 10000 c r1 c c r0
 alberta 247 42 ayothaya 149 71 10000 c r1 c c r0 n
 lou_fild01 190 100 alberta 235 45 0 c r0
 tur_dun01 165 29 alberta 241 115 0 c r0 c c
@@ -109,7 +109,6 @@ prontera 29 207 morocc 156 47 1200 1 c r2 c r3
 prontera 29 207 alberta 117 56 1800 1 c r2 c r4
 prontera 29 207 aldebaran 168 112 2000 1 c r2 c r5
 prontera 29 207 gef_fild10 52 326 2000 1 c r2 c r6
-prontera 98 120 yuno 157 167 1800 1 c c r0 c
 prontera 130 94 world_st02 100 100 0 c c r1 c r0
 geffen 120 62 prontera 116 72 1200 1 c r2 c r0
 geffen 120 62 aldebaran 168 112 1200 1 c r2 c r1
@@ -952,7 +951,7 @@ ein_fild09 328 344 ein_fild10 28 330
 ein_fild10 25 330 ein_fild09 325 344
 ein_fild10 196 371 ein_fild07 179 46
 gef_dun00 104 103 gef_tower 153 28
-gef_dun00 107 168 gef_dun01 115 240
+gef_dun00 107 169 gef_dun01 115 240
 gef_dun01 115 240 gef_dun00 107 169
 gef_dun01 197 38 gef_dun02 106 134
 gef_dun02 106 134 gef_dun01 197 38
