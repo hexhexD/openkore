@@ -602,6 +602,7 @@ automacro battle_ship_entered {
 	timeout 600
   call {
     do move 225 63
+		do conf route_randomWalk 2
     do talknpc 217 67 r0
   }
 }
@@ -620,7 +621,6 @@ automacro battle_ship_lower_deck {
   call {
     do conf attackAuto 2
     do move 78 60
-		do conf route_randomWalk 2
   }
 }
 automacro battle_ship_lower_deck_1 {

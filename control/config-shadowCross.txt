@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword deprewie
+adminPassword spaspaig
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 2
+attackAuto 0
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -263,7 +263,7 @@ sitAuto_look_from_wall
 sitTensionRelax 0
 
 statsAddAuto 1
-statsAddAuto_list dex 40, str 30, agi 50, str 50, agi 90, str 90, vit 90, dex 50, luk 60, agi 100, str 120, vit 110, int 90, str 130, vit 120
+statsAddAuto_list dex 40, str 30, agi 50, str 50, agi 90, str 90, vit 90, luk 60, agi 100, str 130, int 90, vit 120, dex 50
 statsAddAuto_dontUseBonus 1
 statsAdd_over_99 1
 
@@ -616,7 +616,16 @@ attackSkillSlot AS_ENCHANTPOISON {
 	maxAttempts 2
 	timeout 30
 }
+
 attackSkillSlot GC_DARKCROW {
+	inMap 1@ge_st
+	lvl 5
+	minCastTime 0
+	timeout 5
+}
+
+attackSkillSlot GC_DARKCROW {
+	monsters フェンリル, 呪いの根源, 大長老アイリン, サラの幻影#1, 暴走した船長ペルロック
 	lvl 5
 	minCastTime 0
 	timeout 5
@@ -851,17 +860,16 @@ equipAuto {
 }
 
 equipAuto {
-	timeout 20
 	topHead +9 フェイスオブイグドラシル [厄災の魔将:英雄の凱歌] [1]
 	lowHead くわえたチョコスティック
-	leftHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
-	rightHand +9 メロンカタール [Special Str:アルカナ:覇王] [1]
+	leftHand +9 モイスラ-OS [2 Option]
+	rightHand +9 モイスラ-OS [2 Option]
 	robe +9 ヴァルキリーカースブライト [ニヒツ:覇王] [1]
 	armor +9 デスブリンガー [スキルディレイ - 15%:フラッド] [1]
 	arrow 銀の矢
-	shoes +9 銀の毛皮のシューズ [Extra Str:MaxHP + 15%:スキルディレイ - 15%*2]
-	rightAccessory リングオブシルバークロウ [Special Luk:Special Str:Vit + 7] [1]
-	leftAccessory カルニウムイヤリング [Extra Str:MaxHP + 15%:スキルディレイ - 15%:詠唱時間 - 15%]
+	shoes +9 スターリースカイ・ツインプライム [必中攻撃 + 25%:豪傑] [1]
+	rightAccessory アムルタート [Special Agi:Special Luk:Special Vit] [1]
+	leftAccessory リングオブシルバークロウ [Special Luk:Special Str:Str + 7] [1]
 	costumeTopHead [衣装] 輝くマジェスティックゴート
 	notInTown 1
 }
@@ -1080,4 +1088,4 @@ logToFile_Messages
 logToFile_Warnings
 history_max 50
 macro_orphans terminate
-charSelect_password 1111
+charSelect_password 1111yti
