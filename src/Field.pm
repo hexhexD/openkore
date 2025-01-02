@@ -67,7 +67,7 @@ use constant {
 ##
 # Field->new(options...)
 #
-# Create a new Load a field (.fld2) file.
+# Create a new Load a field (.fld2) file. 
 #
 # This function also loads an associated .weight file
 # (the weight per cell file), which is used by pathfinding (for path choosing).
@@ -212,12 +212,12 @@ sub isOffMap {
 
 sub getCellInfo {
 	my ($self, $x, $y) = @_;
-
+	
 	if ($self->isOffMap($x, $y)) {
 		message "Cell $x $y is off the map.\n";
 		return;
 	}
-
+	
 	if ($self->isWalkable($x, $y)) {
 		message "Cell $x $y is walkable.\n";
 		my $weight = $self->getBlockWeight($x, $y);
@@ -225,19 +225,19 @@ sub getCellInfo {
 	} else {
 		message "Cell $x $y is not walkable.\n";
 	}
-
+	
 	if ($self->isSnipable($x, $y)) {
 		message "Cell $x $y is snipable.\n";
 	} else {
 		message "Cell $x $y is not snipable.\n";
 	}
-
+	
 	if ($self->isWater($x, $y)) {
 		message "Cell $x $y is water.\n";
 	} else {
 		message "Cell $x $y is not water.\n";
 	}
-
+	
 	if ($self->isCliff($x, $y)) {
 		message "Cell $x $y is a Cliff.\n";
 	} else {
@@ -249,48 +249,40 @@ sub getCellInfo {
 # boolean $Field->isWalkable(int x, int y)
 #
 # Check whether you can walk on ($x,$y) on this field.
+#  1.73 microsec -> 798.04 nanosec p.o.
 sub isWalkable {
 	my ($self, $x, $y) = @_;
-	return 0 if ($self->isOffMap($x, $y));
-	my $offset = $self->getOffset($x, $y);
-	my $value = $self->getBlock($offset);
-	return ($value & TILE_WALK);
+	return PathFinding::checkTile($x, $y, TILE_WALK, $self->{width}, $self->{height}, \$self->{rawMap});
 }
 
 ##
 # boolean $Field->isSnipable(int x, int y)
 #
 # Check whether you can snipe through ($x,$y) on this field.
+#  1.73 microsec -> 798.04 nanosec p.o.
 sub isSnipable {
 	my ($self, $x, $y) = @_;
-	return 0 if ($self->isOffMap($x, $y));
-	my $offset = $self->getOffset($x, $y);
-	my $value = $self->getBlock($offset);
-	return ($value & TILE_SNIPE);
+	return PathFinding::checkTile($x, $y, TILE_SNIPE, $self->{width}, $self->{height}, \$self->{rawMap});
 }
 
 ##
 # boolean $Field->isWater(int x, int y)
 #
 # Check whether there is water ($x,$y) on this field.
+#  1.73 microsec -> 798.04 nanosec p.o.
 sub isWater {
 	my ($self, $x, $y) = @_;
-	return 0 if ($self->isOffMap($x, $y));
-	my $offset = $self->getOffset($x, $y);
-	my $value = $self->getBlock($offset);
-	return ($value & TILE_WATER);
+	return PathFinding::checkTile($x, $y, TILE_WATER, $self->{width}, $self->{height}, \$self->{rawMap});
 }
 
 ##
 # boolean $Field->isCliff(int x, int y)
 #
 # Check whether cell ($x,$y) in a cliff on this field.
+#  1.73 microsec -> 798.04 nanosec p.o.
 sub isCliff {
 	my ($self, $x, $y) = @_;
-	return 0 if ($self->isOffMap($x, $y));
-	my $offset = $self->getOffset($x, $y);
-	my $value = $self->getBlock($offset);
-	return ($value & TILE_CLIFF);
+	return PathFinding::checkTile($x, $y, TILE_CLIFF, $self->{width}, $self->{height}, \$self->{rawMap});
 }
 
 sub getBlockWeight {
@@ -314,26 +306,49 @@ sub getBlockDist {
 # Returns: walkable position in a reference to a position hash (which contains 'x' and 'y' keys) on success or undef on failure.
 sub closestWalkableSpot {
 	my ($self, $pos, $max_distance) = @_;
-
+	
 	my %center = ( x => $pos->{x}, y => $pos->{y} );
-
+	
 	if ($self->isWalkable($pos->{x}, $pos->{y})) {
 		return \%center;
 	}
-
+	
 	return if (!$max_distance);
-
+	
 	my @current_distance = (1..$max_distance);
-
+	
 	foreach my $distance (@current_distance) {
-		my @blocks = Misc::calcRectArea($center{x}, $center{y}, $distance, $self);
+		my @blocks = $self->calcRectArea($center{x}, $center{y}, $distance);
 		foreach my $block (@blocks) {
 			next if (!$self->isWalkable($block->{x}, $block->{y}));
 			return $block;
 		}
 	}
-
+	
 	return undef;
+}
+
+sub getSquareEdgesFromCoord {
+    my ($self, $start, $radius) = @_;
+
+	my @coords;
+	PathFinding::getSquareEdgesFromCoord($start->{x}, $start->{y}, $radius, $self->{width}, $self->{height}, \@coords);
+	return @coords;
+}
+
+##
+# $Field->calcRectArea($x, $y, $radius)
+# Returns: an array with position hashes. Each has contains an x and a y key.
+#
+# Creates a rectangle with center ($x,$y) and radius $radius,
+# and returns a list of positions of the border of the rectangle.
+# 8.9us -> 1.1us
+sub calcRectArea {
+	my ($self, $x, $y, $radius) = @_;
+
+	my @walkableBlocks;
+	PathFinding::calcRectArea($x, $y, $radius, TILE_WALK, $self->{width}, $self->{height}, \$self->{rawMap}, \@walkableBlocks);
+	return @walkableBlocks;
 }
 
 # Bresenham's algorithm
@@ -342,83 +357,38 @@ sub closestWalkableSpot {
 # Do not use for checking if you can walk between 2 cells, use checkPathFree for that
 #
 # Reference: hercules src\map\path.c path_search_long
+# 27.2micros -> 1.2micros
 sub checkLOS {
 	my ($self, $from, $to, $can_snipe) = @_;
-
-	my ($X0, $Y0, $X1, $Y1) = ($from->{x}, $from->{y}, $to->{x}, $to->{y});
-
-	my $steep;
-	my $posX = 1;
-	my $posY = 1;
-	if ($X1 - $X0 < 0) {
-		$posX = -1;
-	}
-	if ($Y1 - $Y0 < 0) {
-		$posY = -1;
-	}
-	if (abs($Y0 - $Y1) < abs($X0 - $X1)) {
-		$steep = 0;
+	
+	my $tile;
+	if ($can_snipe) {
+		$tile = TILE_WALK|TILE_SNIPE;
 	} else {
-		$steep = 1;
+		$tile = TILE_WALK;
 	}
-	if ($steep == 1) {
-		my $Yt = $Y0;
-		$Y0 = $X0;
-		$X0 = $Yt;
+	
+	return PathFinding::checkLOS($from->{x}, $from->{y}, $to->{x}, $to->{y}, $tile, $self->{width}, $self->{height}, \$self->{rawMap});
+}
 
-		$Yt = $Y1;
-		$Y1 = $X1;
-		$X1 = $Yt;
-	}
-	if ($X0 > $X1) {
-		my $Xt = $X0;
-		$X0 = $X1;
-		$X1 = $Xt;
-
-		my $Yt = $Y0;
-		$Y0 = $Y1;
-		$Y1 = $Yt;
-	}
-	my $dX = $X1 - $X0;
-	my $dY = abs($Y1 - $Y0);
-	my $E = 0;
-	my $dE;
-	if ($dX) {
-		$dE = $dY / $dX;
+# Returns:
+# -1: No LOS
+#  0: out of range
+#  1: sucess
+#
+# Reference: hercules src\map\battle.c battle_check_range
+# 3.1micros -> 1.1micros
+sub canAttack {
+	my ($self, $pos1, $pos2, $can_snipe, $range, $clientSight) = @_;
+	
+	my $tile;
+	if ($can_snipe) {
+		$tile = TILE_WALK|TILE_SNIPE;
 	} else {
-		# Delta X is 0, it only occures when $from is equal to $to
-		return 1;
+		$tile = TILE_WALK;
 	}
-	my $stepY;
-	if ($Y0 < $Y1) {
-		$stepY = 1;
-	} else {
-		$stepY = -1;
-	}
-	my $Y = $Y0;
-	my $Erate = 0.99;
-	if (($posY == -1 && $posX == 1) || ($posY == 1 && $posX == -1)) {
-		$Erate = 0.01;
-	}
-	for (my $X=$X0;$X<=$X1;$X++) {
-		$E += $dE;
-		if ($steep == 1) {
-			if (!$self->isWalkable($Y, $X)) {
-				return 0 if (!$can_snipe);
-				return 0 if (!$self->isSnipable($Y, $X))
-			}
-		} else {
-			if (!$self->isWalkable($X, $Y)) {
-				return 0 if (!$can_snipe);
-				return 0 if (!$self->isSnipable($X, $Y))
-			}
-		}
-		if ($E >= $Erate) {
-			$Y += $stepY;
-			$E -= 1;
-		}
-	}
-	return 1;
+	
+	return PathFinding::canAttack($pos1->{x}, $pos1->{y}, $pos2->{x}, $pos2->{y}, $tile, $self->{width}, $self->{height}, $range, $clientSight, \$self->{rawMap});
 }
 
 # Used for checking if there are no obstacles in a given walking solution
@@ -430,39 +400,8 @@ sub checkLOS {
 #
 # Reference: hercules src\map\path.c path_search - flag&1
 sub checkPathFree {
-	my ($self, $solution) = @_;
-
-	return 0 unless ($self->isWalkable($solution->[0]{x}, $solution->[0]{y}));
-
-	my %current_pos;
-	my %next_pos;
-
-	my $stepType = 0; # 1 - vertical or horizontal; 2 - diagonal
-
-	my $last = $#{$solution};
-
-	foreach my $current_step (0..$last) {
-		%current_pos = ( x => $solution->[$current_step]{x}, y => $solution->[$current_step]{y} );
-
-		my $next_step = $current_step+1;
-		%next_pos = ( x => $solution->[$next_step]{x}, y => $solution->[$next_step]{y} );
-		return 0 unless ($self->isWalkable($next_pos{x}, $next_pos{y}));
-
-		$stepType = 0;
-		if ($current_pos{x} != $next_pos{x}) {
-			$stepType++;
-		}
-		if ($current_pos{y} != $next_pos{y}) {
-			$stepType++;
-		}
-
-		if ($stepType == 2) {
-			return 0 unless ($self->isWalkable($current_pos{x}, $next_pos{y}));
-			return 0 unless ($self->isWalkable($next_pos{x}, $current_pos{y}));
-		}
-
-		return 1 if ($next_step == $last);
-	}
+	my ($self, $from, $to) = @_;
+	return PathFinding::checkPathFree($from->{x}, $from->{y}, $to->{x}, $to->{y}, TILE_WALK, $self->{width}, $self->{height}, \$self->{rawMap});
 }
 
 # Checks wheter you can send a move command from $from to $to
@@ -470,27 +409,31 @@ sub checkPathFree {
 # Reference: hercules src\map\unit.c unit_walk_toxy
 #
 # Todo this should be used in a lot more places like Task::Route and Follow
+# Can probably be moved to XS-cpp
 sub canMove {
 	my ($self, $from, $to) = @_;
 
+	return 0 unless ($self->isWalkable($from->{x}, $from->{y}));
 	return 0 unless ($self->isWalkable($to->{x}, $to->{y}));
 
 	my $dist = blockDistance($from, $to);
 
 	# This 17 is actually set at
 	# hercules conf\map\battle\client.conf max_walk_path (which is by default 17, can be higher)
+	# TODO: Change this 17 to a config key with default value 17
 	if ($dist > 17) {
 		return 0;
 	}
 
+	# Actually uses CheckLos at rathena - TODO: check which is better, both work
 	# If there are no obstacles return success
-	if ($dist < 2) {
-		return $self->checkLOS($from, $to, 0);
-	} else {
-		my $easy_solution = get_client_easy_solution($from, $to);
-		if ($self->checkPathFree($easy_solution)) {
-			return 1;
-		}
+	if ($self->checkPathFree($from, $to)) {
+		return 1;
+	}
+	
+	# If there are obstacles and the path is walkable the max solution dist acceptable is 14 (double check to save time)
+	if ($dist > 14) {
+		return 0;
 	}
 
 	# If there are obstacles and OFFICIAL_WALKPATH is defined (which is by default) then calculate a client pathfinding
@@ -501,33 +444,13 @@ sub canMove {
 		return 0;
 	}
 
-	# Pathfinding always returns the original cell in the solution, so remove 1 from it
-	$dist_path -= 1;
-
-	# If there are obstacles and the path is walkable the max solution dist acceptable is 14
-	if ($dist_path > 14) {
+	# Pathfinding always returns the original cell in the solution, so remove 1 from it (or compare to 15 (14+1))
+	#$dist_path -= 1;
+	if ($dist_path > 15) {
 		return 0;
 	}
 
 	return 1;
-}
-
-sub checkWallLength {
-	my ($self, $pos, $dx, $dy, $length) = @_;
-
-	my $x = $pos->{x};
-	my $y = $pos->{y};
-	my $len = 0;
-
-	while (1) {
-		last if ($self->isOffMap($x, $y));
-		$x += $dx;
-		$y += $dy;
-		$len++;
-		last unless (!$self->isWalkable($x, $y) && $len < $length);
-	}
-
-	return (($len >= $length) ? 1 : 0);
 }
 
 ##
@@ -594,7 +517,7 @@ sub loadFile {
 	$weightFile =~ s/\.fld2(\.gz)?$/.weight/i;
 	if ($loadWeightMap) {
 		if ((!-f $weightFile && !-f $weightFile.'.gz') || !$self->loadWeightMap($weightFile, $width, $height)) {
-
+			
 			# Load the associated distance map (.dist file)
 			my $distFile = $filename;
 			$distFile =~ s/\.fld2(\.gz)?$/.dist/i;
@@ -610,7 +533,7 @@ sub loadFile {
 					close $f;
 				}
 			}
-
+			
 			# (Re)create the weight map.
 			my $f;
 			$self->{weightMap} = Utils::makeWeightMap($self->{dstMap}, $width, $height);
@@ -621,7 +544,7 @@ sub loadFile {
 				print $f $self->{weightMap};
 				close $f;
 			}
-
+			
 			delete $self->{dstMap};
 		}
 	} else {
@@ -650,13 +573,13 @@ sub loadFile {
 sub loadWeightMap {
 	my ($self, $filename, $width, $height) = @_;
 	my ($f, $weightData);
-
+	
 	$filename .= '.gz' if (-f $filename.'.gz');
-
+	
 	if ($filename =~ /\.gz$/) {
 		use bytes;
 		no encoding 'utf8';
-
+		
 		my $gz = gzopen($filename, 'rb');
 		if (!$gz) {
 			IOException->throw("Cannot open $filename for reading.");
@@ -683,7 +606,7 @@ sub loadWeightMap {
 		IOException->throw("Cannot open distance map $filename for reading.");
 		return;
 	}
-
+	
 	# Get file version.
 	my $dversion = 0;
 	if (substr($weightData, 0, 2) eq "V#") {

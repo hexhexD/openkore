@@ -112,7 +112,7 @@ sub reset {
 
 		$args{randomFactor} = 0 unless (defined $args{randomFactor});
 		$args{useManhattan} = 0 unless (defined $args{useManhattan});
-
+		
 		$args{width} = $args{field}{width} unless (defined $args{width});
 		$args{height} = $args{field}{height} unless (defined $args{height});
 		$args{timeout} = 1500 unless (defined $args{timeout});
@@ -123,13 +123,13 @@ sub reset {
 	}
 
 	return $class->_reset(
-		$args{weight_map},
-		$args{avoidWalls},
+		$args{weight_map}, 
+		$args{avoidWalls}, 
 		$args{customWeights},
 		$args{secondWeightMap},
 		$args{randomFactor},
 		$args{useManhattan},
-		$args{width},
+		$args{width}, 
 		$args{height},
 		$args{start}{x},
 		$args{start}{y},

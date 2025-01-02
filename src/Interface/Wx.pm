@@ -934,6 +934,17 @@ sub get_task {
 	}
 }
 
+sub get_task {
+	my ($args) = @_;
+	if (UNIVERSAL::isa($args, 'Task::Route')) {
+		return $args;
+	} elsif (UNIVERSAL::isa($args, 'Task::MapRoute') && $args->getSubtask && UNIVERSAL::isa($args->getSubtask, 'Task::Route')) {
+		return $args->getSubtask;
+	} else {
+		return undef;
+	}
+}
+
 sub updateMapViewer {
 	my $self = shift;
 	my $map = $self->{mapViewer};
