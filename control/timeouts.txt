@@ -171,6 +171,8 @@ ai_route_npcTalk 10
 ai_npc_talk_wait_after_close_to_cancel 0.1
 ai_npc_talk_wait_after_cancel_to_destroy 0.1
 
+ai_npc_talk_wait_before_continue 0.7
+
 ai_buyAuto 5
 ai_buyAuto_wait 2
 ai_buyAuto_wait_giveup_npc 15
@@ -213,3 +215,6 @@ patchserver 120
 
 # Time to wait before load map in xKore mode
 ai_clientSuspend 0
+
+meetingPosition_extra_time_actor 0.2
+meetingPosition_extra_time_target 0.5

@@ -40,7 +40,6 @@ use Utils::Exceptions;
 use Network::MessageTokenizer;
 
 my $clientBuffer;
-my %flushTimer;
 my $currentClientKey = 0;
 
 # Members:
@@ -81,6 +80,17 @@ sub new {
 		no encoding 'utf8';
 		$self->{packetPending} = '';
 		$clientBuffer = '';
+	}
+
+	eval {
+		$clientPacketHandler = Network::ClientReceive->new;
+		$packetParser = Network::Receive->create($self, $masterServer->{serverType});
+		$messageSender = Network::Send->create($self, $masterServer->{serverType});
+	};
+	if (my $e = caught('Exception::Class::Base')) {
+		$interface->errorDialog($e->message());
+		$quit = 1;
+		return;
 	}
 
 	message T("X-Kore mode intialized.\n"), "startup";
@@ -137,6 +147,44 @@ sub serverRecv {
 sub serverSend {
 	my $self = shift;
 	my $msg = shift;
+
+	if (!defined $msg || length($msg) >= 2) {
+		# Get packet switch
+		my $switch = uc(unpack("H2", substr($msg, 1, 1))) . uc(unpack("H2", substr($msg, 0, 1)));
+		# Handle 'master_login'
+		if ($switch eq "0C26" && $config{username} && $config{password}) {
+			# Log master login packet
+			warning "Modifying packet 'master_login'...\n", "xkoreProxy";
+			# Parse master login packet
+			my ($game_code, $username, $password_rijndael, $flag) = unpack('a4 Z51 a32 a5', substr($msg, 2));
+			# Rebuild master login packet
+			$msg = $messageSender->reconstruct({
+				switch => 'master_login',
+				game_code => $game_code,
+				username => $config{username},
+				password => $config{password},
+				flag => $flag,
+			});
+		}
+		# Handle 'token_login'
+		elsif ($switch eq "0825" && $config{username} && $config{password}) {
+			# Log token login packet
+			warning "Modifying packet 'token_login'...\n", "xkoreProxy";
+			# Parse token login packet
+			my ($len, $version, $master_version, $username, $mac_hyphen_separated, $ip, $token) = unpack('v V C Z51 a17 a15 a*', substr($msg, 2));
+			# Rebuild token login packet
+			$msg = $messageSender->reconstruct({
+				switch => "token_login",
+				len => $len,
+				version => $version,
+				master_version => $master_version,
+				username => $config{username},
+				mac_hyphen_separated => $mac_hyphen_separated,
+				ip => inet_aton($self->{publicIP} || $self->{proxy}->sockhost),
+				token => $token,
+			});
+		}
+	}
 
 	$self->{server}->serverSend($msg);
 }
@@ -207,10 +255,22 @@ sub clientSend {
 
 	return unless ($self->proxyAlive);
 
-	$msg = $self->modifyPacketIn($msg) unless ($dontMod);
+	my $switch = uc(unpack("H2", substr($msg, 1, 1))) . uc(unpack("H2", substr($msg, 0, 1)));
+
+	if ($switch eq "08B9") { # login_pin_code_request
+		my $seed = unpack("V", substr($msg,  2, 4));
+		my $accountID = unpack("a4", substr($msg, 6, 4));
+		my $flag = unpack("v", substr($msg, 10, 2));
+
+		if ($flag == 1 and $config{loginPinCode}) {
+			$messageSender->sendLoginPinCode($seed, 0);
+		}
+	}
+
+	$msg = $self->modifyPacketIn($msg, $switch) unless ($dontMod);
 	if ($config{debugPacket_ro_received}) {
-		debug "Modified packet sent to client\n";
-		visualDump($msg, 'clientSend');
+		debug "Modified packet sent to client\n", "xkoreProxy";
+		visualDump($msg, 'sendToClient');
 	}
 
 	# queue message instead of sending directly
@@ -223,7 +283,7 @@ sub clientFlush {
 	return unless (length($clientBuffer));
 
 	$self->{proxy}->send($clientBuffer);
-	debug "Client network buffer flushed out\n";
+	debug "Client network buffer flushed out\n", "xkoreProxy";
 	$clientBuffer = '';
 }
 
@@ -238,6 +298,9 @@ sub clientRecv {
 		close($self->{proxy});
 		return undef;
 	}
+
+	my $switch = uc(unpack("H2", substr($msg, 1, 1))) . uc(unpack("H2", substr($msg, 0, 1)));
+	$msg = $self->modifyPacketOut($msg, $switch);
 
 	if($self->getState() eq Network::IN_GAME || $self->getState() eq Network::CONNECTED_TO_CHAR_SERVER) {
 		$self->onClientData($msg);
@@ -257,7 +320,6 @@ sub onClientData {
 	}
 	$self->decryptMessageID(\$msg);
 
-	$msg = $self->{tokenizer}->slicePacket($msg, \$additional_data); # slice packet if needed
 
 	$self->{tokenizer}->add($msg, 1);
 
@@ -314,7 +376,7 @@ sub checkProxy {
 
 		close $self->{proxy} if $self->{proxy};
 		$self->{waitClientDC} = undef;
-		debug "Removing pending packet from queue\n" if (defined $self->{packetPending});
+		debug "Removing pending packet from queue\n", "xkoreProxy" if (defined $self->{packetPending});
 		$self->{packetPending} = '';
 
 		# FIXME: there's a racing condition here. If the RO client tries to connect
@@ -354,25 +416,19 @@ sub checkServer {
 
 	# Connect to the next server for proxying the packets
 	if (!$self->serverAlive()) {
+		# if no next server was defined by received packets, setup a primary server.
+		my $master = $masterServer = $masterServers{$config{'master'}};
 
 		# Setup the next server to connect.
 		if (!$self->{nextIp} || !$self->{nextPort}) {
-			# if no next server was defined by received packets, setup a primary server.
-			my $master = $masterServer = $masterServers{$config{'master'}};
-
-			$self->{nextIp} = $master->{ip};
-			$self->{nextPort} = $master->{port};
-			message TF("Proxying to [%s]\n", $config{master}), "connection" unless ($self->{gotError});
-			eval {
-				$clientPacketHandler = Network::ClientReceive->new;
-				$packetParser = Network::Receive->create($self, $masterServer->{serverType});
-				$messageSender = Network::Send->create($self, $masterServer->{serverType});
-			};
-			if (my $e = caught('Exception::Class::Base')) {
-				$interface->errorDialog($e->message());
-				$quit = 1;
-				return;
+			if ($master->{OTP_ip} && $master->{OTP_port}) {
+				$self->{nextIp} = $master->{OTP_ip};
+				$self->{nextPort} = $master->{OTP_port};
+			} else {
+				$self->{nextIp} = $master->{ip};
+				$self->{nextPort} = $master->{port};
 			}
+			message TF("Proxying to [%s]\n", $config{master}), "connection" unless ($self->{gotError});
 		}
 
 		$self->serverConnect($self->{nextIp}, $self->{nextPort}) unless ($self->{gotError});
@@ -405,12 +461,12 @@ sub checkPacketReplay {
 	if ($self->{replayTimeout}{time} && timeOut($self->{replayTimeout})) {
 		if ($self->{packetReplayTrial} < 3) {
 			warning TF("Client did not respond in time.\n" .
-				"Trying to replay the packet for %s of 3 times\n", $self->{packetReplayTrial}++);
+				"Trying to replay the packet for %s of 3 times\n", $self->{packetReplayTrial}++), "connection";
 			$self->clientSend($self->{packetPending});
 			$self->{replayTimeout}{time} = time;
 			$self->{replayTimeout}{timeout} = 2.5;
 		} else {
-			error T("Client did not respond. Forcing disconnection\n");
+			error T("Client did not respond. Forcing disconnection\n"), "connection";
 			close($self->{proxy});
 			return;
 		}
@@ -422,18 +478,17 @@ sub checkPacketReplay {
 }
 
 sub modifyPacketIn {
-	my ($self, $msg) = @_;
+	my ($self, $msg, $switch) = @_;
 
 	return undef if (length($msg) < 1);
 
-	my $switch = uc(unpack("H2", substr($msg, 1, 1))) . uc(unpack("H2", substr($msg, 0, 1)));
 	if ($switch eq "02AE") {
 		$msg = "";
 	}
 
 	# packet replay check: reset status for every different packet received
 	if ($self->{packetPending} && ($self->{packetPending} ne $msg)) {
-		debug "Removing pending packet from queue\n";
+		debug "Removing pending packet from queue\n", "connection";
 		use bytes; no encoding 'utf8';
 		delete $self->{replayTimeout};
 		$self->{packetPending} = '';
@@ -441,14 +496,14 @@ sub modifyPacketIn {
 	} elsif ($self->{packetPending} && ($self->{packetPending} eq $msg)) {
 		# avoid doubled 0259 message: could mess the character selection and hang up the client
 		if ($switch eq "0259") {
-			debug T("Logon-grant packet received twice! Avoiding bug in client.\n");
+			debug T("Logon-grant packet received twice! Avoiding bug in client.\n"), "connection";
 			$self->{packetPending} = undef;
 			return undef;
 		}
 	}
 
 	# server list
-	if ($switch eq "0069" || $switch eq "0276" || $switch eq "0A4D" || $switch eq "0AC4" || $switch eq "0AC9" || $switch eq "0B07" || $switch eq "0B60") {
+	if ($switch eq "0069" || $switch eq "0276" || $switch eq "0A4D" || $switch eq "0AC4" || $switch eq "0AC9" || $switch eq "0B07" || $switch eq "0B60" || $switch eq "0C32") {
 		use bytes; no encoding 'utf8';
 
 		# queue the packet as requiring client's response in time
@@ -472,7 +527,7 @@ sub modifyPacketIn {
 			}
 		}
 
-		debug "Modifying Account Info packet...\n";
+		debug "Modifying Account Info packet...\n", "xkoreProxy";
 
 		my $xKoreCharServer = $servers[$config{server}];
 
@@ -500,20 +555,20 @@ sub modifyPacketIn {
 
 	} elsif ($switch eq "0071" || $switch eq "0AC5") { # login in map-server
 		my ($mapInfo, $server_info);
-		
+
 		# queue the packet as requiring client's response in time
 		$self->{packetPending} = $msg;
 
 		# Proxy the Logon to Map server
-		debug "Modifying Map Logon packet...\n", "connection";
-		
+		debug "Modifying Map Logon packet...\n", "xkoreProxy";
+
 		if ($switch eq '0AC5') { # cRO 2017
 			$server_info = {
 				types => 'a4 Z16 a4 v a128',
 				keys => [qw(charID mapName mapIP mapPort mapUrl)],
 			};
-			
-		} else { 
+
+		} else {
 			$server_info = {
 				types => 'a4 Z16 a4 v',
 				keys => [qw(charID mapName mapIP mapPort)],
@@ -521,7 +576,7 @@ sub modifyPacketIn {
 		}
 
 		my $ip = $self->{publicIP} || $self->{proxy}->sockhost;
-		
+
 		@{$mapInfo}{@{$server_info->{keys}}} = unpack($server_info->{types}, substr($msg, 2));
 
 		if (exists $mapInfo->{mapUrl} && $mapInfo->{'mapUrl'} =~ /.*\:\d+/) { # in cRO we have server.alias.com:port
@@ -561,17 +616,17 @@ sub modifyPacketIn {
 			message T("Closing connection to Map Server\n"), "connection" if (!$self->{packetReplayTrial});
 		}
 		$self->serverDisconnect(1);
-		
+
 	} elsif($switch eq "0092" || $switch eq "0AC7" || $switch eq "0A4C") { # In Game Map-server changed
 		my ($mapInfo, $server_info);
-		
+
 		if ($switch eq '0AC7') { # cRO 2017
 			$server_info = {
 				types => 'Z16 v2 a4 v a128',
 				keys => [qw(map x y IP port url)],
 			};
-			
-		} else { 
+
+		} else {
 			$server_info = {
 				types => 'Z16 v2 a4 v',
 				keys => [qw(map x y IP port)],
@@ -580,9 +635,9 @@ sub modifyPacketIn {
 
 		my $ip = $self->{publicIP} || $self->{proxy}->sockhost;
 		my $port = $self->{proxy}->sockport;
-		
+
 		@{$mapInfo}{@{$server_info->{keys}}} = unpack($server_info->{types}, substr($msg, 2));
-		
+
 		if (exists $mapInfo->{url} && $mapInfo->{'url'} =~ /.*\:\d+/) { # in cRO we have server.alias.com:port
 			@{$mapInfo}{@{[qw(ip port)]}} = split (/\:/, $mapInfo->{'url'});
 			$mapInfo->{ip} =~ s/^\s+|\s+$//g;
@@ -594,7 +649,7 @@ sub modifyPacketIn {
 		if($masterServer->{'private'}) {
 			$mapInfo->{ip} = $masterServer->{ip};
 		}
-	
+
 		$msg = $packetParser->reconstruct({
 			switch => $switch,
 			map => $mapInfo->{'map'},
@@ -608,7 +663,7 @@ sub modifyPacketIn {
 		$self->{nextIp} = $mapInfo->{ip};
 		$self->{nextPort} = $mapInfo->{'port'};
 		debug " next server to connect ($self->{nextIp}:$self->{nextPort})\n", "connection";
-		
+
 		# reset key when change map-server
 		if ($currentClientKey && $messageSender->{encryption}->{crypt_key}) {
 			$currentClientKey = $messageSender->{encryption}->{crypt_key_1};
@@ -616,13 +671,15 @@ sub modifyPacketIn {
 		}
 
 	} elsif ($switch eq "006A" || $switch eq "006C" || $switch eq "0081" || $switch eq "02CA" || $switch eq "083E" || $switch eq "0ACD" || $switch eq "0AE0") { # error while login in server
+		# Show error message
+		error T("Server reported an error, disconnecting...\n"), "connection";
 		# An error occurred. Restart proxying
 		$self->{gotError} = 1;
 		$self->{nextIp} = undef;
 		$self->{nextPort} = undef;
 		$self->{charServerIp} = undef;
 		$self->{charServerPort} = undef;
-		$self->serverDisconnect(1);
+		$self->serverDisconnect();
 
 	} elsif ($switch eq "00B3") {
 		$self->{nextIp} = $self->{charServerIp};
@@ -632,7 +689,29 @@ sub modifyPacketIn {
 	} elsif ($switch eq "0259") {
 		# queue the packet as requiring client's response in time
 		$self->{packetPending} = $msg;
-	}
+	} elsif ($switch eq "0AE3") { # If token was received, we need to connect to login server
+        # Parse token response
+        my ($len, $login_type, $flag, $login_token) = unpack('v l Z20 Z*', substr($msg, 2));
+        # If token response contains a login token, we need to connect to the master server
+        if (length($login_token)) {
+            # Get master config
+            my $master = $masterServer = $masterServers{$config{'master'}};
+            # Set next server to connect
+            $self->{nextIp} = $master->{ip};
+            $self->{nextPort} = $master->{port};
+        } else {
+            error T("Authentication failed, token not received: $flag.\n"), "connection";
+        }
+        # Disconnect from token server
+        message T("Closing connection to Token Server\n"), 'connection' if (!$self->{packetReplayTrial});
+        $self->serverDisconnect(1);
+    }
+
+	return $msg;
+}
+
+sub modifyPacketOut {
+	my ($self, $msg, $switch) = @_;
 
 	return $msg;
 }

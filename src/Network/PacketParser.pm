@@ -324,7 +324,7 @@ sub unhandledMessage {
 # sub willMangle {
 #     my (undef, $args) = @_;
 #     if ($args->{messageID} eq '008A') {
-#         $args->{willMangle} = 1;
+#         $args->{return} = 1;
 #     }
 # }
 #
@@ -333,6 +333,7 @@ sub unhandledMessage {
 #     my $message_args = $args->{messageArgs};
 #     if ($message_args->{switch} eq '008A') {
 #         ...Modify $message_args as necessary....
+#         $args->{return} = 2; Modify {return} as necessary....
 #     }
 # }
 # </pre>
@@ -406,12 +407,14 @@ sub process {
 			my $switch = Network::MessageTokenizer::getMessageID($message);
 
 			# FIXME?
-			$self->parse_pre($handleContainer->{hook_prefix}, $switch, $message);
+			$self->parse_pre($handleContainer->{hook_prefix}, $switch, $message, \$message);
 
 			my $willMangle = $handleContainer->can('willMangle') && $handleContainer->willMangle($switch);
 
 			if ($args = $self->parse($message, $handleContainer, @handleArguments)) {
-				$args->{mangle} ||= $willMangle && $handleContainer->mangle($args);
+				if ($willMangle) {
+					$args->{mangle} = $handleContainer->mangle($args);
+				}
 			} else {
 				$args = {
 					switch => $switch,
@@ -459,7 +462,7 @@ sub process {
 }
 
 sub parse_pre {
-	my ($self, $mode, $switch, $msg) = @_;
+	my ($self, $mode, $switch, $msg, $realMsg) = @_;
 	my $values = {
 		'Network::Receive' => ['<< Received packet:', 'received', 'Recv', 'parseMsg/pre'],
 		'Network::ClientReceive' => ['<< Sent by RO client:', 'ro_sent', 'ROSend', 'RO_sendMsg_pre'],
@@ -495,7 +498,7 @@ sub parse_pre {
 		switch => $switch,
 		msg => $msg,
 		msg_size => length($msg),
-		realMsg => \$msg
+		realMsg => $realMsg
 	});
 }
 

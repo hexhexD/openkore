@@ -421,6 +421,11 @@ sub initHandlers {
 			[T("<portal #>"), T("move to nearby portal")],
 			["stop", T("stop all movement")]
 			], \&cmdMove],
+		['nc', [
+			T("NPC Create."),
+			["", T("Create NPC by default name 'GOLDPCCAFE'")],
+			[T("<name>"), T("Create NPC by <name>")],
+			], \&cmdNPCCreateRequest],
 		['nl', T("List NPCs that are on screen."), \&cmdNPCList],
 		['openbuyershop', undef, \&cmdOpenBuyerShop],
 		['openshop', T("Open your vending shop."), \&cmdOpenShop],
@@ -1629,6 +1634,7 @@ sub cmdCart_list {
 			my %eqp;
 			$eqp{index} = $item->{ID};
 			$eqp{binID} = $item->{binID};
+			$eqp{nameID} = $item->{nameID};
 			$eqp{name} = $item->{name};
 			$eqp{amount} = $item->{amount};
 			$eqp{identified} = " -- " . T("Not Identified") if !$item->{identified};
@@ -1647,11 +1653,12 @@ sub cmdCart_list {
 		for (my $i = 0; $i < @useable; $i++) {
 			$index = $useable[$i];
 			my $item = $char->cart->get($index);
+			my $nameID = "[".$item->{nameID}."]";
 			$display = $item->{name};
 			$display .= " x $item->{amount}";
 			$msg .= swrite(
-				"@<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
-				[$index, $display]);
+				"@<<< @<<<<<<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+				[$index, $nameID, $display]);
 		}
 	}
 
@@ -1659,7 +1666,7 @@ sub cmdCart_list {
 		$msg .= T("\n-- Equipment --\n");
 		foreach my $item (@equipment) {
 			## altered to allow for Arrows/Ammo which will are stackable equip.
-			$display = sprintf("%-3d  %s (%s)", $item->{binID}, $item->{name}, $item->{type});
+			$display = sprintf("%-3d [%-6d]  %s (%s)", $item->{binID}, $item->{nameID}, $item->{name}, $item->{type});
 			$display .= " x $item->{amount}" if $item->{amount} > 1;
 			$display .= $item->{identified};
 			$msg .= sprintf("%-57s\n", $display);
@@ -1671,11 +1678,12 @@ sub cmdCart_list {
 		for (my $i = 0; $i < @non_useable; $i++) {
 			$index = $non_useable[$i];
 			my $item = $char->cart->get($index);
+			my $nameID = "[".$item->{nameID}."]";
 			$display = $item->{name};
 			$display .= " x $item->{amount}";
 			$msg .= swrite(
-				"@<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
-				[$index, $display]);
+				"@<<< @<<<<<<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+				[$index, $nameID, $display]);
 		}
 	}
 
@@ -3825,6 +3833,7 @@ sub cmdInventory {
 				my %eqp;
 				$eqp{index} = $item->{ID};
 				$eqp{binID} = $item->{binID};
+				$eqp{nameID} = $item->{nameID};
 				$eqp{name} = $item->{name};
 				$eqp{amount} = $item->{amount};
 				$eqp{equipped} = ($item->{type} == 10 || $item->{type} == 16 || $item->{type} == 17 || $item->{type} == 19) ? $item->{amount} . " left" : $equipTypes_lut{$item->{equipped}};
@@ -3849,7 +3858,7 @@ sub cmdInventory {
 			$msg .= T("-- Equipment (Equipped) --\n");
 			foreach my $item (@equipment) {
 				$sell = defined(findIndex(\@sellList, "binID", $item->{binID})) ? T("Will be sold") : "";
-				$display = sprintf("%-3d  %s -- %s", $item->{binID}, $item->{name}, $item->{equipped});
+				$display = sprintf("%-3d [%-6d] %s -- %s", $item->{binID}, $item->{nameID}, $item->{name}, $item->{equipped});
 				$msg .= sprintf("%-57s %s\n", $display, $sell);
 			}
 		}
@@ -3859,7 +3868,7 @@ sub cmdInventory {
 			$msg .= T("-- Equipment (Not Equipped) --\n");
 			foreach my $item (@uequipment) {
 				$sell = defined(findIndex(\@sellList, "binID", $item->{binID})) ? T("Will be sold") : "";
-				$display = sprintf("%-3d  %s (%s)", $item->{binID}, $item->{name}, $item->{type});
+				$display = sprintf("%-3d [%-6d]  %s (%s)", $item->{binID}, $item->{nameID}, $item->{name}, $item->{type});
 				$display .= " x $item->{amount}" if $item->{amount} > 1;
 				$display .= $item->{identified};
 				$msg .= sprintf("%-57s %s\n", $display, $sell);
@@ -3872,13 +3881,14 @@ sub cmdInventory {
 			for ($i = 0; $i < @non_useable; $i++) {
 				$index = $non_useable[$i];
 				my $item = $char->inventory->get($index);
+				my $nameID = "[".$item->{nameID}."]";
 				$display = $item->{name};
 				$display .= " x $item->{amount}";
 				# Translation Comment: Tell if the item is marked to be sold
 				$sell = defined(findIndex(\@sellList, "binID", $index)) ? T("Will be sold") : "";
 				$msg .= swrite(
-					"@<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<<<<<<<<<<<<",
-					[$index, $display, $sell]);
+					"@<<< @<<<<<<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<<<<<<<<<<<<",
+					[$index, $nameID, $display, $sell]);
 			}
 		}
 
@@ -3888,12 +3898,13 @@ sub cmdInventory {
 			for ($i = 0; $i < @useable; $i++) {
 				$index = $useable[$i];
 				my $item = $char->inventory->get($index);
+				my $nameID = "[".$item->{nameID}."]";
 				$display = $item->{name};
 				$display .= " x $item->{amount}";
 				$sell = defined(findIndex(\@sellList, "binID", $index)) ? T("Will be sold") : "";
 				$msg .= swrite(
-					"@<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<<<<<<<<<<<<",
-					[$index, $display, $sell]);
+					"@<<< @<<<<<<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< @<<<<<<<<<<<<",
+					[$index, $nameID, $display, $sell]);
 			}
 		}
 
@@ -4138,7 +4149,7 @@ sub cmdMove {
 				if ($portalsID[$map_or_portal]) {
 					message TF("Move into portal number %s (%s,%s)\n",
 						$map_or_portal, $portals{$portalsID[$map_or_portal]}{'pos'}{'x'}, $portals{$portalsID[$map_or_portal]}{'pos'}{'y'});
-					main::ai_route($field->baseName, $portals{$portalsID[$map_or_portal]}{'pos'}{'x'}, $portals{$portalsID[$map_or_portal]}{'pos'}{'y'}, attackOnRoute => 2, noSitAuto => 1);
+					main::ai_route($field->baseName, $portals{$portalsID[$map_or_portal]}{'pos'}{'x'}, $portals{$portalsID[$map_or_portal]}{'pos'}{'y'}, attackOnRoute => 1, noSitAuto => 1);
 				} else {
 					error T("No portals exist.\n");
 				}
@@ -4173,7 +4184,7 @@ sub cmdMove {
 							$map_name, $map_or_portal), "route";
 					}
 					main::ai_route($map_or_portal, $x, $y,
-					attackOnRoute => 2,
+					attackOnRoute => 1,
 					noSitAuto => 1,
 					notifyUponArrival => 1,
 					distFromGoal => $dist);
@@ -5106,7 +5117,7 @@ sub cmdSell {
 	}
 	my @args = parseArgs($_[1]);
 
-	if ($args[0] eq "" && $ai_v{'npc_talk'}{'talk'} eq 'buy_or_sell') {
+	if ($args[0] eq "" && defined $ai_v{'npc_talk'} && exists $ai_v{'npc_talk'}{'talk'} && $ai_v{'npc_talk'}{'talk'} eq 'buy_or_sell') {
 		$messageSender->sendNPCBuySellList($talk{ID}, 1);
 
 	} elsif ($args[0] eq "list") {
@@ -5702,7 +5713,7 @@ sub cmdStore {
 		$msg .= ('-'x68) . "\n";
 		message $msg, "list";
 
-	} elsif ($arg1 eq "" && $ai_v{'npc_talk'}{'talk'} eq 'buy_or_sell'
+	} elsif ($arg1 eq "" && defined $ai_v{'npc_talk'} && exists $ai_v{'npc_talk'}{'talk'} && $ai_v{'npc_talk'}{'talk'} eq 'buy_or_sell'
 	 && ($net && $net->getState() == Network::IN_GAME)) {
 		$messageSender->sendNPCBuySellList($talk{'ID'}, 0);
 
@@ -7149,6 +7160,7 @@ sub cmdStorage_list {
 			my %eqp;
 			$eqp{index} = $item->{ID};
 			$eqp{binID} = $item->{binID};
+			$eqp{nameID} = $item->{nameID};
 			$eqp{name} = $item->{name};
 			$eqp{amount} = $item->{amount};
 			$eqp{identified} = " -- " . T("Not Identified") if !$item->{identified};
@@ -7166,11 +7178,12 @@ sub cmdStorage_list {
 		for (my $i = 0; $i < @useable; $i++) {
 			$index = $useable[$i];
 			my $item = $char->storage->get($index);
+			my $nameID = "[".$item->{nameID}."]";
 			$display = $item->{name};
 			$display .= " x $item->{amount}";
 			$msg .= swrite(
-				"@<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
-				[$index, $display]);
+				"@<<< @<<<<<<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+				[$index, $nameID, $display]);
 		}
 	}
 
@@ -7178,7 +7191,7 @@ sub cmdStorage_list {
 		$msg .= T("\n-- Equipment --\n");
 		foreach my $item (@equipment) {
 			## altered to allow for Arrows/Ammo which will are stackable equip.
-			$display = sprintf("%-3d  %s (%s)", $item->{binID}, $item->{name}, $item->{type});
+			$display = sprintf("%-3d [%-6d]  %s (%s)", $item->{binID}, $item->{nameID}, $item->{name}, $item->{type});
 			$display .= " x $item->{amount}" if $item->{amount} > 1;
 			$display .= $item->{identified};
 			$msg .= sprintf("%-57s\n", $display);
@@ -7190,11 +7203,12 @@ sub cmdStorage_list {
 		for (my $i = 0; $i < @non_useable; $i++) {
 			$index = $non_useable[$i];
 			my $item = $char->storage->get($index);
+			my $nameID = "[".$item->{nameID}."]";
 			$display = $item->{name};
 			$display .= " x $item->{amount}";
 			$msg .= swrite(
-				"@<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
-				[$index, $display]);
+				"@<<< @<<<<<<<< @<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<",
+				[$index, $nameID, $display]);
 		}
 	}
 
@@ -7936,7 +7950,7 @@ sub cmdCancelTransaction {
 		return;
 	}
 
-	if ($ai_v{'npc_talk'}{'talk'} eq 'buy_or_sell' || $ai_v{'npc_talk'}{'talk'} eq 'store') {
+	if (defined $ai_v{'npc_talk'} && exists $ai_v{'npc_talk'}{'talk'} && ($ai_v{'npc_talk'}{'talk'} eq 'buy_or_sell' || $ai_v{'npc_talk'}{'talk'} eq 'store')) {
 		cancelNpcBuySell();
 	} else {
 		error T("You are not on a sell or store npc interaction.\n");
@@ -8678,6 +8692,18 @@ sub cmdMemorialDungeonDestroy {
 	if ($args eq "destroy") {
 		$messageSender->sendMemorialDungeonCommand(3);
 	}
+}
+
+sub cmdNPCCreateRequest {
+	if (!$net || $net->getState() != Network::IN_GAME) {
+		error TF("You must be logged in the game to use this command '%s'\n", shift);
+		return;
+	}
+
+	my (undef, $args) = @_;
+	$args = 'GOLDPCCAFE' if (!defined $args);
+
+	$messageSender->sendNPCCreateRequest($args);
 }
 
 1;

@@ -9,11 +9,13 @@ username
 password
 loginPinCode
 char
+otpSeed
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
 poseidonServer 127.0.0.1
 poseidonPort 24390
+poseidonTimeout 5
 
 bindIp
 forceMapIP
@@ -75,7 +77,6 @@ attackAuto_considerDamagedAggressive 0
 attackDistance 1
 attackDistanceAuto 1
 attackMaxDistance 1
-attackMaxRouteDistance 50
 attackMaxRouteTime 4
 attackMinPlayerDistance 2
 attackMinPortalDistance 4
@@ -243,6 +244,8 @@ runFromTarget_noAttackMethodFallback_attackMaxDist 14
 runFromTarget_noAttackMethodFallback_minStep 8
 
 saveMap
+saveMap_x
+saveMap_y
 saveMap_warpToBuyOrSell 1
 saveMap_warpChatCommand
 memo1
@@ -412,9 +415,9 @@ mercenary_attackChangeTarget 1
 mercenary_attack_dance_melee 0
 mercenary_attack_dance_ranged 0
 
-mercenary_attackBeyondMaxDistance_waitForAgressive 1
-mercenary_attackBeyondMaxDistance_sendAttackWhileWaiting 1
-mercenary_attackSendAttackWithMove 1
+mercenary_attackBeyondMaxDistance_waitForAgressive 0
+mercenary_attackBeyondMaxDistance_sendAttackWhileWaiting 0
+mercenary_attackSendAttackWithMove 0
 mercenary_attackWaitApproachFinish 1
 
 mercenary_lost_teleportToMaster_maxTries 6
@@ -432,14 +435,13 @@ mercenary_runFromTarget_noAttackMethodFallback 0
 mercenary_runFromTarget_noAttackMethodFallback_attackMaxDist 14
 mercenary_runFromTarget_noAttackMethodFallback_minStep 8
 
-mercenary_followDistanceMax 12
+mercenary_idleWalkType 1
 mercenary_followDistanceMin 3
+mercenary_followDistanceMax 12
 
 mercenary_moveNearWhenIdle 1
 mercenary_moveNearWhenIdle_minDistance 3
 mercenary_moveNearWhenIdle_maxDistance 8
-
-mercenary_idleWalkType 1
 
 mercenary_route_step 10
 
@@ -482,9 +484,9 @@ homunculus_attackNoGiveup 0
 homunculus_attackChangeTarget 1
 homunculus_attack_dance_melee 0
 
-homunculus_attackBeyondMaxDistance_waitForAgressive 1
-homunculus_attackBeyondMaxDistance_sendAttackWhileWaiting 1
-homunculus_attackSendAttackWithMove 1
+homunculus_attackBeyondMaxDistance_waitForAgressive 0
+homunculus_attackBeyondMaxDistance_sendAttackWhileWaiting 0
+homunculus_attackSendAttackWithMove 0
 homunculus_attackWaitApproachFinish 1
 
 homunculus_lost_teleportToMaster_maxTries 6
@@ -501,14 +503,13 @@ homunculus_runFromTarget_noAttackMethodFallback 0
 homunculus_runFromTarget_noAttackMethodFallback_attackMaxDist 14
 homunculus_runFromTarget_noAttackMethodFallback_minStep 8
 
-homunculus_followDistanceMax 12
+homunculus_idleWalkType 1
 homunculus_followDistanceMin 3
+homunculus_followDistanceMax 12
 
 homunculus_moveNearWhenIdle 1
 homunculus_moveNearWhenIdle_minDistance 3
 homunculus_moveNearWhenIdle_maxDistance 8
-
-homunculus_idleWalkType 1
 
 homunculus_route_step 10
 
@@ -577,6 +578,8 @@ attackSkillSlot {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
+    inQueue
+    notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -659,6 +662,8 @@ doCommand {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
+    inQueue
+    notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -711,6 +716,8 @@ useSelf_skill {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
+    inQueue
+    notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -767,6 +774,8 @@ partySkill {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
+    inQueue
+    notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -869,6 +878,8 @@ equipAuto {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
+    inQueue
+    notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -912,6 +923,8 @@ useSelf_item {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
+    inQueue
+    notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -960,6 +973,7 @@ sellAuto_maxDistance
 sellAuto_npc_steps s
 
 storageAuto 0
+storageAuto_onStart 0
 storageAuto_npc
 storageAuto_standpoint
 storageAuto_distance 3

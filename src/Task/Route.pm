@@ -28,9 +28,9 @@ use Task::WithSubtask;
 use base qw(Task::WithSubtask);
 use Task::Move;
 
-use Globals qw($field $net %config %timeout);
+use Globals qw($field $net %config %timeout $npcsList);
 use AI qw(ai_useTeleport);
-use Log qw(message debug warning);
+use Log qw(message error debug warning);
 use Network;
 use Field;
 use Translation qw(T TF);
@@ -107,7 +107,7 @@ sub new {
 		ArgumentException->throw(error => "Invalid Coordinates argument.");
 	}
 
-	my $allowed = new Set(qw(maxDistance maxTime distFromGoal pyDistFromGoal avoidWalls randomFactor useManhattan notifyUponArrival attackID sendAttackWithMove attackOnRoute noSitAuto LOSSubRoute meetingSubRoute isRandomWalk isFollow isIdleWalk isSlaveRescue isMoveNearSlave isEscape isItemTake isItemGather isDeath isToLockMap runFromTarget));
+	my $allowed = new Set(qw(targetNpcPos maxDistance maxTime distFromGoal pyDistFromGoal avoidWalls randomFactor useManhattan notifyUponArrival attackID sendAttackWithMove attackOnRoute noSitAuto LOSSubRoute meetingSubRoute isRandomWalk isFollow isIdleWalk isSlaveRescue isMoveNearSlave isEscape isItemTake isItemGather isDeath isToLockMap runFromTarget));
 	foreach my $key (keys %args) {
 		if ($allowed->has($key) && defined($args{$key})) {
 			$self->{$key} = $args{$key};
@@ -211,7 +211,9 @@ sub iterate {
 		my $pos = $self->{actor}{pos};
 		my $pos_to = $self->{actor}{pos_to};
 		
-		debug "Route $self->{actor}: Calculating. Your pos ($pos->{x} $pos->{y}). Your pos_to ($pos_to->{x} $pos_to->{y}).\n", "route";
+		my $calc_pos = calcPosFromPathfinding($field, $self->{actor});
+		
+		debug "Route $self->{actor}: Calculating. Your pos ($pos->{x} $pos->{y}). Your pos_to ($pos_to->{x} $pos_to->{y}). calcPosFromPathfinding ($calc_pos->{x} $calc_pos->{y})\n", "route";
 		
 		my $begin = time;
 
@@ -219,59 +221,67 @@ sub iterate {
 			debug "Route $self->{actor}: Current position and destination are the same.\n", "route";
 			$self->setDone();
 		
-		} elsif ($self->getRoute($self->{solution}, $self->{dest}{map}, $pos, $self->{dest}{pos}, $self->{avoidWalls}, $self->{randomFactor}, $self->{useManhattan}, 1)) {
+		} elsif ($self->getRoute($self->{solution}, $self->{dest}{map}, $calc_pos, $self->{dest}{pos}, $self->{avoidWalls}, $self->{randomFactor}, $self->{useManhattan}, 1)) {
 			$self->{stage} = ROUTE_SOLUTION_READY;
 
-			@{$self->{last_pos}}{qw(x y)} = @{$pos}{qw(x y)};
+			@{$self->{last_pos}}{qw(x y)} = @{$calc_pos}{qw(x y)};
 			@{$self->{last_pos_to}}{qw(x y)} = @{$pos_to}{qw(x y)};
 			$self->{start} = 1;
 			$self->{confirmed_correct_vector} = 0;
-
-			debug "Route $self->{actor} Solution Ready! Found path on ".$self->{dest}{map}->baseName." from ".$pos->{x}." ".$pos->{y}." to ".$self->{dest}{pos}{x}." ".$self->{dest}{pos}{y}.". Size: ".@{$self->{solution}}." steps.\n", "route";
 			
-			# Changed in pathfinding.xs
-			#unshift(@{$self->{solution}}, { x => $pos->{x}, y => $pos->{y}});
+			if ($self->{pyDistFromGoal} || $self->{distFromGoal}) {
+				$self->{anyDistFromGoal} = 1;
+				
+				my $current_i = $#{$self->{solution}};
+				
+				while (1) {
+					my $dest = $self->{solution}[$current_i];
+					
+					if ($self->{distFromGoal}) {
+						if (blockDistance($dest, $self->{dest}{pos}) <= $self->{distFromGoal}) {
+							$self->{solution}[$current_i]{closeToEnd} = 1;
+						} else {
+							$self->{solution}[$current_i]{closeToEnd} = 0;
+							last;
+						}
+						
+					} elsif ($self->{pyDistFromGoal}) {
+						if (distance($dest, $self->{dest}{pos}) <= $self->{pyDistFromGoal}) {
+							$self->{solution}[$current_i]{closeToEnd} = 1;
+						} else {
+							$self->{solution}[$current_i]{closeToEnd} = 0;
+							last;
+						}
+					}
+					last if ($current_i == 0);
+				} continue {
+					$current_i--;
+				}
+				
+			} else {
+				$self->{anyDistFromGoal} = 0;
+			}
+
+			debug "Route $self->{actor} Solution Ready! Found path on ".$self->{dest}{map}->baseName." from ".$calc_pos->{x}." ".$calc_pos->{y}." to ".$self->{dest}{pos}{x}." ".$self->{dest}{pos}{y}.". Size: ".@{$self->{solution}}." steps.\n", "route";
 
 			$self->iterate();
 
 		} else {
-			debug "Something's wrong; there is no path from " . $self->{dest}{map}->baseName . "($pos->{x},$pos->{y}) to " . $self->{dest}{map}->baseName . "($self->{dest}{pos}{x},$self->{dest}{pos}{y}).\n", "debug";
+			debug "Something's wrong; there is no path from " . $self->{dest}{map}->baseName . "($calc_pos->{x},$calc_pos->{y}) to " . $self->{dest}{map}->baseName . "($self->{dest}{pos}{x},$self->{dest}{pos}{y}).\n", "route";
 			$self->setError(CANNOT_CALCULATE_ROUTE, "Unable to calculate a route.");
 		}
 
 	} elsif ($self->{stage} == ROUTE_SOLUTION_READY) {
 		my $begin = time;
 		my $solution = $self->{solution};
+		
+		# TODO: What is this Fractional route motion bellow?
 		if ($self->{maxDistance} > 0 && $self->{maxDistance} < 1) {
 			# Fractional route motion
 			$self->{maxDistance} = int($self->{maxDistance} * scalar(@{$solution}));
 		}
 		if ($self->{maxDistance} && $self->{maxDistance} < @{$solution}) {
 			splice(@{$solution}, 1 + $self->{maxDistance});
-		}
-
-		my $final_pos = $self->{solution}[-1];
-		if ( ($self->{pyDistFromGoal} || $self->{distFromGoal}) && ($self->{dest}{pos}{x} != $final_pos->{x} || $self->{dest}{pos}{y} != $final_pos->{y}) ) {
-			debug "Route $self->{actor} - final destination is not the same of pathfind, adjusting the trimsteps\n", "route";
-			my $trim = blockDistance($self->{dest}{pos}, $final_pos);
-			$self->{pyDistFromGoal} -= $trim if $self->{pyDistFromGoal};
-			$self->{distFromGoal} -= $trim if $self->{distFromGoal};
-		}
-
-		# Trim down solution tree for pyDistFromGoal or distFromGoal
-		if ($self->{pyDistFromGoal}) {
-			my $trimsteps = 0;
-			while ($trimsteps < @{$solution} && distance($solution->[@{$solution} - 1 - $trimsteps], $solution->[@{$solution} - 1]) < $self->{pyDistFromGoal}) {
-				$trimsteps++;
-			}
-			debug "Route $self->{actor} - trimming down solution by $trimsteps steps for pyDistFromGoal $self->{pyDistFromGoal}\n", "route";
-			splice(@{$self->{'solution'}}, -$trimsteps) if ($trimsteps);
-
-		} elsif ($self->{distFromGoal}) {
-			my $trimsteps = $self->{distFromGoal};
-			$trimsteps = @{$self->{solution}} if ($trimsteps > @{$self->{solution}});
-			debug "Route $self->{actor} - trimming down solution by $trimsteps steps for distFromGoal $self->{distFromGoal}\n", "route";
-			splice(@{$self->{solution}}, -$trimsteps) if ($trimsteps);
 		}
 
 		undef $self->{mapChanged};
@@ -304,7 +314,7 @@ sub iterate {
 			$self->{step_index} = $config{$self->{actor}{configPrefix}.'route_step'};
 		}
 
-		my ($current_pos, $current_pos_to);
+		my ($current_pos, $current_pos_to, $current_calc_pos);
 
 		# $actor->{pos} is the position the character moved FROM in the last move packet received
 		@{$current_pos}{qw(x y)} = @{$self->{actor}{pos}}{qw(x y)};
@@ -312,12 +322,12 @@ sub iterate {
 		# $actor->{pos_to} is the position the character moved TO in the last move packet received
 		@{$current_pos_to}{qw(x y)} = @{$self->{actor}{pos_to}}{qw(x y)};
 		
-		my $current_calc_pos = calcPosFromPathfinding($field, $self->{actor});
+		$current_calc_pos = calcPosFromPathfinding($field, $self->{actor});
 		
 		if ($current_calc_pos->{x} == $solution->[$#{$solution}]{x} && $current_calc_pos->{y} == $solution->[$#{$solution}]{y}) {
 			# Actor position is the destination; we've arrived at the destination
 			if ($self->{notifyUponArrival}) {
-				message TF("%s reached the destination.\n", $self->{actor}), "success";
+				message TF("%s reached the destination.\n", $self->{actor}), "route";
 			} else {
 				debug "$self->{actor} reached the destination.\n", "route";
 			}
@@ -329,54 +339,63 @@ sub iterate {
 		} else {
 			# Failsafe
 			my $lookahead_failsafe_max = $self->{step_index} + 1;
-			my $lookahead_failsafe_count = 0;
+			my $lookahead_failsafe_count;
 
 			# This looks ahead in the solution array and finds the closest position in it to our current {pos}, then it looks $lookahead_failsafe_max further, just to be sure
-			my $best_pos_step = 0;
-			my $next_best_pos_step_try = 1;
-
-			while (1) {
-				if (adjustedBlockDistance($current_pos, $solution->[$best_pos_step]) > adjustedBlockDistance($current_pos, $solution->[$next_best_pos_step_try])) {
-					$best_pos_step = $next_best_pos_step_try;
+			
+			$lookahead_failsafe_count = 0;
+			my $best_index;
+			my $best_dist;
+			
+			foreach my $step_i (0..$#{$solution}) {
+				my $step = $solution->[$step_i];
+				if ($step->{x} == $current_calc_pos->{x} && $step->{y} == $current_calc_pos->{y}) {
+					$best_index = $step_i;
+					$best_dist = 0;
+					last;
+				}
+				my $dist = adjustedBlockDistance($current_calc_pos, $step);
+				if (!defined $best_dist || $best_dist > $dist) {
+					$best_index = $step_i;
+					$best_dist = $dist;
 					$lookahead_failsafe_count = 0;
 				} else {
 					$lookahead_failsafe_count++;
-					if ($lookahead_failsafe_count == $lookahead_failsafe_max) {
-						$lookahead_failsafe_count = 0;
-						last;
-					}
 				}
-				$next_best_pos_step_try++;
-
-				if ($next_best_pos_step_try > $#{$solution}) {
+				if ($lookahead_failsafe_count == $lookahead_failsafe_max) {
 					last;
 				}
 			}
+			my $best_pos_step = $best_index;
 
 			# This does the same, but with {pos_to}
-			my $best_pos_to_step = 0;
-			my $next_best_pos_to_step_try = 1;
-			while (1) {
-				if (adjustedBlockDistance($current_pos_to, $solution->[$best_pos_to_step]) > adjustedBlockDistance($current_pos_to, $solution->[$next_best_pos_to_step_try])) {
-					$best_pos_to_step = $next_best_pos_to_step_try;
+			undef $best_index;
+			undef $best_dist;
+			foreach my $step_i (0..$#{$solution}) {
+				my $step = $solution->[$step_i];
+				if ($step->{x} == $current_pos_to->{x} && $step->{y} == $current_pos_to->{y}) {
+					$best_index = $step_i;
+					$best_dist = 0;
+					last;
+				}
+				my $dist = adjustedBlockDistance($current_pos_to, $step);
+				if (!defined $best_dist || $best_dist > $dist) {
+					$best_index = $step_i;
+					$best_dist = $dist;
 					$lookahead_failsafe_count = 0;
 				} else {
 					$lookahead_failsafe_count++;
-					if ($lookahead_failsafe_count == $lookahead_failsafe_max) {
-						$lookahead_failsafe_count = 0;
-						last;
-					}
 				}
-				$next_best_pos_to_step_try++;
-
-				if ($next_best_pos_to_step_try > $#{$solution}) {
+				if ($lookahead_failsafe_count == $lookahead_failsafe_max) {
 					last;
 				}
 			}
+			my $best_pos_to_step = $best_index;
 
 			# Here there may be the need to check if 'pos' has changed yet best_pos_step is still the same, creating a lag in the movement
 
 			# Last change in pos and pos_to put us in a walk path oposite to the desired one
+			# TODO: This confirmed_correct_vector could probably be removed
 			if ($best_pos_step > $best_pos_to_step) {
 				if ($self->{confirmed_correct_vector}) {
 					debug "Route $self->{actor} - movement interrupted: reset route (last change in pos and pos_to put us in a walk path oposite to the desired one)\n", "route";
@@ -390,13 +409,16 @@ sub iterate {
 			}
 
 			# Last move was to the cell we are already at, lag?, buggy code?
-			if ($self->{start} || $best_pos_step == 0) {
+			if ($self->{start}) {
+				debug "Route $self->{actor} - not trimming down solution (" . @{$solution} . ") because we have not moved yet.\n", "route";
+				
+			} elsif ($best_pos_step == 0) {
 				debug "Route $self->{actor} - not trimming down solution (" . @{$solution} . ") because best_pos_step is 0.\n", "route";
 
 			} else {
 				# Should we trimm only the known walk ones ($best_pos_step) or the known + the guessed (calcStepsWalkedFromTimeAndRoute)? Default was both.
 
-				# Currently testing delete up to known ($best_pos_step)(exclusive)
+				# Currently testing delete up to known + the guessed
 				debug "Route $self->{actor} - trimming down solution (" . @{$solution} . ") by ".($best_pos_step)." steps\n", "route";
 
 				splice(@{$solution}, 0, $best_pos_step);
@@ -407,7 +429,7 @@ sub iterate {
 		}
 
 		my $pos_changed;
-		if ($self->{last_pos}{x} == $current_pos->{x} && $self->{last_pos}{y} == $current_pos->{y}) {
+		if ($self->{last_current_calc_pos}{x} == $current_calc_pos->{x} && $self->{last_current_calc_pos}{y} == $current_calc_pos->{y}) {
 			$pos_changed = 0;
 		} else {
 			$pos_changed = 1;
@@ -420,7 +442,7 @@ sub iterate {
 		if ($stepsleft == 0) {
 			# No more points to cover; we've arrived at the destination
 			if ($self->{notifyUponArrival}) {
-				message TF("%s reached the destination.\n", $self->{actor}), "success";
+				message TF("%s reached the destination.\n", $self->{actor}), "route";
 			} else {
 				debug "$self->{actor} reached the destination.\n", "route";
 			}
@@ -432,14 +454,49 @@ sub iterate {
 			# 2 more steps to cover (current position and the destination)
 			debug "Stoping 1 cell away from destination because there is an obstacle in it.\n", "route";
 			if ($self->{notifyUponArrival}) {
-				message TF("%s reached the destination.\n", $self->{actor}), "success";
+				message TF("%s reached the destination.\n", $self->{actor}), "route";
 			} else {
 				debug "$self->{actor} reached the destination.\n", "route";
 			}
 
 			Plugins::callHook('route', {status => 'success'});
 			$self->setDone();
+		} elsif ($stepsleft <= 2 && isCellOccupied($solution->[-1]) && $self->{attackID}) {
+			# If the destination cell is occupied, then we can't walk there but we need to attack
 
+			# Get the cells around the destination cell
+			my @cells = calcRectArea2($solution->[-1]{x}, $solution->[-1]{y}, 1, 1);
+			my $walk_pos;
+			my $index;
+			while (@cells) {
+				$index = int(rand(@cells));
+				my $cell = $cells[$index];
+				next if ((!$field->isWalkable($cell->{x}, $cell->{y})) || ($field->isCellOccupied($cell->{x}, $cell->{y})));
+				
+				$walk_pos = $cell;
+				last;
+			} continue {
+				splice(@cells, $index, 1);
+			}
+			# If the cells around the destination cell are all occupied, then we can't walk there
+			if (!(defined $walk_pos)) {
+				# Log error message
+				error TF("Destination cell (%d,%d) is occupied and there are no walkable cells around it.\n",
+					$solution->[-1]{x}, $solution->[-1]{y}), "route";
+				# Emit error message
+				$self->setError(STUCK, T("Stuck during route."));
+				Plugins::callHook('route', {status => 'stuck'});
+			} else {
+				# If we have a walkable cell, then walk there
+				warning TF("Destination cell (%d,%d) is occupied, replacing it with (%d,%d).\n",
+					$solution->[-1]{x}, $solution->[-1]{y}, $walk_pos->{x}, $walk_pos->{y}), "route";
+				#
+				$self->{dest}{pos}{x} = $walk_pos->{x};
+				$self->{dest}{pos}{y} = $walk_pos->{y};
+				#
+				$self->{route_out_time} = time;
+				$self->resetRoute();
+			}
 		} elsif (timeOut($self->{route_out_time}, 3)) {
 			# Because of attack monster, get item or something else we are out of our route for a long time
 			# recalculate again
@@ -469,7 +526,7 @@ sub iterate {
 				# We're stuck
 				my $msg = TF("Stuck at %s (%d,%d), while walking from (%d,%d) to (%d,%d).",
 					$self->{dest}{map}->baseName, @{$self->{actor}{pos_to}}{qw(x y)},
-					$current_pos->{x}, $current_pos->{y}, $self->{dest}{pos}{x}, $self->{dest}{pos}{y}
+					$current_calc_pos->{x}, $current_calc_pos->{y}, $self->{dest}{pos}{x}, $self->{dest}{pos}{y}
 				);
 				$msg .= T(" Teleporting to unstuck.") if ($config{$self->{actor}{configPrefix}.'teleportAuto_unstuck'});
 				$msg .= "\n";
@@ -502,21 +559,98 @@ sub iterate {
 
 			# Here maybe we should also use pos_to (in the form of best_pos_to_step) to decide the next step index, as it can make the routing way more responsive
 
+			
+			if ($self->{anyDistFromGoal}) {
+				my $step = $solution->[$self->{step_index}];
+				# We are close enough to the destination
+				if (exists $step->{closeToEnd} && $step->{closeToEnd}) {
+					my $current_i = $self->{step_index};
+					while (1) {
+						last if ($current_i == 0);
+						last if ($solution->[($current_i-1)]{closeToEnd} == 0);
+						$current_i--;
+					}
+					$self->{step_index} = $current_i;
+				}
+			}
 			@{$self->{next_pos}}{qw(x y)} = @{$solution->[$self->{step_index}]}{qw(x y)};
 
 			# But first, check whether the distance of the next point isn't abnormally large.
 			# If it is, then we've moved to an unexpected place. This could be caused by auto-attack, for example.
+			# TODO: This should be calcDistFromPath or something like that
 			my %nextPos = (x => $self->{next_pos}{x}, y => $self->{next_pos}{y});
-			if (blockDistance(\%nextPos, $current_pos) > 17) {
-				debug "Route $self->{actor} - movement interrupted: reset route (the distance of the next point is abnormally large ($current_pos->{x} $current_pos->{y} -> $nextPos{x} $nextPos{y}))\n", "route";
+			if (blockDistance(\%nextPos, $current_calc_pos) > 17) {
+				debug "Route $self->{actor} - movement interrupted: reset route (the distance of the next point is abnormally large ($current_calc_pos->{x} $current_calc_pos->{y} -> $nextPos{x} $nextPos{y}))\n", "route";
 				$self->{solution} = [];
 				$self->{stage} = CALCULATE_ROUTE;
 
 			} else {
+				
+				if ($self->{targetNpcPos}) {
+					my $found = 0;
+					foreach my $actor (@{$npcsList->getItems()}) {
+						my $pos = $actor->{pos};
+						next if ($actor->{statuses}->{EFFECTSTATE_BURROW});
+						if ($pos->{x} == $self->{dest}{pos}{x} && $pos->{y} == $self->{dest}{pos}{y}) {
+							if (defined $actor->{name}) {
+								$found = 1;
+								last;
+							}
+						}
+					}
+					if ($found) {
+						debug "[Route] [targetNpcPos] Found target npc.\n", "route";
+						if ($self->{pyDistFromGoal} || $self->{distFromGoal}) {
+							if ($self->{distFromGoal} && blockDistance($self->{dest}{pos}, $current_calc_pos) <= $self->{distFromGoal}) {
+								debug "[Route] [targetNpcPos] [distFromGoal] Target npc is already close enough, ending movement.\n", "route";
+								$self->setDone();
+								return;
+								
+							} elsif ($self->{pyDistFromGoal} && distance($self->{dest}{pos}, $current_calc_pos) <= $self->{pyDistFromGoal}) {
+								debug "[Route] [targetNpcPos] [pyDistFromGoal] Target npc is already close enough, ending movement.\n", "route";
+								$self->setDone();
+								return;
+							}
+						} else {
+							debug "[Route] [targetNpcPos] Target npc is already on screen, ending movement.\n", "route";
+							$self->setDone();
+							return;
+						}
+					}
+					
+				} elsif ($self->{pyDistFromGoal} || $self->{distFromGoal}) {
+					if ($self->{distFromGoal} && blockDistance($self->{dest}{pos}, $current_calc_pos) <= $self->{distFromGoal}) {
+						debug "[Route] [distFromGoal] Target cell is already close enough, ending movement.\n", "route";
+						$self->setDone();
+						return;
+						
+					} elsif ($self->{pyDistFromGoal} && distance($self->{dest}{pos}, $current_calc_pos) <= $self->{pyDistFromGoal}) {
+						debug "[Route] [pyDistFromGoal] Target cell is already close enough, ending movement.\n", "route";
+						$self->setDone();
+						return;
+					}
+				}
+				
+				my %hookArgs;
+				$hookArgs{args} = $self;
+				$hookArgs{pos} = $current_calc_pos;
+				Plugins::callHook("route_before_move", \%hookArgs);
+				return if ($hookArgs{return});
+				
+				if (!$self->{start} && $current_pos_to->{x} == $self->{next_pos}{x} && $current_pos_to->{y} == $self->{next_pos}{y}) {
+					debug "[Route] Not sending next step ($self->{next_pos}{x}, $self->{next_pos}{y}) because our pos_to is the same as it.\n", "route";
+					if ($self->{lastStep} == 1 && !$self->{sendAttackWithMove} && $self->{meetingSubRoute}) {
+						debug "[Route] Also ending task now ang giving back control to AI::Attack.\n", "route";
+						Plugins::callHook('route', {status => 'success'});
+						$self->setDone();
+					}
+					return;
+				}
+				
                 if ($self->{actor}->isa('Actor::You') && $self->{isRandomWalk} && $self->{actor}{slaves}) {
 					my $slave = AI::SlaveManager::mustWaitMinDistance();
 					if (defined $slave) {
-						debug TF("Waiting for slave %s before next randomWalk step.\n", $slave), 'slave', 2;
+						debug TF("Waiting for slave %s before next randomWalk step.\n", $slave), 'route', 2;
 						return;
 					}
 				}
@@ -529,6 +663,7 @@ sub iterate {
 
 				@{$self->{last_pos}}{qw(x y)} = @{$current_pos}{qw(x y)};
 				@{$self->{last_pos_to}}{qw(x y)} = @{$current_pos_to}{qw(x y)};
+				@{$self->{last_current_calc_pos}}{qw(x y)} = @{$current_calc_pos}{qw(x y)};
 
 				debug "Route $self->{actor} - next step moving to ($self->{next_pos}{x}, $self->{next_pos}{y}), index $self->{step_index}, $stepsleft steps left\n", "route";
 				

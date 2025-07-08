@@ -550,6 +550,15 @@ use constant {
 	MCR_INPROGRESS => 2,
 };
 
+# dynamicnpc_create_result
+use constant {
+	DYNAMICNPC_RESULT_SUCCESS => 0x0,
+	DYNAMICNPC_RESULT_UNKNOWN => 0x1,
+	DYNAMICNPC_RESULT_UNKNOWNNPC => 0x2,
+	DYNAMICNPC_RESULT_DUPLICATE => 0x3,
+	DYNAMICNPC_RESULT_OUTOFTIME => 0x4
+};
+
 # Display gained exp.
 # 07F6 <account id>.L <amount>.L <var id>.W <exp type>.W (ZC_NOTIFY_EXP)
 # 0ACC <account id>.L <amount>.Q <var id>.W <exp type>.W (ZC_NOTIFY_EXP2)
@@ -972,7 +981,7 @@ sub character_creation_successful {
 
 	Plugins::callHook('char_created', {char => $character});
 
-	if (charSelectScreen() == 1) {
+	if ($net->getState() == 3 && charSelectScreen() == 1) {
 		$firstLoginMap = 1;
 		$startingzeny = $chars[$config{'char'}]{'zeny'} unless defined $startingzeny;
 		$sentWelcomeMessage = 1;
@@ -1066,6 +1075,12 @@ sub parse_account_server_info {
 			types => 'a4 v Z20 v5',
 			keys => [qw(ip port name state users property sid unknown)],
 		};
+	} elsif ($args->{switch} eq '0C32') {
+		$server_info = {
+			len => 165,
+			types => 'a4 v Z20 v3 a128 a5',
+			keys => [qw(ip port name users state property ip_port unknown)],
+		};
 	} else { # 0069 [default] and 0276 [pRO]
 		$server_info = {
 			len => 32,
@@ -1127,6 +1142,12 @@ sub reconstruct_account_server_info {
 			len => 36,
 			types => 'a4 v Z20 v5',
 			keys => [qw(ip port name state users property sid unknown)],
+		};
+	} elsif ($args->{switch} eq '0C32') {
+		$serverInfo = {
+			len => 165,
+			types => 'a4 v Z20 v3 a128 a5',
+			keys => [qw(ip port name users state property ip_port unknown)],
 		};
 	} else {
 		$serverInfo = {
@@ -1247,9 +1268,9 @@ sub map_loaded {
 		$messageSender->sendSync(1);
 
 		# Request for Guild Information
-		$messageSender->sendGuildRequestInfo(0) if ($masterServer->{serverType} ne 'twRO'); # twRO does not send this packet
+		$messageSender->sendGuildRequestInfo(0) unless (grep { $masterServer->{serverType} eq $_ } qw(twRO ROla)); # some servers does not send this packet
 
-		$messageSender->sendRequestCashItemsList() if (grep { $masterServer->{serverType} eq $_ } qw(bRO idRO_Renewal twRO)); # tested at bRO 2013.11.30, request for cashitemslist
+		$messageSender->sendRequestCashItemsList() if (grep { $masterServer->{serverType} eq $_ } qw(bRO idRO_Renewal twRO ROla)); # tested at bRO 2013.11.30, request for cashitemslist
 		$messageSender->sendCashShopOpen() if ($config{whenInGame_requestCashPoints});
 
 		# request to unfreeze char - alisonrag
@@ -1930,7 +1951,7 @@ sub actor_display {
 			$actor = new Actor::Player();
 			$actor->{appear_time} = time;
 			# New actor_display packets include the player's name
-			$actor->{name} = $name if defined $name;
+			$actor->setName($name) if defined $name;
 			$mustAdd = 1;
 		}
 		$actor->{nameID} = $nameID;
@@ -1982,7 +2003,7 @@ sub actor_display {
 		if (!defined $actor) {
 			$actor = new Actor::Pet();
 			$actor->{appear_time} = time;
-			$actor->{name} = $name;
+			$actor->setName($name) if defined $name;
 #			if ($monsters_lut{$args->{type}}) {
 #				$actor->setName($monsters_lut{$args->{type}});
 #			}
@@ -2007,7 +2028,7 @@ sub actor_display {
 				$actor->setName($monsters_lut{$args->{type}});
 			}
 			# New actor_display packets include the Monster name
-			$actor->{name} = $name if defined $name;
+			$actor->setName($name) if defined $name;
 			$actor->{name_given} = "Unknown";
 			$actor->{binType} = $args->{type};
 			$mustAdd = 1;
@@ -2021,7 +2042,7 @@ sub actor_display {
 		if (!defined $actor) {
 			$actor = new Actor::NPC();
 			$actor->{appear_time} = time;
-			$actor->{name} = $name if defined $name;
+			$actor->setName($name) if defined $name;
 			$mustAdd = 1;
 		}
 		$actor->{nameID} = $nameID;
@@ -2033,7 +2054,8 @@ sub actor_display {
 			$actor->{appear_time} = time;
 			$mustAdd = 1;
 		}
-		$actor->{name} = $jobs_lut{$args->{type}};
+		
+		$actor->setName($jobs_lut{$args->{type}});
 	}
 
 	#### Step 2: update actor information ####
@@ -2069,24 +2091,6 @@ sub actor_display {
 	$actor->{pos_to} = {%coordsTo};
 	$actor->{time_move} = time;
 	$actor->{time_move_calc} = calcTime(\%coordsFrom, \%coordsTo, $actor->{walk_speed});
-
-	# Ignore actors with a distance greater than clientSight. Useful for vending (so you don't spam
-	# too many packets in prontera and cause server lag). As a side effect, you won't be able to "see" actors
-	# beyond clientSight.
-	if ($config{clientSight}) {
-		# TODO: Is there any situation where we should use calcPosFromPathfinding or calcPosFromTime here?
-		my $realMyPos = calcPosition($char);
-		my $realActorPos = calcPosition($actor);
-		my $realActorDist = blockDistance($realMyPos, $realActorPos);
-
-		if ($realActorDist >= $config{clientSight}) {
-			my ($actor_type) = $object_class =~ /\:\:(\w+)$/;
-			warning TF("Avoiding out of sight %s: '%s' at (%d, %d) (distance: %d >= max %d) - check clientSight in config.txt\n", $actor_type, $actor->{name}, $actor->{pos_to}{x}, $actor->{pos_to}{y}, $realActorDist, $config{clientSight});
-			$actor->{avoid} = 1;
-		} else {
-			$actor->{avoid} = 0;
-		}
-	}
 
 
 	if (UNIVERSAL::isa($actor, "Actor::Player")) {
@@ -2301,6 +2305,7 @@ typedef enum <unnamed-tag> {
 			Plugins::callHook('player_connected', {player => $actor});
 		} else {
 			debug "Unknown Connected: $args->{type} - \n", "parseMsg";
+			Plugins::callHook('unknown_connected', {unknown => $actor});
 		}
 
 	} elsif ($args->{switch} eq "007B" ||
@@ -2891,7 +2896,7 @@ sub homunculus_property {
 	return 0 unless enforce_homun_state();
 
 	my $slave = $char->{homunculus};
-	$slave->{name} = bytesToString($args->{name});
+	$slave->setName(bytesToString($args->{name}));
 
 	slave_calcproperty_handler($slave, $args);
 	homunculus_state_handler($slave, $args);
@@ -3714,15 +3719,6 @@ sub inventory_item_added {
 		});
 
 		$args->{item} = $item;
-
-		# TODO: move this stuff to AI()
-		if (defined($ai_v{npc_talk})) { # avoid autovivification
-			if (grep {$_ eq $item->{nameID}} @{$ai_v{npc_talk}{itemsIDlist}}, $ai_v{npc_talk}{itemID}) {
-
-				$ai_v{'npc_talk'}{'talk'} = 'buy';
-				$ai_v{'npc_talk'}{'time'} = time;
-			}
-		}
 
 		if (AI::state == AI::AUTO) {
 			# Auto-drop item
@@ -4561,6 +4557,7 @@ sub sprite_change {
 	} else {
 		error TF("%s changed unknown sprite type (%d), write about it to OpenKore developer\n", $player, $type), "parseMsg_statuslook";
 	}
+	Plugins::callHook('sprite_job_change');
 }
 
 sub progress_bar {
@@ -4623,7 +4620,7 @@ sub quest_all_list {
 			mission_len => 44,
 		};
 
-	} elsif ($args->{switch} eq '0AFF') { # SERVERTYPE >= 20150513
+	} elsif ($args->{switch} eq '0AFF') { # SERVERTYPE >= 20181010
 		$quest_info = {
 			quest_pack => 'V C V2 v',
 			quest_keys => [qw(quest_id active time_expire time_start mission_amount)],
@@ -4658,6 +4655,8 @@ sub quest_all_list {
 
         next if !exists $quest->{mission_amount};
 
+        debug "- Mission amount: $quest->{mission_amount}\n", "info";
+
         for ( my $j = 0 ; $j < $quest->{mission_amount}; $j++ ) {
             my $mission;
 
@@ -4678,7 +4677,7 @@ sub quest_all_list {
 		}
 	}
 
-	Plugins::callHook('quest_list');
+	Plugins::callHook('quest_all_list_end');
 }
 
 # 02b2 <packet len>.W <num>.L { <quest id>.L <start time>.L <expire time>.L <mobs>.W { <mob id>.L <mob count>.W <mob name>.24B }*3 }*num
@@ -4737,6 +4736,8 @@ sub quest_all_mission {
 			});
 		}
 	}
+
+	Plugins::callHook('quest_all_mission_end');
 }
 
 # 02b3 <quest id>.L <active>.B <start time>.L <expire time>.L <mobs>.W { <mob id>.L <mob count>.W <mob name>.24B }*3 (ZC_ADD_QUEST)
@@ -4906,6 +4907,8 @@ sub quest_update_mission_hunt {
 			goal => $quest_mission->{mob_goal}
 		});
 	}
+
+	Plugins::callHook('quest_update_mission_hunt_end');
 }
 
 # 02B4
@@ -4913,6 +4916,8 @@ sub quest_delete {
 	my ($self, $args) = @_;
 	message TF("Quest: %s has been deleted.\n", $quests_lut{$args->{questID}} ? "$quests_lut{$args->{questID}}{title} ($args->{questID})" : $args->{questID}), "info";
 	delete $questList->{$args->{questID}};
+
+	Plugins::callHook('quest_delete');
 }
 
 # 02B7
@@ -4925,6 +4930,8 @@ sub quest_active {
 	, "info";
 
 	$questList->{$args->{questID}}->{active} = $args->{active};
+
+	Plugins::callHook('quest_active');
 }
 
 # 02C1
@@ -5829,9 +5836,13 @@ sub deal_begin {
 	if ($args->{type} == 0) {
 		error T("That person is too far from you to trade.\n"), "deal";
 		Plugins::callHook('error_deal', {type => $args->{type}});
+		undef %outgoingDeal;
+		
 	} elsif ($args->{type} == 2) {
 		error T("That person is in another deal.\n"), "deal";
 		Plugins::callHook('error_deal', {type => $args->{type}});
+		undef %outgoingDeal;
+		
 	} elsif ($args->{type} == 3) {
 		if (%incomingDeal) {
 			$currentDeal{name} = $incomingDeal{name};
@@ -5850,12 +5861,17 @@ sub deal_begin {
 		}
 		message TF("Engaged Deal with %s\n", $currentDeal{name}), "deal";
 		Plugins::callHook('engaged_deal', {name => $currentDeal{name}});
+		
 	} elsif ($args->{type} == 5) {
 		error T("That person is opening storage.\n"), "deal";
 		Plugins::callHook('error_deal', {type =>$args->{type}});
+		undef %outgoingDeal;
+		
 	} else {
 		error TF("Deal request failed (unknown error %s).\n", $args->{type}), "deal";
 		Plugins::callHook('error_deal', {type =>$args->{type}});
+		undef %outgoingDeal;
+		
 	}
 }
 
@@ -7066,35 +7082,44 @@ sub item_exists {
 # Makes an item disappear from the ground.
 # 00A1 <id>.L (ZC_ITEM_DISAPPEAR)
 sub item_disappeared {
-	my ($self, $args) = @_;
+	my ( $self, $args ) = @_;
 	return unless changeToInGameState();
 
-	my $item = $itemsList->getByID($args->{ID});
-	if ($item) {
-		if ($config{attackLooters} && AI::action ne "sitAuto" && pickupitems($item->{name}, $item->{nameID}) > 0) {
-			for my Actor::Monster $monster (@$monstersList) { # attack looter code
-				if (my $control = mon_control($monster->name,$monster->{nameID})) {
-					next if ( ($control->{attack_auto}  ne "" && $control->{attack_auto} == -1)
-						|| ($control->{attack_lvl}  ne "" && $control->{attack_lvl} > $char->{lv})
-						|| ($control->{attack_jlvl} ne "" && $control->{attack_jlvl} > $char->{lv_job})
-						|| ($control->{attack_hp}   ne "" && $control->{attack_hp} > $char->{hp})
-						|| ($control->{attack_sp}   ne "" && $control->{attack_sp} > $char->{sp})
-						);
+	my $item = $itemsList->getByID( $args->{ID} );
+	if ( $item ) {
+		if ( $config{attackLooters} && AI::action ne "sitAuto" && pickupitems( $item->{name}, $item->{nameID} ) > 0 ) {
+			for my Actor::Monster $monster ( @$monstersList ) {    # attack looter code
+				if ( my $control = mon_control( $monster->name, $monster->{nameID} ) ) {
+					next
+						if ( ( $control->{attack_auto} ne "" && $control->{attack_auto} == -1 )
+						|| ( $control->{attack_lvl} ne ""  && $control->{attack_lvl} > $char->{lv} )
+						|| ( $control->{attack_jlvl} ne "" && $control->{attack_jlvl} > $char->{lv_job} )
+						|| ( $control->{attack_hp} ne ""   && $control->{attack_hp} > $char->{hp} )
+						|| ( $control->{attack_sp} ne ""   && $control->{attack_sp} > $char->{sp} ) );
 				}
-				if (distance($item->{pos}, $monster->{pos}) <= ($config{attackLooters_dist} || 0)) {
-					attack($monster->{ID});
-					message TF("Attack Looter: %s looted %s\n", $monster->nameIdx, $item->{name}), "looter";
-					last;
+				if ( distance( $item->{pos}, $monster->{pos} ) <= ( $config{attackLooters_dist} || 0 ) ) {
+					my %plugin_args;
+					$plugin_args{monster} = $monster;
+					$plugin_args{item}    = $item;
+					$plugin_args{return}  = 0;
+					Plugins::callHook( 'check_attackLooter' => \%plugin_args );
+					unless ( $plugin_args{return} ) {
+						message TF( "Looter: %s looted %s - Adding it to looters list to be attacked\n",
+							$monster->nameIdx, $item->{name} ),
+							"looter";
+						$monster->{attackLooters} = 1;
+						last;
+					}
 				}
 			}
 		}
 
 		debug "Item Disappeared: $item->{name} ($item->{binID})\n", "parseMsg_presence";
 		my $ID = $args->{ID};
-		$items_old{$ID} = $item->deepCopy();
+		$items_old{$ID}              = $item->deepCopy();
 		$items_old{$ID}{disappeared} = 1;
-		$items_old{$ID}{gone_time} = time;
-		$itemsList->removeByID($ID);
+		$items_old{$ID}{gone_time}   = time;
+		$itemsList->removeByID( $ID );
 	}
 }
 
@@ -7390,20 +7415,9 @@ sub hat_effect {
 sub npc_talk {
 	my ($self, $args) = @_;
 
-	#Auto-create Task::TalkNPC if not active
-	if (!AI::is("NPC") && !(AI::is("route") && $char->args->getSubtask && UNIVERSAL::isa($char->args->getSubtask, 'Task::TalkNPC'))) {
-		my $nameID = unpack 'V', $args->{ID};
-		debug "An unexpected npc conversation has started, auto-creating a TalkNPC Task\n";
-		my $task = Task::TalkNPC->new(type => 'autotalk', nameID => $nameID, ID => $args->{ID});
-		AI::queue("NPC", $task);
-		# TODO: The following npc_talk hook is only added on activation.
-		# Make the task module or AI listen to the hook instead
-		# and wrap up all the logic.
-		$task->activate;
-		Plugins::callHook('npc_autotalk', {
-			task => $task
-		});
-	}
+	my $ID = $args->{ID};
+	my $nameID = unpack 'V', $ID;
+	autoNpcTalk($ID, $nameID);
 
 	$talk{ID} = $args->{ID};
 	$talk{nameID} = unpack 'V', $args->{ID};
@@ -7417,8 +7431,9 @@ sub npc_talk {
 	$talk{msg} .= "\n" if $talk{msg};
 	$talk{msg} .= $msg;
 
-	$ai_v{npc_talk}{talk} = 'initiated';
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{'npc_talk'}{'ID'} = $talk{ID};
+	$ai_v{'npc_talk'}{talk} = 'initiated';
+	$ai_v{'npc_talk'}{time} = time;
 
 	my $name = getNPCName($talk{ID});
 	Plugins::callHook('npc_talk', {
@@ -7435,17 +7450,18 @@ sub npc_talk {
 sub npc_talk_close {
 	my ($self, $args) = @_;
 	# 00b6: long ID
-	# "Close" icon appreared on the NPC message dialog
-	if (!defined $ai_v{'npc_talk'}{'ID'} || $ai_v{'npc_talk'}{'ID'} ne $args->{ID}) {
+
+	if (!exists $ai_v{'npc_talk'} || !defined $ai_v{'npc_talk'} || !exists $ai_v{'npc_talk'}{'ID'} || !defined $ai_v{'npc_talk'}{'ID'}) {
 		debug "We received an strange 'npc_talk_done', just ignoring it\n", "npc";
 		return;
 	}
 
-	return if ($ai_v{'npc_talk'}{'talk'} eq 'buy_or_sell');
+	return if (exists $ai_v{'npc_talk'}{'talk'} && $ai_v{'npc_talk'}{'talk'} eq 'buy_or_sell');
 
 	my $ID = $args->{ID};
 	my $name = getNPCName($ID);
 
+	$ai_v{'npc_talk'}{'ID'} = $talk{ID};
 	$ai_v{'npc_talk'}{'talk'} = 'close';
 	$ai_v{'npc_talk'}{'time'} = time;
 	undef %talk;
@@ -7460,6 +7476,7 @@ sub npc_talk_continue {
 	my $ID = substr($args->{RAW_MSG}, 2, 4);
 	my $name = getNPCName($ID);
 
+	$ai_v{'npc_talk'}{'ID'} = $ID;
 	$ai_v{'npc_talk'}{'talk'} = 'next';
 	$ai_v{'npc_talk'}{'time'} = time;
 }
@@ -7472,6 +7489,7 @@ sub npc_talk_number {
 	my $ID = $args->{ID};
 
 	my $name = getNPCName($ID);
+	$ai_v{'npc_talk'}{'ID'} = $ID;
 	$ai_v{'npc_talk'}{'talk'} = 'number';
 	$ai_v{'npc_talk'}{'time'} = time;
 }
@@ -7488,20 +7506,7 @@ sub npc_talk_responses {
 
 	my $ID = substr($msg, 4, 4);
 	my $nameID = unpack 'V', $ID;
-
-	# Auto-create Task::TalkNPC if not active
-	if (!AI::is("NPC") && !(AI::is("route") && $char->args->getSubtask && UNIVERSAL::isa($char->args->getSubtask, 'Task::TalkNPC'))) {
-		debug "An unexpected npc conversation has started, auto-creating a TalkNPC Task\n";
-		my $task = Task::TalkNPC->new(type => 'autotalk', nameID => $nameID, ID => $ID);
-		AI::queue("NPC", $task);
-		# TODO: The following npc_talk hook is only added on activation.
-		# Make the task module or AI listen to the hook instead
-		# and wrap up all the logic.
-		$task->activate;
-		Plugins::callHook('npc_autotalk', {
-			task => $task
-		});
-	}
+	autoNpcTalk($ID, $nameID);
 
 	$talk{ID} = $ID;
 	$talk{nameID} = $nameID;
@@ -7523,6 +7528,7 @@ sub npc_talk_responses {
 
 	$talk{responses}[@{$talk{responses}}] = T("Cancel Chat");
 
+	$ai_v{'npc_talk'}{'ID'} = $talk{ID};
 	$ai_v{'npc_talk'}{'talk'} = 'select';
 	$ai_v{'npc_talk'}{'time'} = time;
 
@@ -7544,6 +7550,7 @@ sub npc_talk_text {
 	my $ID = $args->{ID};
 
 	my $name = getNPCName($ID);
+	$ai_v{'npc_talk'}{'ID'} = $ID;
 	$ai_v{'npc_talk'}{'talk'} = 'text';
 	$ai_v{'npc_talk'}{'time'} = time;
 }
@@ -7554,6 +7561,7 @@ sub npc_store_begin {
 	my ($self, $args) = @_;
 	undef %talk;
 	$talk{ID} = $args->{ID};
+	$ai_v{'npc_talk'}{'ID'} = $talk{ID};
 	$ai_v{'npc_talk'}{'talk'} = 'buy_or_sell';
 	$ai_v{'npc_talk'}{'time'} = time;
 
@@ -7603,7 +7611,7 @@ sub npc_store_info {
 		debug "Item added to Store: $item->{name} - $item->{price}z\n", "parseMsg", 2;
 	}
 
-	$ai_v{npc_talk}{talk} = 'store';
+	$ai_v{'npc_talk'}{talk} = 'store';
 	# continue talk sequence now
 	$ai_v{'npc_talk'}{'time'} = time;
 
@@ -7637,7 +7645,7 @@ sub npc_sell_list {
 	undef %talk;
 	message T("Ready to start selling items\n");
 
-	$ai_v{npc_talk}{talk} = 'sell';
+	$ai_v{'npc_talk'}{talk} = 'sell';
 	# continue talk sequence now
 	$ai_v{'npc_talk'}{'time'} = time;
 }
@@ -7822,6 +7830,11 @@ sub deal_add_you {
 	}
 
 	my $id = unpack('v',$args->{ID});
+	
+	if ($id == 0) {
+		message "You added Zeny to Deal (suposedly $currentDeal{'you_zeny'} z).\n";
+		return;
+	}
 
 	return unless ($id > 0);
 
@@ -8000,12 +8013,56 @@ sub remain_time_info {
 }
 
 sub received_login_token {
-	my ($self, $args) = @_;
-	# XKore mode 1 / 3.
-	return if ($self->{net}->version == 1);
-	my $master = $masterServers{$config{master}};
-	# rathena use 0064 not 0825
-	$messageSender->sendTokenToServer($config{username}, $config{password}, $master->{master_version}, $master->{version}, $args->{login_token}, $args->{len}, $master->{OTP_ip}, $master->{OTP_port});
+    my ($self, $args) = @_;
+
+    # Skip in XKore mode 1 / 3
+    return if $self->{net}->version == 1;
+
+    my $master = $masterServers{$config{master}};
+    my $login_type = $args->{login_type};
+
+    if ($login_type == 0) {
+        # rAthena uses 0064 not 0825
+        $messageSender->sendTokenToServer(
+            $config{username},
+            $config{password},
+            $master->{master_version},
+            $master->{version},
+            $args->{login_token},
+            $args->{len},
+            $master->{ip},
+            $master->{port}
+        );
+    
+    } elsif ($login_type == 400 || $login_type == 1000) {
+        die 'ERROR: otpSeed is not set in config.txt' unless $config{otpSeed};
+
+        my $otp;
+        Plugins::callHook('request_otp_login', { otp => \$otp, seed => $config{otpSeed} });
+    	unless (defined $otp && length $otp) { 
+			error "No Plugin returned a OTP code for account $config{username}\n", 'connection';
+			$otp = $interface->query(T(', please enter your OTP: ')); 
+		}
+        $messageSender->sendOtpToServer($otp);
+
+	} elsif ($login_type == 300) {
+        error "OTP token malformed for account $config{username}\n", 'connection';
+        my $otp = $interface->query(T('Please enter the OTP code: '));
+        $messageSender->sendOtpToServer($otp);
+    
+    } elsif ($login_type == 500) {
+        error "Wrong OTP for account $config{username}\n", 'connection';
+        my $otp = $interface->query(T('Please enter the OTP code: '));
+        $messageSender->sendOtpToServer($otp);
+    
+    } elsif ($login_type == 600) {
+        error "Password Error for account $config{username}\n", 'connection';
+        Misc::quit();
+    
+    } else {
+        error "Unknown login_type $login_type\n", 'connection';
+		Misc::quit();
+    }
 }
 
 # this info will be sent to xkore 2 clients
@@ -9989,9 +10046,9 @@ sub cash_dealer {
 	my ($self, $args) = @_;
 
 	undef %talk;
-	$ai_v{npc_talk}{talk} = 'cash';
+	$ai_v{'npc_talk'}{talk} = 'cash';
 	# continue talk sequence now
-	$ai_v{npc_talk}{time} = time;
+	$ai_v{'npc_talk'}{time} = time;
 
 	# Parse item_list => ['V2 C v', [qw(price price_discount type nameid)]]
 	$cashList->clear;
@@ -11135,6 +11192,9 @@ sub monster_ranged_attack {
 		$monster->{movetoattack_pos} = {%coords1};
 		$monster->{movetoattack_time} = time;
 	}
+	
+	$char->{movetoattack_targetID} = $ID;
+
 	$char->{movetoattack_pos} = {%coords2};
 	$char->{movetoattack_time} = time;
 	debug "Received Failed to attack target - you: $coords2{x},$coords2{y} - monster: $coords1{x},$coords1{y} - range $range\n", "parseMsg_move";
@@ -11507,10 +11567,9 @@ sub skill_cast {
 	$control = mon_control($monster->name,$monster->{nameID}) if ($monster);
 	if (AI::state == AI::AUTO && $control->{skillcancel_auto}) {
 		if ($targetID eq $accountID || $dist > 0 || (AI::action eq "attack" && AI::args->{ID} ne $sourceID)) {
-			message TF("Monster Skill - switch Target to : %s (%d)\n", $monster->name, $monster->{binID});
-			$char->sendAttackStop;
-			AI::dequeue;
-			attack($sourceID);
+			message TF( "Monster Skill - %s (%d) - Adding it to monsterSkillCancel list to be attacked\n",
+				$monster->name, $monster->{binID} );
+			$monster->{monsterSkillCancel} = 1;
 		}
 
 		# Skill area casting -> running to monster's back
@@ -11533,7 +11592,7 @@ sub skill_cast {
 			getVector(\%vec, \%coords, $char->{pos_to});
 			moveAlongVector(\%pos, $char->{pos_to}, \%vec, distance($char->{pos_to}, \%coords));
 			ai_route($field->baseName, $pos{x}, $pos{y},
-				maxRouteDistance => $config{attackMaxRouteDistance},
+				maxRouteDistance => $config{attackRouteMaxPathDistance},
 				maxRouteTime => $config{attackMaxRouteTime},
 				noMapRoute => 1);
 			message TF("Avoid casting Skill - switch position to : %s,%s\n", $pos{x}, $pos{y}), 1;
@@ -11574,7 +11633,7 @@ sub switch_character {
 	my ($self, $args) = @_;
 	# User is switching characters in X-Kore
 	$net->setState(Network::CONNECTED_TO_MASTER_SERVER);
-	$net->serverDisconnect();
+	$net->serverDisconnect() if(UNIVERSAL::isa($net, 'Network::DirectConnection'));
 
 	# FIXME better support for multiple received_characters packets
 	undef @chars;
@@ -12217,14 +12276,14 @@ sub captcha_upload_request_status {
 # Status of Macro Reporter
 sub macro_reporter_status {
 	my ($self, $args) = @_;
-	my $status = "Unknown";
+	my $status = T("Unknown");
 
 	if ($args->{status} == MCR_MONITORING) {
-		$status = "Monitoring";
+		$status = T("Monitoring");
 	} elsif ($args->{status} == MCR_NO_DATA) {
-		$status = "No Data";
+		$status = T("No Data");
 	} elsif ($args->{status} == MCR_INPROGRESS) {
-		$status = "In Progress";
+		$status = T("In Progress");
 	}
 
 	message TF("Macro Reporter - Status: %s \n", $status), "captcha";
@@ -12297,14 +12356,14 @@ sub macro_detector_show {
 # Status of Macro Detector
 sub macro_detector_status {
 	my ($self, $args) = @_;
-	my $status = "Unknown";
+	my $status = T("Unknown");
 
 	if ($args->{status} == MCD_TIMEOUT) {
-		$status = "Timeout";
+		$status = T("Timeout");
 	} elsif ($args->{status} == MCD_INCORRECT) {
-		$status = "Incorrect";
+		$status = T("Incorrect");
 	} elsif ($args->{status} == MCD_GOOD) {
-		$status = "Correct";
+		$status = T("Correct");
 	}
 
 	message TF("Macro Detector Status: %s \n", $status), "captcha";
@@ -12389,6 +12448,26 @@ sub repute_info {
 sub gold_pc_cafe_point {
 	my ($self, $args) = @_;
 	debug TF("[gold_pc_cafe_point] isActive=%d, mode=%d, point=%d, playedTime=%d\n", $args->{isActive}, $args->{mode}, $args->{point}, $args->{playedTime});
+}
+
+# 0A17 - PACKET_ZC_DYNAMICNPC_CREATE_RESULT
+sub dynamicnpc_create_result {
+	my ($self, $args) = @_;
+	my $status;
+
+	if ($args->{result} == DYNAMICNPC_RESULT_SUCCESS ) {
+		$status = T("Success");
+	} elsif ($args->{result} == DYNAMICNPC_RESULT_UNKNOWN) {
+		$status = T("Unknown");
+	} elsif ($args->{result} == DYNAMICNPC_RESULT_UNKNOWNNPC) {
+		$status = T("Unknown NPC");
+	} elsif ($args->{result} == DYNAMICNPC_RESULT_DUPLICATE) {
+		$status = T("Duplicate");
+	} elsif ($args->{result} == DYNAMICNPC_RESULT_OUTOFTIME) {
+		$status = T("Out of time");
+	}
+
+	message TF("Dynamic NPC create result - Status: %s\n", $status);
 }
 
 1;

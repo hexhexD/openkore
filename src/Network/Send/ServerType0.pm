@@ -298,6 +298,7 @@ sub new {
 		'0A06' => ['rodex_remove_item', 'a2 v', [qw(ID amount)]],   # 6 -- RodexRemoveItem
 		'0A08' => ['rodex_open_write_mail', 'Z24', [qw(name)]],   # 26 -- RodexOpenWriteMail
 		'0A13' => ['rodex_checkname', 'Z24', [qw(name)]],   # 26 -- RodexCheckName
+		'0A16' => ['dynamicnpc_create_request', 'Z24', [qw(name)]], # 26
 		'0A19' => ['roulette_window_open'],
 		'0A1B' => ['roulette_info_request'],
 		'0A1D' => ['roulette_close'],
@@ -338,6 +339,7 @@ sub new {
 		'0B19' => ['inventory_expansion_rejected'], #2
 		'0B1C' => ['ping'], #2
 		'0B21' => ['hotkey_change', 'v2 C V v', [qw(tab idx type id lvl)]],
+		'0C23' => ['send_otp_login', 'a6 C', [qw(otp padding)]],
 	);
 	$self->{packet_list}{$_} = $packets{$_} for keys %packets;
 

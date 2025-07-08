@@ -50,7 +50,7 @@ our @EXPORT = (
 	# Other stuff
 	qw(dataWaiting dumpHash formatNumber getCoordString getCoordString2
 	getFormattedDate getFormattedDateShort getHex giveHex getRange getTickCount
-	inRange judgeSkillArea makeCoordsDir makeCoordsXY makeCoordsFromTo makeDistMap makeIP encodeIP parseArgs
+	inRange judgeSkillArea makeCoordsDir makeCoordsXY makeCoordsFromTo makeDistMap makeIP encodeIP parseArgs parse_portal_conversation_args
 	quarkToString stringToQuark shiftPack swrite timeConvert timeOut
 	urldecode urlencode unShiftPack vocalString wrapText pin_encode)
 );
@@ -952,14 +952,15 @@ sub launchScript {
 # Checks whether the socket $r_handle has pending incoming data.
 # If there is, then you can read from $r_handle without being blocked.
 sub dataWaiting {
-	my $r_fh = shift;
+	my ($r_fh, $timeout) = @_;
 	return 0 if (!defined $r_fh || !defined $$r_fh);
+	$timeout = 0.01 unless (defined $timeout);
 
 	my $bits = '';
 	vec($bits, fileno($$r_fh), 1) = 1;
-	# The timeout was 0.005
-	return (select($bits, undef, undef, 0) > 0);
-	#return select($bits, $bits, $bits, 0) > 1);
+
+	my $nfound = select($bits, undef, undef, $timeout);
+	return ($nfound > 0);
 }
 
 ##
@@ -1570,6 +1571,45 @@ sub parseArgs {
 	}
 	$$r_last_arg_pos = $last_arg_pos if ($r_last_arg_pos);
 	return reverse @args;
+}
+
+sub parse_portal_conversation_args {
+    my ($command) = @_;
+    my @args;
+    my $i = 0;
+    my $len = length($command);
+
+    while ($i < $len) {
+        # Skip leading whitespace
+        $command =~ /\G\s*/gc;
+
+        # End of string
+        last if $i >= $len;
+
+        # Check current position
+        $i = pos($command);
+
+        # Handle quoted strings
+        if ($command =~ /\G(["'])(.*?)\1\s*/gc) {
+            push @args, $2;
+        }
+        # Handle regex r~/.../flags
+        elsif ($command =~ /\Gr~\/((?:\\\/|[^\/])+)\/([a-z]*)\s*/gc) {
+            my ($regex, $flags) = ($1, $2);
+            push @args, "r~/$regex/$flags";
+        }
+        # Handle normal token (non-whitespace)
+        elsif ($command =~ /\G(\S+)\s*/gc) {
+            push @args, $1;
+        } else {
+            # Fallback: skip one character
+            pos($command)++;
+        }
+
+        $i = pos($command);
+    }
+
+    return @args;
 }
 
 ##

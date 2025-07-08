@@ -55,6 +55,7 @@ use Actor::Unknown;
 use Time::HiRes qw(time usleep);
 use Translation;
 use Utils::Exceptions;
+use Utils::PathFinding;
 
 our @EXPORT = (
 	# Config modifiers
@@ -193,6 +194,7 @@ our @EXPORT = (
 	compilePortals_check
 	portalExists
 	portalExists2
+	portalExistsAirship
 	redirectXKoreMessages
 	monKilled
 	getActorName
@@ -217,7 +219,8 @@ our @EXPORT = (
 	solveItemLink
 	solveMessage
 	solveMSG
-	absunit/,
+	absunit
+	autoNpcTalk/,
 
 	# Npc buy and sell
 	qw/cancelNpcBuySell
@@ -348,6 +351,8 @@ sub configModify {
 	$config{$key} = $val;
 	Settings::update_log_filenames() if $key =~ /^(username|char|server)$/o;
 	saveConfigFile();
+	
+	Plugins::callHook('post_configModify');
 }
 
 ##
@@ -360,7 +365,9 @@ sub bulkConfigModify {
 	my $r_hash = shift;
 	my $silent = shift;
 	my $oldval;
-
+	
+	
+	my %create_keys;
 	foreach my $key (keys %{$r_hash}) {
 		Plugins::callHook('configModify', {
 			key => $key,
@@ -369,6 +376,10 @@ sub bulkConfigModify {
 		});
 
 		$oldval = $config{$key};
+		
+		if (!exists $config{$key}) {
+			$create_keys{$key} = 1;
+		}
 
 		$config{$key} = $r_hash->{$key};
 
@@ -378,7 +389,20 @@ sub bulkConfigModify {
 			message TF("Config '%s' set to %s (was %s)\n", $key, $r_hash->{$key}, $oldval), "info" unless ($silent);
 		}
 	}
+	
+	if (scalar keys %create_keys > 0) {
+		my $f;
+		if (open($f, ">>", Settings::getConfigFilename())) {
+			foreach my $key (keys %create_keys) {
+				print $f "$key\n";
+			}
+			close($f);
+		}
+	}
+
 	saveConfigFile();
+	
+	Plugins::callHook('post_configModify');
 }
 
 ##
@@ -1468,7 +1492,7 @@ sub is_aggressive {
 
 	if (
 		($plugin_args{return}) ||
-		($type && $control->{attack_auto} == 2) ||
+		($type == 2 && $control->{attack_auto} == 2) ||
 		(($monster->{dmgToYou} || $monster->{missedYou} || $monster->{castOnToYou})) ||
 		($config{"attackAuto_considerDamagedAggressive"} && $monster->{dmgFromYou} > 0) ||
 		($party &&
@@ -2496,8 +2520,11 @@ sub meetingPosition {
 		return;
 	}
 
+	my $extra_time_actor = $timeout{'meetingPosition_extra_time_actor'}{'timeout'} ? $timeout{'meetingPosition_extra_time_actor'}{'timeout'} : 0.2;
+	my $extra_time_target = $timeout{'meetingPosition_extra_time_target'}{'timeout'} ? $timeout{'meetingPosition_extra_time_target'}{'timeout'} : 0.2;
+
 	my $mySpeed = ($actor->{walk_speed} || 0.12);
-	my $timeSinceActorMoved = time - $actor->{time_move};
+	my $timeSinceActorMoved = time - $actor->{time_move} + $extra_time_actor;
 
 	my $my_solution;
 	my $timeActorFinishMove;
@@ -2578,7 +2605,7 @@ sub meetingPosition {
 	}
 
 	my $targetSpeed = ($target->{walk_speed} || 0.12);
-	my $timeSinceTargetMoved = time - $target->{time_move};
+	my $timeSinceTargetMoved = time - $target->{time_move} + $extra_time_target;
 
 	my $target_solution = get_solution($field, $target->{pos}, $target->{pos_to});
 
@@ -2621,7 +2648,7 @@ sub meetingPosition {
 	my $masterSpeed;
 	if ($masterPos) {
 		$masterSpeed = ($master->{walk_speed} || 0.12);
-		$timeSinceMasterMoved = time - $master->{time_move};
+		$timeSinceMasterMoved = time - $master->{time_move} + $extra_time_actor;
 
 		$master_solution = get_solution($field, $master->{pos}, $master->{pos_to});
 
@@ -2659,6 +2686,11 @@ sub meetingPosition {
 		$allspots{$spot->{x}}{$spot->{y}} = 1;
 	}
 
+	my %prohibitedSpots;
+	foreach my $prohibited_actor (@$playersList, @$monstersList, @$npcsList, @$petsList, @$slavesList, @$elementalsList) {
+		$prohibitedSpots{$prohibited_actor->{pos_to}{x}}{$prohibited_actor->{pos_to}{y}} = 1;
+	}
+
 	my $best_spot;
 	my $best_targetPosInStep;
 	my $best_dist_to_target;
@@ -2676,6 +2708,9 @@ sub meetingPosition {
 
 			# 1. It must be walkable.
 			next unless ($field->isWalkable($spot->{x}, $spot->{y}));
+			
+			# 1.2 It must not be occupied
+			next if (exists $prohibitedSpots{$spot->{x}} && exists $prohibitedSpots{$spot->{x}}{$spot->{y}});
 
 			# 2. It must not be close to a portal.
 			next if (positionNearPortal($spot, $config{'attackMinPortalDistance'}));
@@ -3434,44 +3469,6 @@ sub updateDamageTables {
 						$monster, $player, $player->verb(T('your'), T('its')), $config{$player->{configPrefix}.'teleportAuto_hp'}), "teleport";
 					$teleport = 1;
 
-				} elsif (
-					$config{$player->{configPrefix}.'attackChangeTarget'}
-					&& (
-						$player->action eq 'route' && $player->action(1) eq 'attack'
-						or $player->action eq 'move' && $player->action(2) eq 'attack'
-					)
-					&& $player->args->{attackID} && $player->args->{attackID} ne $sourceID
-				) {
-					my $attackTarget = Actor::get($player->args->{attackID});
-					my $attackSeq = ($player->action eq 'route') ? $player->args(1) : $player->args(2);
-					if (
-						!($accountID eq $targetID ? $attackTarget->{dmgToYou} : $attackTarget->{dmgToPlayer}{$targetID})
-						&& !($accountID eq $targetID ? $attackTarget->{dmgToYou} : $attackTarget->{dmgFromPlayer}{$targetID})
-						&& distance($monster->{pos_to}, calcPosition($player)) <= $attackSeq->{attackMethod}{distance}
-					) {
-						my $ignore = 0;
-						# Don't attack ignored monsters
-						if ((my $control = mon_control($monster->{name},$monster->{nameID}))) {
-							$ignore = 1 if ( ($control->{attack_auto} == -1)
-								|| ($control->{attack_lvl} ne "" && $control->{attack_lvl} > $char->{lv})
-								|| ($control->{attack_jlvl} ne "" && $control->{attack_jlvl} > $char->{lv_job})
-								|| ($control->{attack_hp}  ne "" && $control->{attack_hp} > $char->{hp})
-								|| ($control->{attack_sp}  ne "" && $control->{attack_sp} > $char->{sp})
-								|| ($accountID eq $targetID && $control->{attack_auto} == 3 && ($monster->{dmgToYou} || $monster->{missedYou} || $monster->{dmgFromYou}))
-								);
-						}
-						unless ($ignore) {
-							# Change target to closer aggressive monster
-							message TF("%s %s target to aggressive %s\n",
-								$player, $player->verb(T('change'), T('changes')), $monster);
-							$player->sendAttackStop;
-							$player->dequeue;
-							$player->dequeue if $player->action eq 'route';
-							$player->dequeue;
-							$player->attack($sourceID);
-						}
-					}
-
 				} elsif ($accountID eq $targetID && $player->action eq "attack" && mon_control($monster->{name}, $monster->{nameID})->{attack_auto} == 3
 					&& ($monster->{dmgToYou} || $monster->{missedYou} || $monster->{dmgFromYou})) {
 
@@ -3557,7 +3554,7 @@ sub canUseTeleport {
 	my ($use_lvl) = @_;
 
 	# not in game
-	return 0 if $net->getState != Network::IN_GAME;
+	return 0 if $net && $net->getState != Network::IN_GAME; # $net check is to not crash test
 
 	# 1 - check for items
 	my $item;
@@ -3656,7 +3653,7 @@ sub writeStorageLog {
 		print $f TF("---------- Storage %s -----------\n", getFormattedDate(int(time)));
 		for my $item (@{$char->storage}) {
 
-			my $display = sprintf "%2d %s x %s", $item->{binID}, $item->{name}, $item->{amount};
+			my $display = sprintf "%2d [%6d] %s x %s", $item->{binID}, $item->{nameID}, $item->{name}, $item->{amount};
 			# Translation Comment: Mark to show not identified items
 			$display .= " -- " . T("Not Identified") if !$item->{identified};
 			# Translation Comment: Mark to show broken items
@@ -3691,8 +3688,9 @@ sub getBestTarget {
 	my $playerDist = $config{'attackMinPlayerDistance'} || 1;
 
 	my @noLOSMonsters;
+	my @noLOSMonsters_pos;
 	# TODO: Is there any situation where we should use calcPosFromPathfinding or calcPosFromTime here?
-	my $myPos = calcPosition($char);
+	my $myPos = calcPosFromPathfinding($field, $char);
 	my ($highestPri, $smallestDist, $bestTarget);
 
 	# First of all we check monsters in LOS, then the rest of monsters
@@ -3700,11 +3698,12 @@ sub getBestTarget {
 	foreach (@{$possibleTargets}) {
 		my $monster = $monsters{$_};
 		# TODO: Is there any situation where we should use calcPosFromPathfinding or calcPosFromTime here?
-		my $pos = calcPosition($monster);
+		my $pos = calcPosFromPathfinding($field, $monster);
 		next if (positionNearPlayer($pos, $playerDist)
 			|| positionNearPortal($pos, $portalDist)
 		);
-		if ((my $control = mon_control($monster->{name},$monster->{nameID}))) {
+		my $control = mon_control($monster->{name},$monster->{nameID});
+		if (defined $control) {
 			next if ( ($control->{attack_auto} == -1)
 				|| ($control->{attack_lvl} ne "" && $control->{attack_lvl} > $char->{lv})
 				|| ($control->{attack_jlvl} ne "" && $control->{attack_jlvl} > $char->{lv_job})
@@ -3714,47 +3713,83 @@ sub getBestTarget {
 				|| ($control->{attack_auto} == 0 && !($monster->{dmgToYou} || $monster->{missedYou}))
 			);
 		}
+		
+		my %plugin_args;
+		$plugin_args{target} = $monster;
+		$plugin_args{control} = $control;
+		$plugin_args{attackCheckLOS} = $attackCheckLOS;
+		$plugin_args{attackCanSnipe} = $attackCanSnipe;
+		$plugin_args{return} = 0;
+		Plugins::callHook('getBestTarget' => \%plugin_args);
+		next if ($plugin_args{return});
 
 		if (!$field->checkLOS($myPos, $pos, $attackCanSnipe)) {
 			push(@noLOSMonsters, $_);
+			push(@noLOSMonsters_pos, $pos);
 			next;
 		}
 
 		my $name = lc $monster->{name};
 		my $dist = adjustedBlockDistance($myPos, $pos);
+		my $priority = $priority{$name} ? $priority{$name} : 0;
 
-		if (!defined($bestTarget) || ($priority{$name} > $highestPri)) {
-			$highestPri = $priority{$name};
+		if (!defined($bestTarget) || ($priority > $highestPri)) {
+			$highestPri = $priority;
 			$smallestDist = $dist;
 			$bestTarget = $_;
 		}
-		if ((!defined($bestTarget) || $priority{$name} == $highestPri)
+		if ((!defined($bestTarget) || $priority == $highestPri)
 		  && (!defined($smallestDist) || $dist < $smallestDist)) {
-			$highestPri = $priority{$name};
+			$highestPri = $priority;
 			$smallestDist = $dist;
 			$bestTarget = $_;
 		}
 	}
 	if ($attackCheckLOS && !$bestTarget && scalar(@noLOSMonsters) > 0) {
-		foreach (@noLOSMonsters) {
+		my $pathfinding = new PathFinding;
+		my ($min_pathfinding_x, $min_pathfinding_y, $max_pathfinding_x, $max_pathfinding_y) = $field->getSquareEdgesFromCoord($myPos, $config{attackRouteMaxPathDistance});
+		foreach my $index (0..$#noLOSMonsters) {
+			
 			# The most optimal solution is to include the path lenghts' comparison, however it will take
 			# more time and CPU resources, so, we use rough solution with priority and distance comparison
 
-			my $monster = $monsters{$_};
+			my $monster = $monsters{$noLOSMonsters[$index]};
 			# TODO: Is there any situation where we should use calcPosFromPathfinding or calcPosFromTime here?
-			my $pos = calcPosition($monster);
-			my $name = lc $monster->{name};
-			my $dist = adjustedBlockDistance($myPos, $pos);
-			if (!defined($bestTarget) || ($priority{$name} > $highestPri)) {
-				$highestPri = $priority{$name};
-				$smallestDist = $dist;
-				$bestTarget = $_;
+			my $pos = $noLOSMonsters_pos[$index];
+
+			# avoid get targets away from attackRouteMaxPathDistance
+			next if(blockDistance($myPos, $pos) >= $config{attackRouteMaxPathDistance});
+
+			$pathfinding->reset(
+				start => $myPos,
+				dest  => $pos,
+				field => $field,
+				avoidWalls => 0,
+				randomFactor => 0,
+				useManhattan => 0,
+				min_x => $min_pathfinding_x,
+				max_x => $max_pathfinding_x,
+				min_y => $min_pathfinding_y,
+				max_y => $max_pathfinding_y
+			);
+			my $dist = $pathfinding->runcount;
+			if ($dist <= 0 || $dist > $config{attackRouteMaxPathDistance}) {
+				$monster->{attack_failedLOS} = time;
+				next;
 			}
-			if ((!defined($bestTarget) || $priority{$name} == $highestPri)
-			  && (!defined($smallestDist) || $dist < $smallestDist)) {
-				$highestPri = $priority{$name};
+			
+			my $name = lc $monster->{name};
+			my $priority = $priority{$name} ? $priority{$name} : 0;
+			if (!defined($bestTarget) || ($priority > $highestPri)) {
+				$highestPri = $priority;
 				$smallestDist = $dist;
-				$bestTarget = $_;
+				$bestTarget = $noLOSMonsters[$index];
+			}
+			if ((!defined($bestTarget) || $priority == $highestPri)
+			  && (!defined($smallestDist) || $dist < $smallestDist)) {
+				$highestPri = $priority;
+				$smallestDist = $dist;
+				$bestTarget = $noLOSMonsters[$index];
 			}
 		}
 	}
@@ -4168,6 +4203,32 @@ sub compilePortals {
 		}
 	}
 
+	foreach my $portal (keys %portals_commands) {
+		foreach my $dest (keys %{$portals_commands{$portal}{dest}}) {
+			next if $portals_commands{$portal}{dest}{$dest}{map} eq '';
+			$mapSpawns{$portals_commands{$portal}{dest}{$dest}{map}}{$dest}{x} = $portals_commands{$portal}{dest}{$dest}{x};
+			$mapSpawns{$portals_commands{$portal}{dest}{$dest}{map}}{$dest}{y} = $portals_commands{$portal}{dest}{$dest}{y};
+		}
+	}
+
+	foreach my $portal (keys %portals_spawns) {
+		foreach my $dest (keys %{$portals_spawns{$portal}{dest}}) {
+			next if $portals_spawns{$portal}{dest}{$dest}{map} eq '';
+			$mapSpawns{$portals_spawns{$portal}{dest}{$dest}{map}}{$dest}{x} = $portals_spawns{$portal}{dest}{$dest}{x};
+			$mapSpawns{$portals_spawns{$portal}{dest}{$dest}{map}}{$dest}{y} = $portals_spawns{$portal}{dest}{$dest}{y};
+		}
+	}
+
+	foreach my $portal (keys %portals_airships) {
+		$mapPortals{$portals_airships{$portal}{source}{map}}{$portal}{x} = $portals_airships{$portal}{source}{x};
+		$mapPortals{$portals_airships{$portal}{source}{map}}{$portal}{y} = $portals_airships{$portal}{source}{y};
+		foreach my $dest (keys %{$portals_airships{$portal}{dest}}) {
+			next if $portals_airships{$portal}{dest}{$dest}{map} eq '';
+			$mapSpawns{$portals_airships{$portal}{dest}{$dest}{map}}{$dest}{x} = $portals_airships{$portal}{dest}{$dest}{x};
+			$mapSpawns{$portals_airships{$portal}{dest}{$dest}{map}}{$dest}{y} = $portals_airships{$portal}{dest}{$dest}{y};
+		}
+	}
+
 	$pathfinding = new PathFinding if (!$checkOnly);
 
 	# Calculate LOS values from each spawn point per map to other portals on same map
@@ -4255,6 +4316,18 @@ sub portalExists2 {
 		 && $entry->{source}{pos}{x} == $srcx
 		 && $entry->{source}{pos}{y} == $srcy
 		 && $entry->{dest}{$destID}) {
+			return $_;
+		}
+	}
+	return;
+}
+
+sub portalExistsAirship {
+	my ($map, $r_pos) = @_;
+	foreach (keys %portals_airships) {
+		if ($portals_airships{$_}{source}{map} eq $map
+		    && $portals_airships{$_}{source}{x} == $r_pos->{x}
+		    && $portals_airships{$_}{source}{y} == $r_pos->{y}) {
 			return $_;
 		}
 	}
@@ -4583,6 +4656,8 @@ sub checkSelfCondition {
 	}
 
 
+	if ($config{$prefix . "_inQueue"}) { return 0 unless AI::inQueue($config{$prefix . "_inQueue"}); }
+	if ($config{$prefix . "_notInQueue"}) { return 0 if AI::inQueue($config{$prefix . "_notInQueue"}); }
 	if ($config{$prefix . "_onAction"}) { return 0 unless (existsInList($config{$prefix . "_onAction"}, AI::action())); }
 	if ($config{$prefix . "_notOnAction"}) { return 0 if (existsInList($config{$prefix . "_notOnAction"}, AI::action())); }
 	if ($config{$prefix . "_spirit"}) {return 0 unless (inRange(defined $char->{spirits} ? $char->{spirits} : 0, $config{$prefix . "_spirit"})); }
@@ -4647,6 +4722,16 @@ sub checkSelfCondition {
 			my ($itemName, $count) = $input =~ /(.*?)(?:\s+([><]=? *\d+))?$/;
 			$count = '>0' if $count eq '';
 			my $item = $char->inventory->getByName($itemName);
+ 			return 0 if !inRange(!$item ? 0 : $item->{amount}, $count);
+		}
+	}
+
+	if ($config{$prefix."_inInventoryID"}) {
+		return 0 if (!$char->inventory->isReady());
+		foreach my $input (split / *, */, $config{$prefix."_inInventoryID"}) {
+			my ($itemName, $count) = $input =~ /^(.*?)(?:\s*([><]=? *\d+))?$/;
+			$count = '>0' if $count eq '';
+			my $item = $char->inventory->getByNameID($itemName);
  			return 0 if !inRange(!$item ? 0 : $item->{amount}, $count);
 		}
 	}
@@ -5286,7 +5371,8 @@ sub setCharDeleteDate {
 }
 
 sub cancelNpcBuySell {
-	undef $ai_v{'npc_talk'};
+	undef %talk;
+	delete $ai_v{'npc_talk'} if (exists $ai_v{'npc_talk'});
 
 	if ($in_market) {
 		$messageSender->sendMarketClose;
@@ -5304,7 +5390,8 @@ sub completeNpcSell {
 		$messageSender->sendSellBulk($items);
 	}
 
-	undef $ai_v{'npc_talk'};
+	undef %talk;
+	delete $ai_v{'npc_talk'} if (exists $ai_v{'npc_talk'});
 
 	if ($messageSender->{send_sell_buy_complete}) {
 		$messageSender->sendSellBuyComplete;
@@ -5323,7 +5410,8 @@ sub completeNpcBuy {
 		}
 	}
 
-	undef $ai_v{'npc_talk'};
+	undef %talk;
+	delete $ai_v{'npc_talk'} if (exists $ai_v{'npc_talk'});
 
 	if ($in_market) {
 		$messageSender->sendMarketClose;
@@ -5475,6 +5563,29 @@ sub absunit {
 	} else {
 		return -1;
 	}
+}
+
+sub autoNpcTalk {
+	my ($ID, $nameID) = @_;
+
+	return if (defined AI::findAction("NPC"));
+
+	my $routeIndex = AI::findAction("route");
+	return if (defined $routeIndex && AI::args($routeIndex)->getSubtask && UNIVERSAL::isa(AI::args($routeIndex)->getSubtask, 'Task::TalkNPC'));
+
+	my $routeIndex = AI::findAction("route", 1);
+	return if (defined $routeIndex && AI::args($routeIndex)->getSubtask && UNIVERSAL::isa(AI::args($routeIndex)->getSubtask, 'Task::TalkNPC'));
+
+	debug "An unexpected npc conversation has started, auto-creating a TalkNPC Task\n";
+	my $task = Task::TalkNPC->new(type => 'autotalk', nameID => $nameID, ID => $ID);
+	AI::queue("NPC", $task);
+	# TODO: The following npc_talk hook is only added on activation.
+	# Make the task module or AI listen to the hook instead
+	# and wrap up all the logic.
+	$task->activate;
+	Plugins::callHook('npc_autotalk', {
+		task => $task
+	});
 }
 
 return 1;
