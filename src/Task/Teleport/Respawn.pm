@@ -30,8 +30,7 @@ sub getInventoryItem {
 		$item = $self->{actor}->inventory->getByName($config{teleportAuto_item2});
 		$item = $self->{actor}->inventory->getByNameID($config{teleportAuto_item2}) if (!($item) && $config{teleportAuto_item2} =~ /^\d{3,}$/);
 	}
-	$item = $self->{actor}->inventory->getByNameID(12324) unless $item; # Novice Butterfly Wing
-	$item = $self->{actor}->inventory->getByNameID(602) unless $item; # Butterfly Wing
+	$item = Misc::getButterflyWing() unless $item;
 	return $item;
  }
 
@@ -40,7 +39,8 @@ sub getInventoryItem {
 sub canUseSkill {
 	my ($self) =  @_;
 	return 0 if ($self->{actor}->{muted});
-	return 0 if $config{'teleportAuto_useItemForRespawn'};
+	return 0 if defined $config{'teleportAuto_useItemForRespawn'} && $config{'teleportAuto_useItemForRespawn'} == 1;
+	return 0 if defined $config{'teleportAuto_useSkill'} && $config{'teleportAuto_useSkill'} == 0;
 	return ($self->{actor}->getSkillLevel(new Skill(handle => 'AL_TELEPORT')) == 2) ? 1 : 0;
 }
 
@@ -48,7 +48,7 @@ sub canUseSkill {
 sub isEquipNeededToTeleport {
 	my ($self) =  @_;
 	return 0 unless ($self->{actor}->inventory->isReady());
-	return 0 if $config{'teleportAuto_useItemForRespawn'};
+	return 0 if defined $config{'teleportAuto_useItemForRespawn'} && $config{'teleportAuto_useItemForRespawn'} == 1;
 	return Actor::Item::scanConfigAndCheck('teleportAuto_equip');
 }
 
