@@ -8,29 +8,59 @@ import shlex
 import subprocess
 import time
 import sys
-import msvcrt
+import logging
 import requests
 from bs4 import BeautifulSoup
 import dearpygui.dearpygui as dpg
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from typing import Optional
 from playwright.sync_api import sync_playwright
+import json
+from pathlib import Path
 
 SCREEN_WIDTH = ctypes.windll.user32.GetSystemMetrics(0)
 SCREEN_HEIGHT = ctypes.windll.user32.GetSystemMetrics(1)
+
+APP_NAME = "AutoRag"
+
+
+def appdata_roaming_dir() -> Path:
+    base = Path(os.environ["APPDATA"])
+    dir = base / APP_NAME
+    dir.mkdir(parents=True, exist_ok=True)
+    return dir
+
+
+STATE_FILE = appdata_roaming_dir() / "appstate.json"
 
 
 @dataclass
 class AppState:
     session: Optional[requests.Session] = None
-    launchUrl: Optional[str] = None
     username: Optional[str] = None
     password: Optional[str] = None
     authName: Optional[str] = None
     authValue: Optional[str] = None
+    roAccount: Optional[dict[str, str]] = None
+
+    def save(self, path=STATE_FILE):
+        d = asdict(self)
+        d.pop("session", None)
+        with open(path, "w", encoding="utf-8") as f:
+            json.dump(d, f, ensure_ascii=False)
+
+    @classmethod
+    def load(cls, path=STATE_FILE):
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                d = json.load(f)
+        except Exception as e:
+            return cls()
+        return cls(**d)
 
 
-appState = AppState(requests.session())
+appState = AppState.load()
+appState.session = requests.Session()
 
 
 def waitForGameMon():
@@ -39,10 +69,12 @@ def waitForGameMon():
             ["tasklist", "/FI", "IMAGENAME eq GameMon.des"]
         )
         if "GameMon.des" in output.decode():
-            print("GameMon.des exists")
+            log.debug("GameMon.des exists")
+            # TODO: might not be reliable for user
             time.sleep(3)
             return
-        print("Waiting for GameMon.des")
+        log.debug("Waiting for GameMon.des")
+        time.sleep(0.5)
 
 
 def delete_gg_files(rag_path):
@@ -54,11 +86,25 @@ def delete_gg_files(rag_path):
 
 
 def killAll():
-    print("Killing ragexe")
-    os.system("taskkill /im Ragexe.exe /F")
-    print("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
-    os.system("taskkill /im perl.exe /F /T")
-    os.system("taskkill /im wxstart.exe /F /T")
+    log.debug("Killing ragexe")
+    ragKill = subprocess.run(
+        "taskkill /im Ragexe.exe /F", capture_output=True, shell=True
+    )
+    log.debug(ragKill.stdout.decode())
+    log.debug(ragKill.stderr.decode())
+
+    log.debug("Killing wxstart.exe so ragnarok can launch. Or you can use openkore.pl")
+    perlKill = subprocess.run(
+        "taskkill /im perl.exe /F /T", capture_output=True, shell=True
+    )
+    log.debug(perlKill.stdout.decode())
+    log.debug(perlKill.stderr.decode())
+
+    wxKill = subprocess.run(
+        "taskkill /im wxstart.exe /F /T", capture_output=True, shell=True
+    )
+    log.debug(wxKill.stdout.decode())
+    log.debug(wxKill.stderr.decode())
 
 
 parser = argparse.ArgumentParser(
@@ -85,6 +131,31 @@ HEADERS = {
 }
 
 
+# Parse roaccount from menu.aspx
+def parseRoAccountsFromMenuHtml(html: bytes):
+    soup = BeautifulSoup(html, "lxml")
+    sel = soup.select_one("select#ddlCPID")
+    if not sel:
+        return []
+
+    accounts = []
+    for opt in sel.select("option[value]"):
+        siid = opt.get("value")
+        label = opt.get_text()
+        if not siid or siid == "select":
+            continue
+
+        accounts.append((label, siid))
+    return accounts
+
+
+def populateAccountDropdown(accounts):
+    labels = [label for (label, _siid) in accounts]
+    dpg.configure_item("roAccountCombo", items=labels)
+    dpg.set_value("roAccountCombo", labels[0])
+
+
+# Log in and parse ro accounts
 def getLaunchUrl(username, password, authCookieName, authCookieValue):
     host = "https://member.gungho.jp"
     login_url = "https://member.gungho.jp/front/ro/iframe/login.aspx"
@@ -114,93 +185,16 @@ def getLaunchUrl(username, password, authCookieName, authCookieValue):
     newPayload["passwordControl$txtPassword"] = password
     newPayload["login"] = ""
 
-    # Log in on the website
+    #  login_soup = BeautifulSoup(login_response.content, "lxml")
+    #  log.debug(login_soup)
+    # Log in to get all the roaccount
     login_response = session.post(login_url, data=newPayload, headers=HEADERS)
-    login_soup = BeautifulSoup(login_response.content, "lxml")
-    print(login_soup)
+    login_response.raise_for_status()
+    accounts = parseRoAccountsFromMenuHtml(login_response.content)
+    populateAccountDropdown(accounts)
+    appState.roAccount = {label: siid for (label, siid) in accounts}
+    return True
 
-    # Find the launch url
-    target_tag = login_soup.find(onclick=lambda x: x and "ゲーム起動" in x)
-    launch_url = host + target_tag["href"]
-    # Append ro account
-    if args.a != None:
-        equal_idx = launch_url.find("=")
-        launch_url = launch_url[: equal_idx + 1] + args.a
-        print(launch_url)
-
-    return launch_url
-
-
-"""
-#  stop_proxy_command = [wireguard, "/uninstalltunnelservice", "Japan"]
-#  subprocess.Popen(stop_proxy_command);
-#  time.sleep(2)
-while True:
-    print("Waiting for keypress...")
-    c = msvcrt.getch()
-
-    kill_all()
-    if c == b'q':
-        print("byebye")
-        exit()
-
-    # Fails on expired account, you got pay up
-    launch_response = session.post(launch_url, headers=headers)
-    match = re.search("GameStartAsync\('(\w+)'\)", launch_response.text)
-    print(launch_response.text)
-    # Added trailing equal sign to complete the base64
-    s = match.group(1) + "="
-    data = binascii.unhexlify(binascii.a2b_base64(s))
-    chunks = [data[i:i+4] for i in range(0, len(data), 4)]
-    onetime_key = ""
-    for i in chunks:
-        result = int.from_bytes(i, byteorder='big') ^ 0x12345678
-        onetime_key += result.to_bytes(4, byteorder="big").decode("ascii")
-    print(onetime_key)
-    passwd = re.search("-p:(\w+)", onetime_key).group(1)
-    print(passwd)
-
-    print("Taking out the trash before game start")
-    delete_gg_files(args.g)
-
-    commandline = r"Ragexe.exe 1rag1 -w {}".format(onetime_key).rstrip("\x00")
-    commandline = shlex.split(commandline)
-    print(commandline)
-    os.chdir(args.g)
-    startupinfo = subprocess.STARTUPINFO()
-    startupinfo.dwFlags |= subprocess.HIGH_PRIORITY_CLASS
-    ragproc = subprocess.Popen(commandline, startupinfo=startupinfo)
-
-    print("Taking out the trash after game start")
-    # Chose if we want to inject netredirect or logging dll
-    if b"1" == c:
-        #  print("Game launched as is")
-        os.chdir(cwd)
-        # os.startfile("wxstart.exe")
-        #  subprocess.Popen("Manualmap.exe", stdout=subprocess.DEVNULL)
-        #  print("Injected logging dll")
-    elif b"2" == c:
-        print("Game launched as is")
-    else:
-        os.chdir(cwd)
-        wait_for_gamemonlaunch()
-        inject_antigg = "Manualmap.exe -target GameMon.des -dll AntiGG.dll"
-        ret = subprocess.run(inject_antigg, capture_output=True)
-        print(ret.stdout.decode())
-
-        if args.f is None:
-            continue
-        openkore = "perl openkore.pl " + args.f
-        print("Launching openkore: " + openkore)
-        subprocess.Popen(openkore,
-                         close_fds=True,
-                         creationflags=subprocess.DETACHED_PROCESS)
-
-        time.sleep(1)
-        inject_raven = "Manualmap.exe -target Ragexe.exe -dll Raven.dll"
-        ret = subprocess.run(inject_raven, capture_output=True)
-        print(ret.stdout.decode())
-"""
 
 from urllib.parse import parse_qs
 
@@ -213,12 +207,12 @@ def interactiveLogin():
             return
         if "front/ro/iframe/login.aspx" not in req.url:
             return
-        print("on request")
+        log.debug("on request")
         form = parse_qs(req.post_data or "")
         captured["username"] = form.get("loginNameControl$txtLoginName", [""])[0]
         captured["password"] = form.get("passwordControl$txtPassword", [""])[0]
         captured["otp"] = form.get("OTPControl$inputOTP", [""])[0]
-        #  print(captured)
+        #  log.debug(captured)
         appState.username = captured["username"]
         appState.password = captured["password"]
 
@@ -237,7 +231,7 @@ def interactiveLogin():
         page.wait_for_url("https://ragnarokonline.gungho.jp/**", timeout=180_000)
 
         cookies = context.cookies("https://member.gungho.jp")
-        print(cookies)
+        log.debug(cookies)
         authCookie = next(
             (
                 c
@@ -247,17 +241,20 @@ def interactiveLogin():
             ),
             None,
         )
-        print(authCookie)
+        log.debug(authCookie)
         appState.authName = authCookie["name"]
         appState.authValue = authCookie["value"]
         return True
 
 
-def launchGame():
+def launchGame(siid):
     killAll()
-    launch_response = appState.session.post(appState.launchUrl, headers=HEADERS)
-    match = re.search("GameStartAsync\('(\w+)'\)", launch_response.text)
-    #  print(launch_response.text)
+
+    menuUrl = f"https://member.gungho.jp/front/ro/iframe/menu.aspx?SIID={siid}"
+
+    launch_response = appState.session.post(menuUrl, headers=HEADERS)
+    match = re.search(r"GameStartAsync\('(\w+)'\)", launch_response.text)
+    #  log.debug(launch_response.text)
     # Added trailing equal sign to complete the base64
     s = match.group(1) + "="
     data = binascii.unhexlify(binascii.a2b_base64(s))
@@ -266,37 +263,40 @@ def launchGame():
     for i in chunks:
         result = int.from_bytes(i, byteorder="big") ^ 0x12345678
         onetime_key += result.to_bytes(4, byteorder="big").decode("ascii")
-    print(onetime_key)
+    log.debug(f"one time key: {onetime_key}")
 
-    passwd = re.search("-p:(\w+)", onetime_key).group(1)
-    print(passwd)
+    passwd = re.search(r"-p:(\w+)", onetime_key).group(1)
+    log.debug(passwd)
 
-    print("Taking out the trash before game start")
+    log.debug("Taking out the trash before game start")
+    # TODO: pass ragnarko online path
     delete_gg_files(args.g)
 
     # Launch game
     commandline = r"Ragexe.exe 1rag1 -w {}".format(onetime_key).rstrip("\x00")
     commandline = shlex.split(commandline)
-    print(commandline)
+    log.debug(commandline)
     # TODO: locate game installation dir
     os.chdir(args.g)
-    startupinfo = subprocess.STARTUPINFO()
-    startupinfo.dwFlags |= subprocess.HIGH_PRIORITY_CLASS
-    ragproc = subprocess.Popen(commandline, startupinfo=startupinfo)
+    # Popen to non block
+    ragproc = subprocess.Popen(
+        commandline, creationflags=subprocess.HIGH_PRIORITY_CLASS
+    )
 
     # Inject npgg
     # TODO: Assume openkore is in cwd?
     os.chdir(cwd)
     waitForGameMon()
     inject_antigg = "Manualmap.exe -target GameMon.des -dll AntiGG.dll"
-    ret = subprocess.run(inject_antigg, capture_output=True)
-    print(ret.stdout.decode())
+    ret = subprocess.run(inject_antigg, capture_output=True, text=True)
+    log.debug(ret.stdout)
+    log.debug(ret.stderr)
 
     # Launch openkore
     # TODO: Read arguments
-    arguments = "-interface=Wx --config=control\config-shadowCross.txt"
+    arguments = r"-interface=Wx --config=control\config-shadowCross.txt"
     openkore = "perl openkore.pl " + arguments
-    print("Launching openkore: " + openkore)
+    log.debug("Launching openkore: " + openkore)
     subprocess.Popen(
         openkore, close_fds=True, creationflags=subprocess.DETACHED_PROCESS
     )
@@ -304,62 +304,69 @@ def launchGame():
 
     # Inject client
     inject_raven = "Manualmap.exe -target Ragexe.exe -dll Raven.dll"
-    ret = subprocess.run(inject_raven, capture_output=True)
-    print(ret.stdout.decode())
+    ret = subprocess.run(inject_raven, capture_output=True, text=True)
+    log.debug(ret.stdout)
+    log.debug(ret.stderr)
 
 
-def exitCallback():
+def teardownCallback():
     killAll()
 
 
 def loginCallback():
     # 1) Try to get a launch URL without interactive login
     try:
-        url = getLaunchUrl(
+        ok = getLaunchUrl(
             appState.username, appState.password, appState.authName, appState.authValue
         )
     except Exception as e:
-        url = None
+        ok = False
 
     # 2) Only fall back to interactive login if URL is missing/empty (or an exception happened)
-    if not url:
+    if not ok:
+        dpg.configure_item("loginBtn", enabled=False)
         try:
             ok = interactiveLogin()
         except Exception as e:
-            print("Interactive login failed")
-            print(e)
+            log.error("Interactive login failed")
+            log.error(e)
             return
+        finally:
+            dpg.configure_item("loginBtn", enabled=True)
 
         if not ok:
-            print("Interactive login failed (returned False)")
+            log.error("Interactive login failed with false")
             return
 
         # 3) Retry launch URL after interactive login (in case appState creds changed)
         try:
-            url = getLaunchUrl(
+            ok = getLaunchUrl(
                 appState.username,
                 appState.password,
                 appState.authName,
                 appState.authValue,
             )
         except Exception as e:
-            print("Launch url retrieval error")
-            print(e)
+            log.error("Login failed")
+            log.error(e)
+            return
+        if not ok:
+            log.error("Login failed with false")
             return
 
-        if not url:
-            print("Launch url retrieval error (no URL returned)")
-            return
-
-    appState.launchUrl = url
+    appState.save()
+    log.info("Succesfully loged in")
     dpg.configure_item("launchBtn", enabled=True)
 
 
 def launchCallback():
     try:
-        launchGame()
+        account = dpg.get_value("roAccountCombo")
+        siid = appState.roAccount[account]
+        launchGame(siid)
     except Exception as e:
-        print("Launch game failed, disableing launch button")
+        log.error("Launch game failed, disabling launch button")
+        log.error(e)
         dpg.configure_item("launchBtn", enabled=False)
 
 
@@ -451,6 +458,7 @@ class ConsoleRedirect:
 
 def load_font():
     with dpg.font_registry():
+        # TODO load font in cwd
         with dpg.font(
             "C:/Users/lovemanachan/AppData/Local/Microsoft/Windows/Fonts/SarasaMonoJ-SemiBold.ttf",
             18,
@@ -460,13 +468,20 @@ def load_font():
 
 
 with dpg.window(tag="Primary", no_scrollbar=True, no_scroll_with_mouse=True):
-    with dpg.child_window(tag="mainArea", width=-1, height=-190, border=False):
+    # Keep the controls area a fixed height; let the console fill the rest so it
+    # grows/shrinks with the window.
+    with dpg.child_window(tag="mainArea", width=-1, height=240, border=False):
         dpg.add_text("Subscription email")
         dpg.add_input_text(tag="email", label="")
-        dpg.add_combo(label="RO account")
+        dpg.add_combo(tag="roAccountCombo", label="RO account")
         with dpg.group(horizontal=True):
-            # TODO: username and password cache
-            dpg.add_button(label="Login", callback=loginCallback, width=200, height=100)
+            dpg.add_button(
+                tag="loginBtn",
+                label="Login",
+                callback=loginCallback,
+                width=200,
+                height=100,
+            )
             dpg.add_button(
                 tag="launchBtn",
                 label="ゲーム起動",
@@ -475,8 +490,10 @@ with dpg.window(tag="Primary", no_scrollbar=True, no_scroll_with_mouse=True):
                 height=100,
                 enabled=False,
             )
-            dpg.add_button(label="Exit", callback=exitCallback, width=200, height=100)
-    with dpg.child_window(tag="consoleArea", width=-1, height=180, border=True):
+            dpg.add_button(
+                label="Teardown", callback=teardownCallback, width=200, height=100
+            )
+    with dpg.child_window(tag="consoleArea", width=-1, height=-1, border=True):
         dpg.add_input_text(
             tag="console", multiline=True, readonly=True, width=-1, height=-1
         )
@@ -485,18 +502,23 @@ dpg.set_primary_window("Primary", True)
 sys.stdout = ConsoleRedirect("console")
 sys.stderr = ConsoleRedirect("console")
 
+log = logging.getLogger("autorag")
+log.setLevel(logging.DEBUG)
+h = logging.StreamHandler(sys.stdout)
+h.setLevel(logging.DEBUG)
+log.addHandler(h)
 
 W, H = 640, 600
-dpg.create_viewport(title="RagBot", width=W, height=H)
-dpg.setup_dearpygui()
-dpg.show_viewport()
+dpg.create_viewport(title=APP_NAME, width=W, height=H)
 
 sw = ctypes.windll.user32.GetSystemMetrics(0)
 sh = ctypes.windll.user32.GetSystemMetrics(1)
 dpg.set_viewport_pos(((SCREEN_WIDTH - W) // 2, (SCREEN_HEIGHT - H) // 2))
 
+dpg.setup_dearpygui()
+dpg.set_frame_callback(1, load_font)
+dpg.show_viewport()
 # Load after the first frame.
 # Do a splash screen first if you don't like the first ??? texts
-dpg.set_frame_callback(1, load_font)
 dpg.start_dearpygui()
 dpg.destroy_context()
