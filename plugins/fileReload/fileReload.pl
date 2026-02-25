@@ -6,7 +6,6 @@ use warnings;
 use Plugins;
 use Utils;
 use Log qw(debug message warning error);
-use DDP;
 use Commands qw(run);
 
 use Time::HiRes qw(time);
@@ -93,7 +92,6 @@ sub readConfig {
 	# changes take effect immediately
 	Settings::loadByHandle($file_handle);
 }
-
 
 sub parseReloadList {
 	my $filePath = shift;
