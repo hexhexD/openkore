@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 0
+char 1
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword spaspaig
+adminPassword tibrusho
 callSign
 commandPrefix ;
 callSignGM 0
@@ -355,7 +355,7 @@ chatTitleOversize 0
 shopTitleOversize 0
 buyerShopTitleOversize 0
 
-sleepTime 10
+sleepTime 10000
 
 ignoreAll 0
 itemHistory 0
@@ -854,7 +854,7 @@ equipAuto {
 }
 equipAuto {
 	timeout 20
-	baseLvl < 100
+	maxBase 99
 	topHead +9 黎明のマジェスティックゴート [Extra Str*2:MaxHP + 15%:固定詠唱時間 - 50%]
 	notInTown 1
 }
@@ -1081,7 +1081,7 @@ debugPacket_sent 0
 debugPacket_exclude
 debugPacket_include 0983
 debugPacket_include_dumpMethod 0
-debugDomains portalRecord, ai_npcTalk, #sendPacket
+debugDomains parseInput
 logToFile_Debug
 logToFile_Errors
 logToFile_Messages
