@@ -362,7 +362,7 @@ automacro magic_battle {
 	timeout 10
 	PubMsg /魔法大会進行係に準備完了/
 	call {
-    pause 4
+    pause 6
 		do talknpc 109 51 c r0
 		do talknpc 107 57 c r0
 	}
