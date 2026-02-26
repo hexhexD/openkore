@@ -221,7 +221,6 @@ automacro sara_entered {
 		lock sara_boss_death
 		do conf attackAuto 2
 		# Continue till ???? finishes
-		pause 2
 		do talknpc 261 156 c r0
 		do move 241 146
 	}
@@ -362,9 +361,8 @@ automacro magic_wolf_killed {
 automacro magic_battle {
 	InMap 1@ge_st
 	timeout 10
-	PubMsg /魔法大会進行係に準備完了/
+	PubMsg /連勝を達成し大会/
 	call {
-    pause 6
 		do talknpc 109 51 c r0
 		do talknpc 107 57 c r0
 	}
