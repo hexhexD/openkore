@@ -280,6 +280,54 @@ sub getMultiple {
 }
 
 ##
+# Actor::Item $InventoryList->getAllRegex(String regex)
+# regex: a regex string without the slashes.
+# Returns: an array of Actor::Item objects.
+#
+# Select all items with a name that matches the regex
+# example usage:
+# <pre>
+# my $regex = qr/ペルロ/;
+# my @ilist = $char->storage->getAllRegex($regex);
+# </pre>
+sub getAllRegex {
+	use Log qw(warning message error debug);
+
+	my ($self, $regexStr) = @_;
+	my $regex = qr/$regexStr/;
+	my @result;
+	warning("regex string: $regexStr\n");
+	for my $name (keys %{$self->{nameIndex}}) {
+		if ($name =~ $regex) {
+		# warning(np($name) . "\n");
+			for my $index (@{$self->{nameIndex}{$name}}) {
+				my $item = $self->get($index);
+				$item->{identified} ? unshift(@result, $item) : push(@result, $item);
+			}
+		}
+	}
+	return @result
+}
+
+sub getAllRegex2 {
+	use Log qw(warning message error debug);
+
+	my ($self, $regex) = @_;
+	$regex = qr/$regex/;
+	my @result;
+
+	warning(np($self->[0]));
+
+	my $func = sub {
+		if ($_[0]->{name} =~ $regex) {
+			return 1;
+		}
+	};
+
+	return @result;
+}
+
+##
 # boolean $InventoryList->remove(Actor::Item item)
 # Requires: defined($item) && defined($item->{name})
 #

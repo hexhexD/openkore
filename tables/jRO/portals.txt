@@ -3699,3 +3699,5 @@ enchant01 101 86 enchant01 164 67
 1@xm_d 179 129 1@xm_d 183 100
 1@xm_d 130 178 1@xm_d 130 193
 1@xm_d 107 208 1@xm_d 87 208
+ac_cl_area 76 156 ac_cl_hall 167 69
+ac_cl_hall 167 72 ac_cl_area 73 156

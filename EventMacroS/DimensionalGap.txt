@@ -39,6 +39,7 @@ automacro ghost_first {
 	IsInCoordinate 35..47 191..201
 	timeout 600
 	disabled 0
+	delay 1
     call {
 		do talknpc 41 204 c r0
 		pause 3
@@ -219,7 +220,8 @@ automacro sara_entered {
 		do conf itemsGatherAuto 1
 		lock sara_boss_death
 		do conf attackAuto 2
-		pause 1
+		# Continue till ???? finishes
+		pause 2
 		do talknpc 261 156 c r0
 		do move 241 146
 	}

@@ -27,8 +27,20 @@ sub onUnload {
 	Plugins::delHooks($hooks);
 }
 
-sub test {
-	use DDP;
+# Stub for experimenting with storage
+sub t {
+	my ($name, $amount) = @_;
+	$name = "ペルロックのマント [1]";
+
+	my $regex = qr/ペルロ/;
+
+	my @ilist = $char->storage->getAllRegex2($regex);
+	my $item = $ilist[0];
+
+	# transferItems( \@items, $amount, 'storage' => 'inventory' );
+}
+
+sub taskTest {
 	use Data::Dumper qw(Dumper);
 	use Task::Chained;
 	use Task::SitStand;
@@ -182,7 +194,7 @@ sub MD {
 	open(FH, ">>:utf8", $logFile) or die("Failed to open MD log file\n");
 
 	message("caller is: ".$caller . "\n");
-	my $prefix = "[".getFormattedDate(int(time))."]"." char ".$config{char}." [MD] ";
+	my $prefix = "[".getFormattedDate(int(time))."]"." char $config{char} [MD] ";
 
 	if ($caller eq "start") {
 		message("MD START\n");
@@ -201,17 +213,16 @@ sub MD {
 	elsif ($caller eq "ghost") {
 		print(FH $prefix."Ghost palace done\n");
 		# TODO: weak char stops here
-		# runEventMacro("magic");
-		runEventMacro("cycle");
+		runEventMacro("magic");
 	}
 	elsif ($caller eq "magic") {
 		print(FH $prefix."Magic tournament done\n");
-		Commands::run("autostorage");
 		runEventMacro("sara2");
 	}
 	elsif ($caller eq "sara2") {
 		print(FH $prefix."sara2 done\n");
 		Commands::run("autostorage");
+		runEventMacro("cycle");
 	}
 	else {
 		Commands::run("move 309 280");
