@@ -353,16 +353,17 @@ automacro magic_wolf_killed {
 	call {
 		do talknpc 122 58 c c r0
 		do move 120 34
-		pause 5
+		pause 7
 		do talknpc 107 57 c r0
 	}
 }
 
 automacro magic_battle {
 	InMap 1@ge_st
-	timeout 10
-	PubMsg /連勝を達成し大会/
+	timeout 8
+	PubMsg /魔法大会進行係に準備完了/
 	call {
+    pause 10
 		do talknpc 109 51 c r0
 		do talknpc 107 57 c r0
 	}

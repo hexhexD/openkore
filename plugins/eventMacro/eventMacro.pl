@@ -35,7 +35,7 @@ my $hooks = Plugins::addHooks(
 
 my $chooks = Commands::register(
 	['eventMacro', "eventMacro plugin", \&commandHandler],
-	['emacro', "eventMacro plugin", \&commandHandler]
+	['emacro', "eventMacro plugin", \&commandHandler],
 	# Shorthand for easy typing
 	['em', "eventMacro plugin", \&commandHandler]
 );
