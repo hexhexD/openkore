@@ -3,13 +3,12 @@
 
 ######## Login options and server-specific options ########
 
-master
+master Japan - jRO: Urdr
 server
-username
-password
-loginPinCode
-char
-otpSeed
+username rolvl
+password 1234
+loginPinCode 1111
+char 0
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -22,10 +21,10 @@ forceMapIP
 
 # 1 = hook into RO client, 2 = Act as stand-alone proxy, proxy = act as true proxy
 # https://openkore.com/wiki/XKore
-XKore 0
+XKore 1
 XKore_port 2350
 XKore_dll NetRedirect.dll
-XKore_injectDLL 1
+XKore_injectDLL 0
 XKore_autoAttachIfOneExe 1
 XKore_silent 1
 XKore_bypassBotDetection 0
@@ -39,7 +38,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword
+adminPassword jiehacou
 callSign
 commandPrefix ;
 callSignGM 0
@@ -250,7 +249,9 @@ runFromTarget_noAttackMethodFallback_minStep 8
 saveMap
 saveMap_x
 saveMap_y
+saveMap_warp 0
 saveMap_warpToBuyOrSell 1
+saveMap_warp_minDistance
 saveMap_warpChatCommand
 memo1
 memo2
@@ -273,6 +274,7 @@ sitAuto_over_50 0
 sitAuto_idle 1
 sitAuto_look
 sitAuto_look_from_wall
+sitAuto_look_delay
 sitTensionRelax 0
 
 statsAddAuto 0
@@ -591,8 +593,8 @@ attackSkillSlot {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
-    inQueue
-    notInQueue
+	inQueue
+	notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -675,8 +677,8 @@ doCommand {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
-    inQueue
-    notInQueue
+	inQueue
+	notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -729,8 +731,8 @@ useSelf_skill {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
-    inQueue
-    notInQueue
+	inQueue
+	notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -787,8 +789,8 @@ partySkill {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
-    inQueue
-    notInQueue
+	inQueue
+	notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -891,8 +893,8 @@ equipAuto {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
-    inQueue
-    notInQueue
+	inQueue
+	notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -936,8 +938,8 @@ useSelf_item {
 	mercenary_whenIdle
 	mercenary_whenNotIdle
 	onAction
-    inQueue
-    notInQueue
+	inQueue
+	notInQueue
 	whenStatusActive
 	whenStatusInactive
 	whenFollowing
@@ -1030,3 +1032,5 @@ logToFile_Errors
 logToFile_Messages
 logToFile_Warnings
 history_max 50
+macro_orphans terminate
+password 1234
