@@ -38,7 +38,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword jiehacou
+adminPassword youmeeju
 callSign
 commandPrefix ;
 callSignGM 0
@@ -265,13 +265,13 @@ shop_useSkill 1
 buyerShopAuto_open 0
 buyerShop_random 0
 
-sitAuto_hp_lower 40
+sitAuto_hp_lower 0
 sitAuto_hp_upper 100
 sitAuto_sp_lower 0
 sitAuto_sp_upper 0
 sitAuto_follow 0
 sitAuto_over_50 0
-sitAuto_idle 1
+sitAuto_idle 0
 sitAuto_look
 sitAuto_look_from_wall
 sitAuto_look_delay
