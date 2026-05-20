@@ -248,17 +248,17 @@ sub checkConnection {
 		} else {
 			error "waiting actions for the Ragnarok Online client\n";
 		}
-	} elsif ($conState == Network::CONNECTED_TO_LOGIN_SERVER && $config{'char'} ne "" && !$conState_tries) {
+	} elsif ($conState == Network::CONNECTED_TO_LOGIN_SERVER && $config{autoCharSelect}) {
 		# used to introduce a wait
 		if ($self->serverAlive) {
+			my $charSelectDelay = 5;
 			# new state so we don't enter this block of code again
 			$conState = 2.1;
 			$timeout{charSelectDelay}{time} = time;
-			# $timeout{charSelectDelay}{timeout} = int(rand(30)) + 60;
-			$timeout{charSelectDelay}{timeout} = 10;
-			message("Selecting char in random seconds\n");
+			$timeout{charSelectDelay}{timeout} = $charSelectDelay;
+			message TF("Selecting char in %s seconds\n", $charSelectDelay);
 		}
-	} elsif ($self->getState() == 2.1 && timeOut($timeout{charSelectDelay})) {
+	} elsif ($self->getState() == 2.1 && timeOut($timeout{charSelectDelay}) && $config{'char'} ne '') {
 		$messageSender->sendCharLogin($config{'char'});
 		# Only send char login once
 		$conState = 2.2;
