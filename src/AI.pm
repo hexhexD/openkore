@@ -31,6 +31,8 @@ use Field;
 use Exporter;
 use base qw(Exporter);
 use Translation;
+use Globals;
+use Task::UseSkill;
 
 our @EXPORT = (
 	qw/
@@ -127,7 +129,15 @@ sub queue {
 	unshift @ai_seq_args, ((defined $args) ? $args : {});
 }
 
+sub print_call_stack {
+	my $i = 0;
+	while (my @call_info = caller($i++)) {
+		warning "Subroutine: $call_info[3] called at $call_info[1] line $call_info[2]\n";
+	}
+}
+
 sub clear {
+	# print_call_stack();
 	my $total = scalar @_;
 
 	# If no arg was given clear all AI queue
@@ -628,16 +638,27 @@ sub ai_skillUse {
 sub ai_skillUse2 {
 	my ($skill, $lvl, $maxCastTime, $minCastTime, $target, $prefix, $waitBeforeUse, $tag, $isStartSkill) = @_;
 
-	ai_skillUse(
-		$skill->getHandle(),
-		$lvl,
-		$maxCastTime,
-		$minCastTime,
-		$skill->getTargetType == Skill::TARGET_LOCATION ? (@{$target->{pos_to}}{qw(x y)})
-			: $skill->getTargetType == Skill::TARGET_SELF ? ($skill->getOwner->{ID}, undef)
-			: ($target->{ID}, undef),
-		$tag, undef, $waitBeforeUse, $prefix, $isStartSkill
-	)
+	my $skillTask = new Task::UseSkill(
+		actor => $skill->getOwner,
+		target => $target,
+		actorList => $monstersList,
+		skill => $skill,
+		isStartUseSkill => $isStartSkill,
+		priority => Task::USER_PRIORITY
+	);
+	my $task = new Task::ErrorReport(task => $skillTask);
+	$taskManager->add($task);
+
+	# ai_skillUse(
+		# $skill->getHandle(),
+		# $lvl,
+		# $maxCastTime,
+		# $minCastTime,
+		# $skill->getTargetType == Skill::TARGET_LOCATION ? (@{$target->{pos_to}}{qw(x y)})
+			# : $skill->getTargetType == Skill::TARGET_SELF ? ($skill->getOwner->{ID}, undef)
+			# : ($target->{ID}, undef),
+		# $tag, undef, $waitBeforeUse, $prefix, $isStartSkill
+	# )
 }
 
 ##
