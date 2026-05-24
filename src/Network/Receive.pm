@@ -818,6 +818,7 @@ sub received_characters_slots_info {
 	$charSvrSet{premium_end_slot} = $args->{premium_end_slot} if (exists $args->{premium_end_slot});
 
 	$charSvrSet{normal_slot} = $args->{normal_slot} if (exists $args->{normal_slot});
+	$charSvrSet{normal_slot} += $args->{jro_paid_slot} if (exists $args->{jro_paid_slot});
 	$charSvrSet{premium_slot} = $args->{premium_slot} if (exists $args->{premium_slot});
 	$charSvrSet{billing_slot} = $args->{billing_slot} if (exists $args->{billing_slot});
 

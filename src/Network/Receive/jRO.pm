@@ -27,6 +27,9 @@ sub new {
 		'0A37' => ['inventory_item_added', 'a2 v V C3 a16 V C2 a4 v a25 C v', [qw(ID amount nameID identified broken upgrade cards type_equip type fail expire unknown options favorite viewID)]], # 69 bytes long and still a work in progress.
 		'0A4D' => ['account_server_info', 'v a4 a4 a4 a4 a26 C x17 a*', [qw(len sessionID accountID sessionID2 lastLoginIP lastLoginTime accountSex serverInfo)]],
 		'0ADD' => ['item_appeared', 'a4 V v C v2 C2 v C v', [qw(ID nameID type identified x y subx suby amount show_effect effect_type )]],
+		# 'Internally this is converted to 028D by the client where normal_slot
+		# euqals normal_slot+jro_paid_slot'
+		'0C05' => ['received_characters_info', 'v C6 x20', [qw(len normal_slot jro_paid_slot billing_slot premium_slot valid_slot producible_slot)]],
 		# '02C2' => ['gameguard_unknown'],
 		# '02A3' => ['gameguard_unknown'],
 		# '02BD' => ['gameguard_unknown'],
