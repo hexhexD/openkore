@@ -7,6 +7,7 @@ automacro __1 {
     InMap new_1-1
 	timeout 15
 	call {
+		pause 2
 		do talk "ファラ#nov1"
 		do talk resp 3
 	}
@@ -15,7 +16,8 @@ automacro __2 {
     InMap new_2-1
 	timeout 15
 	call {
-		do talk "ファラ#nov1"
+		pause 2
+		do talk "ファラ#nov2"
 		do talk resp 3
 	}
 }
@@ -23,7 +25,8 @@ automacro __3 {
     InMap new_3-1
 	timeout 15
 	call {
-		do talk "ファラ#nov1"
+		pause 2
+		do talk "ファラ#nov3"
 		do talk resp 3
 	}
 }
@@ -31,7 +34,8 @@ automacro __4 {
     InMap new_4-1
 	timeout 15
 	call {
-		do talk "ファラ#nov1"
+		pause 2
+		do talk "ファラ#nov4"
 		do talk resp 3
 	}
 }
@@ -39,7 +43,8 @@ automacro __5 {
     InMap new_5-1
 	timeout 15
 	call {
-		do talk "ファラ#nov1"
+		pause 2
+		do talk "ファラ#nov5"
 		do talk resp 3
 	}
 }
