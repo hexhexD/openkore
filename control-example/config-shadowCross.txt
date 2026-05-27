@@ -8,7 +8,7 @@ server
 username SX
 password 123
 loginPinCode 1111
-char 0
+char 2
 
 # Poseidon Settings: https://openkore.com/wiki/Poseidon
 # They must be the same as Query Server config in Poseidon.txt
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword zusweemi
+adminPassword zonieyip
 callSign
 commandPrefix ;
 callSignGM 0
@@ -63,7 +63,7 @@ alias_heal sp 28
 allowedMaps
 allowedMaps_reaction 1
 
-attackAuto 0
+attackAuto 2
 teleportAuto_search 0
 attackAuto_party 1
 attackAuto_onlyWhenSafe 0
@@ -214,7 +214,7 @@ route_escape_reachedNoPortal 1
 route_escape_randomWalk 1
 route_escape_shout
 route_avoidWalls 1
-route_randomWalk 0
+route_randomWalk 2
 route_randomWalk_inTown 0
 route_randomWalk_maxRouteTime 60
 route_maxWarpFee
@@ -640,6 +640,8 @@ attackSkillSlot GC_ROLLINGCUTTER {
 	disabled 0
 	lvl 5
 	maxDist 2
+	isSelfSkill 1
+	isStartSkill 1
 	# aggressives > 0
 }
 
@@ -1074,10 +1076,10 @@ autoMD 0
 ######## Debugging options; only useful for developers ########
 
 debug 0
-debugPacket_unparsed 1
+debugPacket_unparsed 0
 debugPacket_received 0
-debugPacket_ro_sent 0
-debugPacket_sent 0
+debugPacket_ro_sent 1
+debugPacket_sent 1
 debugPacket_exclude
 debugPacket_include 0983
 debugPacket_include_dumpMethod 0
