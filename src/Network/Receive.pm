@@ -4569,7 +4569,7 @@ sub progress_bar {
 	$taskManager->add(
 		new Task::Chained(tasks => [new Task::Wait(seconds => $args->{time}),
 		new Task::Function(function => sub {
-			 $messageSender->sendProgress();
+			 # $messageSender->sendProgress();
 			 message TF("Progress bar finished.\n"), 'info';
 			 $char->{progress_bar} = 0;
 			 $_[0]->setDone;
