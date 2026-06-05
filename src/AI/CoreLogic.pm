@@ -49,7 +49,9 @@ sub iterate {
 	Benchmark::begin("ai_prepare") if DEBUG;
 	processWipeOldActors();
 	processActorAvoid();
-	processGetPlayerInfo();
+	# TODO: Prolly only useful for xkor1, needs to confirm actual client behavior
+	# otherwise this is a detection vector
+	# processGetPlayerInfo();
 	processMisc();
 	processReAddMissingPortals();
 	processPortalRecording();
@@ -488,6 +490,8 @@ sub processPortalRecording {
 		return;
 	}
 
+	# use DDP string_escapes => 1, show_dualvar => "strict";
+	# warning(np(%portals_old));
 
 	# Find the nearest portal or the only portal on the map
 	# you came from (source portal)
@@ -1130,7 +1134,13 @@ sub processTransferItems {
 
 			if ($weightNeeded > $freeWeight) {
 				#need to low down the amount
-				$row->{amount} = $freeWeight / ( $item->weight()/10 );
+				$row->{amount} = int($freeWeight / ( $item->weight()/10 ));
+				if ($row->{amount} == 0) {
+					warning("Can't carry anymore, clearing transferItems sequence");
+					AI::clear("transferItems");
+					return;
+				}
+			} else {
 				warning TF("Amount of %s is more than you can carry, getting the maximum possible (%d)\n", $row->{item}, $row->{amount});
 			}
 		}
