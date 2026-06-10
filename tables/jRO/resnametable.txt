@@ -22026,5 +22026,10 @@ moonfield06.rsw#moonfild.rsw#
 3@advs.rsw#1@advs.rsw#
 3@advs.gnd#1@advs.gnd#
 유저인터페이스\map\3@advs.bmp#유저인터페이스\map\gon_test.bmp#
+mu_fild01j.gat#mu_fild01.gat#
+hem_fildj.gat#hem_fild.gat#
+hem_dun01j.gat#hem_dun01.gat#
+ygg_rootsj.gat#ygg_roots.gat#
+uknw_ruinj.gat#uknw_ruin.gat#
 //=============================================================================
 //[file end]
