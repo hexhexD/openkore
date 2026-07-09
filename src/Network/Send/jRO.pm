@@ -39,7 +39,7 @@ sub new {
 		character_move 035F
 		item_drop 0363
 		item_take 0362
-		item_use 02E2
+		item_use 00A7
 		master_login 027C
 		send_equip 0998
 		storage_item_add 0364
