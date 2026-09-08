@@ -3,7 +3,7 @@
 
 ######## Login options and server-specific options ########
 
-master Japan - jRO: Urdr
+master
 server
 username rolvl
 password 1234
