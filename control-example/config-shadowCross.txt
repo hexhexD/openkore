@@ -21,7 +21,7 @@ forceMapIP
 # 1 = hook into RO client, 2 = Act as stand-alone proxy, proxy = act as true proxy
 # https://openkore.com/wiki/XKore
 XKore 1
-XKore_port 2350
+XKore_port 666
 XKore_dll NetRedirect.dll
 XKore_injectDLL 0
 XKore_autoAttachIfOneExe 1
@@ -37,7 +37,7 @@ XKore_ID
 
 # It is not advised to set secureAdminPassword if you're using Xkore 2
 secureAdminPassword 1
-adminPassword zonieyip
+adminPassword chifroru
 callSign
 commandPrefix ;
 callSignGM 0

@@ -34,7 +34,7 @@ forceMapIP
 # 1 = rodar dentro do cliente do RO, 2 = usar proxy autônomo, proxy = atua como proxy verdadeiro
 # https://openkore.com/wiki/XKore
 XKore 0
-XKore_port 2350
+XKore_port 666
 XKore_dll NetRedirect.dll
 XKore_autoAttachIfOneExe 1
 XKore_silent 1
